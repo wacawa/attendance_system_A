@@ -23,3 +23,6 @@ Things you may want to cover:
 
 * ...
 # attendance_system_A
+#10/4変更
+
+
