@@ -2,8 +2,8 @@
 
 User.create!(name: "user0",
              email: "sample@email.com",
-             password: password,
-             password_confirmation: password,
+             password: "password",
+             password_confirmation: "password",
              )
 
 49.times do |n|
