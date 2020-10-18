@@ -26,6 +26,8 @@ gem 'rails-i18n'
 gem 'bootstrap-sass'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
+gem 'faker'
+
 
 
 # Use Active Storage variant
