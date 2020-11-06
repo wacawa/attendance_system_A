@@ -33,3 +33,10 @@
   margin: 15px 0;
   width: 30%;
 }
+
+#table-attendances {
+  th, td {
+    vertical-align: middle;
+    text-align: center;
+  }
+}
