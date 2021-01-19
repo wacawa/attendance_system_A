@@ -1,10 +1,18 @@
 .user-table {
   vertical-align: middle;
   text-align: center;
+  td {
+    vertical-align: middle;
+  }
+}
+
+.btn-notification-show {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .btn-users-show {
-  margin-top: -10px;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 
