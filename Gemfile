@@ -27,7 +27,7 @@ gem 'bootstrap-sass'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'faker'
-
+gem 'roo'
 
 
 # Use Active Storage variant
