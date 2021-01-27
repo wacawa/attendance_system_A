@@ -3,8 +3,7 @@
   <table class="table table-bordered table-condensed user-table">
     <tr>
       <td><%= l(@first_day, format: :middle) %>の勤怠</td>
-      <td>指定勤務時間：<%= format_basic_info(@user.work_time) %></td>
-      <td>基本時間：<%= format_basic_info(@user.basic_time) %></td>
+      <td>基本時間：<%= format_basic_info(@user.basic_work_time) %></td>
       <td>月初日：<%= l(@first_day, format: :short) %></td>
     </tr>
     <tr>
