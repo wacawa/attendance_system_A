@@ -19,8 +19,10 @@ class ApplicationController < ActionController::Base
   end
 
   def correct_user
-    flash[:danger] = "権限がありません。"
-    redirect_to(root_url) unless login_user?(@user)
+    unless login_user?(@user)
+      flash[:danger] = "権限がありません。"
+      redirect_to(root_url)
+    end
   end
 
   def admin_user
