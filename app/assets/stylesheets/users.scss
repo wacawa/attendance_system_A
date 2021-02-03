@@ -3,12 +3,15 @@
   text-align: center;
 }
 
+@for $i from 1 through 10 {
+  .mrgn-top-#{$i} {
+    margin-top: #{$i}px;
+  }
+}
+
 .btn-users-show {
   margin-top: -10px;
   margin-bottom: 10px;
-  .mrgn-top-5 {
-    margin-top: 5px;
-  }
 }
 
 .label-signup {
@@ -48,3 +51,4 @@
     text-align: center;
   }
 }
+

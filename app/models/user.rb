@@ -16,7 +16,7 @@ class User < ApplicationRecord
 
   def self.import(file)  
     CSV.foreach(file.path, headers: true) do |row|
-      user = find_by(id: row["id"]) || new
+      user = find_by(id: row["email"]) || new
       user.attributes = row.to_hash.slice(*updatable_attributes)
       user.save
     end

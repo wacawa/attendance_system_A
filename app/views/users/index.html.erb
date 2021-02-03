@@ -5,7 +5,7 @@
 <div class="csv-import">
   <%= form_with(url: import_users_path, multipart: true) do |f| %>
     <%= f.file_field :file %>
-    <%= f.submit "csvインポート" %>
+    <%= f.submit "CSVインポート", class: "btn btn-primary col-md-3 mrgn-top-10" %>
   <% end %>
 
 <div class="col-md-10 col-md-offset-1">
