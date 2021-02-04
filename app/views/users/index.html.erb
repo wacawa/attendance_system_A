@@ -2,46 +2,47 @@
 
 <h1>ユーザー一覧</h1>
 
-<div class="csv-import">
+<div class="col-md-10 col-md-offset-1 csv-import">
   <%= form_with(url: import_users_path, multipart: true) do |f| %>
     <%= f.file_field :file %>
-    <%= f.submit "CSVインポート", class: "btn btn-primary col-md-3 mrgn-top-10" %>
+    <%= f.submit "CSVインポート", class: "btn btn-primary col-md-3 mrgn-top10" %>
   <% end %>
+</div>
 
-<div class="col-md-10 col-md-offset-1">
-  <%= will_paginate %>
+<%= will_paginate class: "col-md-offset-7" %>
+
+<div class="col-md-6 col-md-offset-2">
   <table class="table table-condensed table-hover" id="table-users">
     <thead><tr>
       <th><%= User.human_attribute_name :name %></th>
-      <th class="center"><%= User.human_attribute_name :department %></th>
-        <% if login_user.admin? %>
-          <th class="center"><%= User.human_attribute_name :basic_work_time %></th>
-        <% end %>
-        <th></th>
+      <th></th>
     </tr></thead>
 
-    <% @users.each do |user| %>
-      <tr>
-        <td>
-          <% if login_user.admin? %>
-            <%= link_to user.name, user %>
-          <% else %>
-            <%= user.name %>
+    <tbody>
+      <% i = 0 %>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= link_to user.name, user %></td>
+          <% if !login_user?(user) %>
+            <td>
+              <%= link_to "削除", user, method: :delete,
+                  data: { confirm: "削除してよろしいですか？" }, class: "btn btn-danger" %>
+              <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <button data-toggle="collapse" data-parent="#accordion" data-target=#@i>編集</button>
+                  </div>
+                  <div id=@i class="panel-collapse collapse in">
+                    <div class="panel-body">あ</div>
+                  </div>
+                </div>
+              </div>
+            </td>
           <% end %>
-        </td>
-        <td class="center"><%= user.department.present? ? user.department : "未所属" %></td>
-        <% if login_user.admin? %>
-          <td class="center"><%= format_basic_info(user.basic_work_time) %></td>
-        <% end %>
-        <td class="center">
-          <% if login_user.admin? && !login_user?(user) %>
-            <%= link_to "基本情報編集", edit_basic_info_user_path(user), remote: true, class: "btn btn-success" %>
-            <%= link_to "削除", user, method: :delete,
-                data: { confirm: "削除してよろしいですか？" }, class: "btn btn-danger" %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
+        </tr>
+        <% i += 1 %>
+      <% end %>
+    </tbody>
   </table>
   <%= will_paginate %>
 </div>

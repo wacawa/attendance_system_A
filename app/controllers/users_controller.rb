@@ -7,6 +7,7 @@ class UsersController < ApplicationController
 
   def index
     @users = User.paginate(page: params[:page])
+    @n_of_users = 0
   end
 
   def import

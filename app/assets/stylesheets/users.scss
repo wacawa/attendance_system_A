@@ -1,17 +1,19 @@
-.user-table {
-  vertical-align: middle;
-  text-align: center;
-}
-
-@for $i from 1 through 10 {
-  .mrgn-top-#{$i} {
-    margin-top: #{$i}px;
+table.user-table {
+  tr {
+    td {
+      vertical-align: middle;
+      text-align: center;
+    }
   }
 }
 
-.btn-users-show {
-  margin-top: -10px;
-  margin-bottom: 10px;
+$position: "top", "bottom", "right", "left";
+@each $x in $position {
+  @for $i from -10 through 10 {
+    .mrgn-#{$x}#{$i} {
+      margin-#{$x}: #{$i}px;
+    }
+  }
 }
 
 .label-signup {

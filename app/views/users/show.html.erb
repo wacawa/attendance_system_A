@@ -3,12 +3,12 @@
   <table class="table table-bordered table-condensed user-table">
     <tr>
       <td>
-        <%= link_to "<--", user_path(date: @first_day.prev_month), class: "btn btn-default"%>
+        <%= link_to "<--", user_path(date: @first_day.prev_month), class: "btn btn-default mrgn-right5"%>
         <%= l(@first_day, format: :middle) %>の勤怠
-        <%= link_to "-->", user_path(date: @first_day.next_month), class: "btn btn-default"%>
+        <%= link_to "-->", user_path(date: @first_day.next_month), class: "btn btn-default mrgn-left5"%>
       </td>
       <td>
-        <div>指定勤務開始時間：   <%= l(@user.work_start_time, format: :time) %></div>
+        <div>指定勤務開始時間： <%= l(@user.work_start_time, format: :time) %></div>
         <div>指定勤務終了時間：<%= l(@user.work_finish_time, format: :time) %></div>
       </td>
       <td colspan="2">基本時間：<%= format_basic_info(@user.basic_work_time) %></td>
@@ -24,12 +24,12 @@
   </table>
 </div>
 
-<div class="btn-users-show">
-  <div>
+<div>
+  <div class="mrgn-top-10">
     <%= link_to "勤怠編集へ", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-success"%>  
     <%= link_to "CSV出力", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-success"%>  
   </div>
-  <div class="mrgn-top-5"><%= link_to "勤怠修正ログ(承認済)", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-success"%></div>
+  <div class="mrgn-top5 mrgn-bottom10"><%= link_to "勤怠修正ログ(承認済)", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-success"%></div>
 </div>
 
 <div>
