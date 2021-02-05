@@ -1,44 +1,53 @@
 <% provide(:title, "All Users") %>
+<% provide(:class_text, 'edit-user') %>
+<% provide(:btn_text, '編集') %>
+
 
 <h1>ユーザー一覧</h1>
 
-<div class="csv-import">
+<div class="col-md-10 col-md-offset-1 csv-import">
   <%= form_with(url: import_users_path, multipart: true) do |f| %>
     <%= f.file_field :file %>
     <%= f.submit "CSVインポート", class: "btn btn-primary col-md-3 mrgn-top10" %>
   <% end %>
+</div>
 
-<div class="col-md-10 col-md-offset-1">
-  <%= will_paginate %>
+<%= will_paginate class: "col-md-offset-7" %>
+
+<div class="col-md-6 col-md-offset-2">
   <table class="table table-condensed table-hover" id="table-users">
-    <thead><tr>
-      <th><%= User.human_attribute_name :name %></th>
-      <th class="center"><%# User.human_attribute_name :department</th> %>
-      <th class="center"><%= User.human_attribute_name :basic_work_time %></th>
-      <th></th>
-    </tr></thead>
-
-    <% @users.each do |user| %>
+    <thead>
       <tr>
-        <td><%= link_to user.name, user %></td>
-        <td class="center"><%# user.department.present? ? user.department : "未所属"</td> %>
-        <td class="center"><%# format_basic_info(user.basic_work_time) %></td>
-        <td class="center">
-          <% if login_user.admin? && !login_user?(user) %>
-            <%= link_to "削除", user, method: :delete,
-                data: { confirm: "削除してよろしいですか？" }, class: "btn btn-danger" %>
-            <%# link_to "編集", edit_basic_info_user_path(user), remote: true, class: "btn btn-success" %>
-            <div class="panel-group" id="accordion">
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  <button data-toggle="collapse" data-parent="#accordion" data-target="#collapse3">編集</button>
+        <th><%= User.human_attribute_name :name %></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @users.each_with_index do |user, i| %>
+        <tr>
+          <td>
+            <%= link_to user.name, user %>
+            <% unless login_user?(user) %>　　
+              <%= link_to "削除", user, method: :delete,
+                  data: { confirm: "削除してよろしいか？" }, class: "btn btn-danger" %>
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <button data-toggle="collapse" data-target="#collapse<%= i %>">編集</button>
+                  </div>
+                  <div id="collapse<%= i %>" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <div><%= render partial: 'form', locals: { model: user } %></div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
   </table>
   <%= will_paginate %>
 </div>

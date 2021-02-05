@@ -1,4 +1,7 @@
 <% provide(:title, "All Users") %>
+<% provide(:class_text, 'edit-user') %>
+<% provide(:btn_text, '編集') %>
+
 
 <h1>ユーザー一覧</h1>
 
@@ -13,31 +16,30 @@
 
 <div class="col-md-6 col-md-offset-2">
   <table class="table table-condensed table-hover" id="table-users">
-    <thead><tr>
-      <th><%= User.human_attribute_name :name %></th>
-      <th></th>
-    </tr></thead>
+    <thead>
+      <tr>
+        <th><%= User.human_attribute_name :name %></th>
+        <th></th>
+      </tr>
+    </thead>
 
     <tbody>
       <% @users.each_with_index do |user, i| %>
         <tr>
           <td><%= link_to user.name, user %></td>
-          <% if !login_user?(user) %>
+          <% unless login_user?(user) %>　　
             <td>
+              <button data-toggle="collapse" data-target="#collapse<%= i %>" class="btn btn-default">編集</button>
               <%= link_to "削除", user, method: :delete,
-                  data: { confirm: "削除してよろしいですか？" }, class: "btn btn-danger" %>
-              <div class="panel-group"><%# id="accordion"> %>
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <button data-toggle="collapse" data-target="#collapse<%= i %>">編集</button><%# data-parent="#accordion" %>
-                  </div>
-                  <div id="collapse<%= i %>" class="panel-collapse collapse">
-                    <div class="panel-body">あ</div>
-                  </div>
+                  data: { confirm: "削除してよろしいか？" }, class: "btn btn-danger" %>
+              <div id="collapse<%= i %>" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div><%= render partial: 'form', locals: { model: user } %></div>
                 </div>
               </div>
             </td>
           <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>

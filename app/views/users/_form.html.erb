@@ -1,13 +1,13 @@
-<%= form_with(model: @user, local: true) do |f| %>
-  <%= render 'shared/error_messages', object: @user %>
+<%= form_with(model: model, local: true) do |f| %>
+  <%= render partial: 'shared/error_messages', locals: {model: model}, object: model %>
 
-  <%= f.label :name, class: "label-#{yield(:class_text)}" %>
+  <%= f.label :name, class: "mrgn-top5 mrgn-right5 label-#{yield(:class_text)}" %>
   <%= f.text_field :name, class: "form-control" %>
-  <%= f.label :email, class: "label-#{yield(:class_text)}" %>
+  <%= f.label :email, class: "mrgn-top5 mrgn-right5 label-#{yield(:class_text)}" %>
   <%= f.email_field :email, class: "form-control" %>
-  <%= f.label :password, class: "label-#{yield(:class_text)}" %>
+  <%= f.label :password, class: "mrgn-top5 mrgn-right5 label-#{yield(:class_text)}" %>
   <%= f.password_field :password, class: "form-control" %>
-  <%= f.label :password_confirmation, class: "label-#{yield(:class_text)}" %>
+  <%= f.label :password_confirmation, class: "mrgn-top5 mrgn-right5 label-#{yield(:class_text)}" %>
   <%= f.password_field :password_confirmation, class: "form-control" %>
-  <%= f.submit yield(:button_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>
+  <%= f.submit yield(:btn_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)} mrgn-top5 mrgn-right5" %>
 <% end %>
