@@ -19,20 +19,19 @@
     </tr></thead>
 
     <tbody>
-      <% i = 0 %>
-      <% @users.each do |user| %>
+      <% @users.each_with_index do |user, i| %>
         <tr>
           <td><%= link_to user.name, user %></td>
           <% if !login_user?(user) %>
             <td>
               <%= link_to "削除", user, method: :delete,
                   data: { confirm: "削除してよろしいですか？" }, class: "btn btn-danger" %>
-              <div class="panel-group" id="accordion">
+              <div class="panel-group"><%# id="accordion"> %>
                 <div class="panel panel-default">
                   <div class="panel-heading">
-                    <button data-toggle="collapse" data-parent="#accordion" data-target=#@i>編集</button>
+                    <button data-toggle="collapse" data-target="#collapse<%= i %>">編集</button><%# data-parent="#accordion" %>
                   </div>
-                  <div id=@i class="panel-collapse collapse in">
+                  <div id="collapse<%= i %>" class="panel-collapse collapse">
                     <div class="panel-body">あ</div>
                   </div>
                 </div>
@@ -40,7 +39,6 @@
             </td>
           <% end %>
         </tr>
-        <% i += 1 %>
       <% end %>
     </tbody>
   </table>
