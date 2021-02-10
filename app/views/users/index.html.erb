@@ -19,7 +19,7 @@
     <thead>
       <tr>
         <th><%= User.human_attribute_name :name %></th>
-        <th></th>
+        <th>オプション</th>
       </tr>
     </thead>
 
@@ -27,18 +27,15 @@
       <% @users.each_with_index do |user, i| %>
         <tr>
           <td><%= link_to user.name, user %></td>
-          <% unless login_user?(user) %>　　
-            <td>
+          <td class="col-md-9"> 
+            <% unless login_user?(user) %>
               <button data-toggle="collapse" data-target="#collapse<%= i %>" class="btn btn-default">編集</button>
               <%= link_to "削除", user, method: :delete,
                   data: { confirm: "削除してよろしいか？" }, class: "btn btn-danger" %>
-              <div id="collapse<%= i %>" class="panel-collapse collapse">
-                <div class="panel-body">
-                  <div><%= render partial: 'form', locals: { model: user } %></div>
-                </div>
+              <div id="collapse<%=i%>" class="panel-collapse collapse">
+                <br><%= render partial: 'form', locals: { model: user } %><br>
               </div>
-            </td>
-          <% end %>
+            <% end %>
           </td>
         </tr>
       <% end %>

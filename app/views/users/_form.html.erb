@@ -1,13 +1,32 @@
 <%= form_with(model: model, local: true) do |f| %>
   <%= render partial: 'shared/error_messages', locals: {model: model}, object: model %>
 
-  <%= f.label :name, class: "mrgn-top5 mrgn-right5 label-#{yield(:class_text)}" %>
+  <%= f.label :name, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
   <%= f.text_field :name, class: "form-control" %>
-  <%= f.label :email, class: "mrgn-top5 mrgn-right5 label-#{yield(:class_text)}" %>
+  <%= f.label :email, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
   <%= f.email_field :email, class: "form-control" %>
-  <%= f.label :password, class: "mrgn-top5 mrgn-right5 label-#{yield(:class_text)}" %>
+  <% if request.original_url == users_url %>
+    <%= f.label :department, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
+    <%= f.text_field :department, class: "form-control" %>
+  <% end %>
+  <%= f.label :employee_id, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
+  <%= f.text_field :employee_id, class: "form-control" %>
+  <%= f.label :card_id, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
+  <%= f.text_field :card_id, class: "form-control" %>
+  <% if request.original_url == users_url %>
+    <%= f.label :basic_work_time, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
+    <%= f.time_field :basic_work_time, class: "form-control" %>
+  <% end %>
+  <%= f.label :designated_work_start_time, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
+  <%= f.time_field :designated_work_start_time, class: "form-control" %>
+  <%= f.label :designated_work_finish_time, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
+  <%= f.time_field :designated_work_finish_time, class: "form-control" %>
+  <%= f.label :password, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
   <%= f.password_field :password, class: "form-control" %>
-  <%= f.label :password_confirmation, class: "mrgn-top5 mrgn-right5 label-#{yield(:class_text)}" %>
-  <%= f.password_field :password_confirmation, class: "form-control" %>
-  <%= f.submit yield(:btn_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)} mrgn-top5 mrgn-right5" %>
+  <% if !request.original_url == users_url %>
+    <%= f.label :password_confirmation, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
+    <%= f.password_field :password_confirmation, class: "form-control" %>
+  <% end %>
+
+  <%= f.submit yield(:btn_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)} mrgn-top10 mrgn-right5" %>
 <% end %>

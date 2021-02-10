@@ -25,6 +25,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def admin_or_correct_user
+    unless login_user?(@user) || login_user.admin?
+      flash[:danger] = "編集権限がありません。"
+      redirect_to(root_url)
+    end
+  end
+
   def admin_user
     redirect_to root_url unless login_user.admin?
   end
@@ -45,4 +52,5 @@ class ApplicationController < ActionController::Base
     flash[:danger] = "ページ情報の取得に失敗しました。再アクセスしてね。"
     redirect_to root_url
   end
+
 end
