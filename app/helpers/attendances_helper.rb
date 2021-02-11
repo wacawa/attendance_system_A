@@ -1,9 +1,13 @@
 module AttendancesHelper
 
-  def attendance_state(attendance)
+  def working_or_not(attendance)
+    return attendance.started_at.present? ? attendance.finished_at.nil? : nil
+  end
+
+  def attendance_state(attendance, x)
     if Date.current == attendance.worked_on
-      return "出勤" if attendance.started_at.nil?
-      return "退勤" if attendance.started_at.present? && attendance.finished_at.nil?
+      return "出勤" if working_or_not(attendance) == nil && x == 0
+      return "退勤" if working_or_not(attendance) && x == 1
     end
     false
   end

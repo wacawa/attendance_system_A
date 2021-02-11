@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   before_action :set_one_month, only: :show
 
   def index_working_users
-    @user = u { |u|, User.all.each do }
+    @users = User.paginate(page: params[:page])
   end
 
   def index
