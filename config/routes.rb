@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
 
+  get 'index_working_users', to: 'users#index_working_users'
+
   resources :users do
     collection { post :import }
     member do
