@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   before_action :set_one_month, only: :show
 
   def index_working_users
-    @users = User.all
+    @user = u { |u|, User.all.each do }
   end
 
   def index
