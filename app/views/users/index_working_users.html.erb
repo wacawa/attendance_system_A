@@ -13,11 +13,14 @@
 
     <tbody>
       <% @users.each do |u| %>
-      
-          <tr>
-            <td><%= u.employee_id %>
-            <td><%= u.name %></th>
-          </tr>
+        <% u.attendances.each do |a| %>
+          <% if working_or_not(a) %>
+            <tr>
+              <td><%= u.employee_id %>
+              <td><%= u.name %></th>
+            </tr>
+          <% end %>
+        <% end %>
       <% end %>
     </tbody>
   </table>

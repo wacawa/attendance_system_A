@@ -44,3 +44,17 @@ $position: "top", "bottom", "right", "left";
   }
 }
 
+.csv-import {
+  div.title-import {
+    padding-bottom: 10px;
+    p {
+      text-align: center;
+      border-bottom: 1px solid;
+    }
+  }
+}
+
+#table-users .td--user-name {
+  vertical-align: middle;
+}
+

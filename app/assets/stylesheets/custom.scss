@@ -13,14 +13,6 @@ textarea {
   resize: vertical;
 }
 
-.center {
-  text-align: center;
-}
-
-.center h1 {
-  margin-bottom: 10px;
-}
-
 h1, h2, h3, h4, h5, h6 {
   line-height: 1;
 }
@@ -44,6 +36,20 @@ h2 {
 p {
   font-size: 1.1em;
   line-height: 1.7em;
+}
+
+.center {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.center h1 {
+  margin-bottom: 10px;
+}
+
+.border {
+  border: 1px solid;
+  border-radius: 20px;
 }
 
 /* header */
