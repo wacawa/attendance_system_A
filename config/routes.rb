@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'static_pages#top'
+  get 'edit_base_info', to: 'static_pages#edit_base_info'
   get '/signup', to: 'users#new'
 
   #ログイン
@@ -8,7 +9,7 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
 
   get 'index_working_users', to: 'users#index_working_users'
-
+  
   resources :users do
     collection { post :import }
     member do
