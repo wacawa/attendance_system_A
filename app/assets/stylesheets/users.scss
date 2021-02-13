@@ -58,3 +58,8 @@ $position: "top", "bottom", "right", "left";
   vertical-align: middle;
 }
 
+#working_users_table {
+  th, td {
+    text-align: center;
+  }
+}
