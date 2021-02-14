@@ -1,0 +1,42 @@
+<% provide(:title, "拠点一覧") %>
+
+<h1>拠点一覧</h1>
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <table class="table table-bordered table-condensed table-hover">
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th>拠点番号</th>
+          <th>拠点名</th>
+          <th>勤怠種類</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td><%= link_to "修正", "#", class: "btn btn-primary" %></td>
+          <td><%= link_to "削除", "#", class: "btn btn-primary" %></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button data-toggle="collapse" data-target=".collapse" class="btn btn-primary btn-lg">拠点情報の追加</button>
+    <div class="panel-collapse collapse">
+      <% if false %>
+      <%= form_with(model: "#", local: true) do |f| %>
+        <%= f.label :base_name, class: "mrgn-top10" %>
+        <%= f.text_field :base_name, class: "form_control" %>
+        <%= f.label :type, class: "mrgn-top10" %>
+        <%= f.select :type, [["出勤", "出勤"], ["退勤", "退勤"]], include_blank: "選択してください", class: "form_control" %>
+        <%= f.submit "登録", class: "btn btn-primary btn-block mrgn-top10" %>
+      <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,2 @@
+class BaseInfo < ApplicationRecord
+end
