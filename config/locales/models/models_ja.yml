@@ -2,7 +2,7 @@ ja:
   activerecord:
     models:
       user: ユーザー
-    attributes:
+      attributes:
         user:
           id: ID
           name: 名前
@@ -25,3 +25,8 @@ ja:
           work_overtime: 残業
           overtime_instructor: 残業指示者
           user: ユーザーID
+        point:
+          id: 拠点番号
+          point_name: 拠点名
+          attendance_type: 勤怠種類            
+            

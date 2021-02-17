@@ -9,12 +9,7 @@ Rails.application.routes.draw do
 
   get 'index_working_users', to: 'users#index_working_users'
 
-  get '/index_base_info', to: 'base_info#index'
-  get '/new_base_info', to: 'base_info#new'
-  post '/create_base_info', to: 'base_info#create'
-  get '/edit_base_info', to: 'base_info#edit'
-  delete '/delete_base_info', to: 'base_info#destroy'
-
+  resources :points, only: [:index, :create, :edit, :destroy]
 
   resources :users do
     collection { post :import }
