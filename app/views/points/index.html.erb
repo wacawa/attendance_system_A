@@ -16,27 +16,32 @@
       </thead>
 
       <tbody>
-        <% @bases.each do |base| %>
+        <% @points.each do |point| %>
           <tr>
-            <td><%= link_to "修正", edit_point_path(base), class: "btn btn-primary" %></td>
-            <td><%= link_to "削除", edit_point_path(base), method: :delete, class: "btn btn-danger" %></td>
-            <td class="center"><%= base.id %></td>
-            <td class="center"><%= base.base_name %></td>
-            <td class="center"><%= base.attendance_type %></td>
+            <td><%= link_to "修正", point, class: "btn btn-primary" %></td>
+            <td><%= link_to "削除", point, method: :delete, class: "btn btn-danger" %></td>
+            <td class="center"><%= point.id %></td>
+            <td class="center"><%= point.point_name %></td>
+            <td class="center"><%= point.attendance_type %></td>
           </tr>
         <% end %>
       </tbody>
     </table>
 
-    <button data-toggle="collapse" data-target=".collapse" class="btn btn-primary btn-lg">拠点情報の追加</button>
-    <div class="panel-collapse collapse">
-      <%= form_with(url: points_path, local: true) do |f| %>
-        <%= f.label :base_name, class: "mrgn-top10" %>
-        <%= f.text_field :base_name, class: "form_control" %>
-        <%= f.label :attendance_type, class: "mrgn-top10" %>
-        <%= f.select :attendance_type, [["出勤", "出勤"], ["退勤", "退勤"]], include_blank: "選択してください", class: "form_control" %>
-        <%= f.submit "登録", class: "btn btn-primary btn-block mrgn-top10" %>
-      <% end %>
+    <div class="row">
+      <div class="col-md-5">
+        <button data-toggle="collapse" data-target=".collapse" class="btn btn-primary btn-lg">拠点情報の追加</button>
+        <div class="col-md-offset-1 panel-collapse collapse">
+          <%= form_with(model: @point, local: true) do |f| %>
+            <%= f.label :point_name, class: "mrgn-top10" %>
+            <%= f.text_field :point_name, class: "form-control" %>
+            <%= f.label :attendance_type, class: "mrgn-top10" %>
+            <%= f.select :attendance_type, [["出勤", "出勤"], ["退勤", "退勤"]], {include_blank: '選択してください'}, {class: 'form-control'} %>
+            <%= f.submit "登録", class: "btn btn-primary btn-block mrgn-top10" %>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+

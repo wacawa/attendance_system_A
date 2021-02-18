@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   get 'index_working_users', to: 'users#index_working_users'
 
-  resources :points, only: [:index, :create, :edit, :destroy]
+  resources :points, only: [:index, :create, :edit, :destroy, :update]
 
   resources :users do
     collection { post :import }

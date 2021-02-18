@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_17_053531) do
+ActiveRecord::Schema.define(version: 2021_02_18_040729) do
 
   create_table "attendances", force: :cascade do |t|
     t.date "worked_on"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2021_02_17_053531) do
   end
 
   create_table "points", force: :cascade do |t|
-    t.string "base_name"
+    t.string "point_name"
     t.string "attendance_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
