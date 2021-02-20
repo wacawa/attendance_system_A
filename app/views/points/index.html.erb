@@ -33,11 +33,16 @@
         <button data-toggle="collapse" data-target=".collapse" class="btn btn-primary btn-lg">拠点情報の追加</button>
         <div class="col-md-offset-1 panel-collapse collapse">
           <%= form_with(model: @point, local: true) do |f| %>
+            <% if @point.errors.any? %>
+              <div class="mrgn-top10">
+                <%= render partial: 'shared/error_messages', locals: {model: @point}, object: @point %>
+              </div>
+            <% end %>
             <%= f.label :point_name, class: "mrgn-top10" %>
             <%= f.text_field :point_name, class: "form-control" %>
             <%= f.label :attendance_type, class: "mrgn-top10" %>
             <%= f.select :attendance_type, [["出勤", "出勤"], ["退勤", "退勤"]], {include_blank: '選択してください'}, {class: 'form-control'} %>
-            <%= f.submit "登録", class: "btn btn-primary btn-block mrgn-top10" %>
+            <%= f.submit "追加", class: "btn btn-primary btn-block mrgn-top10" %>
           <% end %>
         </div>
       </div>

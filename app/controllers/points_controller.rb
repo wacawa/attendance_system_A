@@ -9,8 +9,10 @@ class PointsController < ApplicationController
     @point = Point.new(point_params)
     if @point.save
       flash[:success] = "拠点情報を追加しました。"
-      redirect_to points_url
+      redirect_to points_path
     else
+      @points = Point.all
+      flash[:danger] = "拠点の追加に失敗しました。"
       render :index
     end
   end
