@@ -1,8 +1,10 @@
 <% if model.errors.any? %>
   <div id="error_explanation">
-    <div class="alert alert-danger">
-      入力エラー<%= model.errors.count %>件。
-    </div>
+    <% if with_count = with_count.nil? %>
+      <div class="alert alert-danger">
+        入力エラー<%= model.errors.count %>件。
+      </div>
+    <% end %>
     <ul>
       <% model.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>

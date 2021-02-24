@@ -11,13 +11,15 @@ class PointsController < ApplicationController
       flash[:success] = "拠点情報を追加しました。"
       redirect_to points_path
     else
+      @in = "in"
       @points = Point.all
-      flash[:danger] = "拠点の追加に失敗しました。"
       render :index
     end
   end
 
   def edit
+    index
+    @epid = Point.find(params[:id]).id
   end
 
   def destroy
