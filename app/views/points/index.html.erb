@@ -10,9 +10,7 @@
     <div class="col-md-offset-1 panel-collapse collapse <%= @in %>">
       <%= form_with(model: @point, local: true) do |f| %>
         <div class="mrgn-top10">
-          <% if @point.errors.any? %>
-            <%= render partial: 'shared/error_messages', locals: {model: @point, with_count: false}, object: @point %>
-          <% end %>
+          <%= render partial: 'shared/error_messages', locals: {model: @point, with_count: false}, object: @point %>
         </div>
         <%= f.label :point_name %>
         <%= f.text_field :point_name, class: "form-control" %>
