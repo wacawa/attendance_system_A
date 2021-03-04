@@ -1,4 +1,18 @@
 <% provide(:title, "拠点編集") %>
 
+<%= render partial: "shared/error_messages", locals: {model: @point, with_count: false} %>
+
 <h1>拠点編集</h1>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+      <%= render partial: 'point_index', locals: {edit: true} %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-5 col-md-offset-2 panel">
+    <button class="btn btn-success btn-lg">拠点情報の追加</button>
+  </div>
+</div>
 

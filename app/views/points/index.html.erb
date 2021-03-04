@@ -3,3 +3,28 @@
 <h1>拠点一覧</h1>
 
 
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <%= render partial: "point_index", locals: {edit: false} %>
+  </div>
+</div>
+
+<% i = @point.errors.any? ? "in" : nil %>
+<div class="row">
+  <div class="col-md-5 col-md-offset-2 panel">
+    <button data-toggle="collapse" data-target=".collapse" class="btn btn-success btn-lg">拠点情報の追加</button>
+    <div class="col-md-offset-1 panel-collapse collapse <%= i %>">
+      <%= form_with(model: @point, local: true) do |f| %>
+        <div class="mrgn-top10">
+          <%= render partial: 'shared/error_messages', locals: {model: @point, with_count: false}, object: @point %>
+        </div>
+        <%= f.label :point_name %>
+        <%= f.text_field :point_name, class: "form-control" %>
+        <%= f.label :attendance_type, class: "mrgn-top10" %>
+        <%= f.select :attendance_type, [["出勤", "出勤"], ["退勤", "退勤"]], {include_blank: '選択してください'}, {class: 'form-control'} %>
+        <%= f.submit "追加", class: "btn btn-primary btn-block mrgn-top10" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+

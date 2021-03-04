@@ -1,6 +1,6 @@
 class PointsController < ApplicationController
-  before_action :set_point, only: [:destroy]
-  before_action :set_points, only: [:index]
+  before_action :set_point, only: [:destroy, :edit, :update]
+  before_action :set_points, only: [:index, :edit]
 
   def index
     @points = Point.all
@@ -26,17 +26,15 @@ class PointsController < ApplicationController
   end
 
   def edit
-    @points = Point.all
-    @point = Point.find(params[:id])
   end
 
   def update
-    @point = Point.find(params[:id])
     if @point.update_attributes(point_params)
       flash[:success] = "拠点情報を更新しました。"
       redirect_to points_path
     else
       flash[:danger] = "拠点情報の更新に失敗しました。"
+      @points = Point.all
       render :edit
     end
   end
