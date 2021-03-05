@@ -8,7 +8,6 @@ User.create!(name: "zero",
              employee_id: 0,
              card_id: cardid,
              admin: true,
-             superior: true
              )
 
 24.times do |n|

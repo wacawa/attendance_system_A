@@ -24,8 +24,16 @@
   </table>
 </div>
 
+<% if @user.superior %>
+  <div class="mrgn-top10">
+    <div><%= link_to "[ 所属長承認申請のお知らせ ]", "#", class: "btn-default" %></div>
+    <div><%= link_to "[ 勤怠変更申請のお知らせ ]", "#", class: "btn-default" %></div>
+    <div><%= link_to "[ 残業申請のお知らせ ]", "#", class: "btn-default" %></div>
+  </div>
+<% end %>
+
 <div>
-  <div class="mrgn-top-10">
+  <div class="mrgn-top10">
     <%= link_to "勤怠編集へ", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary"%>
     <%= link_to "CSV出力", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary"%>  
   </div>
