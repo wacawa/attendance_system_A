@@ -13,7 +13,7 @@
         <% @points.each do |point| %>
           <tr>
             <% if edit && point.id == @point.id %>
-              <td class="col-md-2"><%= link_to "キャンセル", points_path, class: "btn btn-default" %></td>
+              <td class="col-md-2"><%= link_to "キャンセル", points_path, class: "btn btn-primary" %></td>
               <td class="col-md-2"><%= f.submit "更新", class: "btn btn-primary" %></td>
               <td class="col-md-2 center"><%= point.id %></td>
               <td class="col-md-2 center"><%= f.text_field :point_name, class: "form-control" %></td>
@@ -26,7 +26,7 @@
               <td class="col-md-2"><%= link_to "修正", edit_point_path(point), class: "btn btn-primary #{disabled}" %></td>
               <td class="col-md-2">
                 <%= link_to "削除", point, method: :delete,
-                  data: {confirm: "拠点\"#{point.point_name}\"を削除しますか？"}, class: "btn btn-danger #{disabled}" %></td>
+                  data: {confirm: "拠点\"#{point.point_name}\"を削除しますか？"}, class: "btn btn-primary #{disabled}" %></td>
               <td class="col-md-2 center"><%= point.id %></td>
               <td class="col-md-2 center"><%= point.point_name %></td>
               <td class="col-md-2 center"><%= point.attendance_type %></td>

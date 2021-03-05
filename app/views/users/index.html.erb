@@ -32,12 +32,12 @@
       <tbody>
         <% @users.each_with_index do |user, i| %>
           <tr>
-            <td class="td--user-name"><%= link_to user.name, user %></td>
+            <td class="td--user-name"><%= user.name %></td>
             <td class="col-md-9"> 
               <% unless login_user?(user) %>
-                <button data-toggle="collapse" data-target="#collapse<%= i %>" class="btn btn-default">編集</button>
+                <button data-toggle="collapse" data-target="#collapse<%= i %>" class="btn btn-primary">編集</button>
                 <%= link_to "削除", user, method: :delete,
-                    data: { confirm: "削除してよろしいか？" }, class: "btn btn-danger" %>
+                    data: { confirm: "削除してよろしいか？" }, class: "btn btn-primary" %>
                 <div id="collapse<%=i%>" class="panel-collapse collapse">
                   <br><%= render partial: 'form', locals: { model: user } %><br>
                 </div>

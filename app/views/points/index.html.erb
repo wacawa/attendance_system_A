@@ -12,7 +12,7 @@
 <% i = @point.errors.any? ? "in" : nil %>
 <div class="row">
   <div class="col-md-5 col-md-offset-2 panel">
-    <button data-toggle="collapse" data-target=".collapse" class="btn btn-success btn-lg">拠点情報の追加</button>
+    <button data-toggle="collapse" data-target=".collapse" class="btn btn-primary btn-lg">拠点情報の追加</button>
     <div class="col-md-offset-1 panel-collapse collapse <%= i %>">
       <%= form_with(model: @point, local: true) do |f| %>
         <div class="mrgn-top10">
