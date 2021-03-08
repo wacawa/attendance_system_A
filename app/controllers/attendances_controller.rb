@@ -1,6 +1,6 @@
 class AttendancesController < ApplicationController
-  before_action :set_user, only: [:edit_one_month, :update_one_month]
-  before_action :logged_in_user, only: [:update, :edit_one_month]
+  before_action :set_user, only: [:edit_one_month, :update_one_month, :attendance_log]
+  before_action :logged_in_user, only: [:update, :edit_one_month, :attendance_log]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
   before_action :set_one_month, only: :edit_one_month    
 
@@ -41,6 +41,9 @@ class AttendancesController < ApplicationController
     flash[:danger] = "入力データが無効な値だったから、更新をキャンセルしたよ"
     redirect_to attendances_edit_one_month_user_url(date: params[:date])
   end 
+
+  def log
+  end
 
   private
 
