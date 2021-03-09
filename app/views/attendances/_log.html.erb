@@ -7,8 +7,47 @@
       <h1>勤怠修正ログ</h1>
     </div>
     <div class="modal-body">
-      <%= link_to "リセット", "#" %>
-      
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>日付</th>
+                <th>変更前出社時間</th>
+                <th>変更前退社時間</th>
+                <th>変更後出社時間</th>
+                <th>変更後退社時間</th>
+                <th>指示者</th>
+                <th>承認日</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
-</div>      
+</div>
+
+<% if false %>
+  <%# form_with(model: @user, attendances_log_user_path(date: @first_day), local: true) do |f| %>
+    <%#= link_to "リセット", attendances_log_user_path(date: @first_day), remote: true, class: "btn btn-default" %>
+    <%# f.fields_for "attendances[]", day do |attendance| %>
+      <%#= attendance.date_select :worked_on, discard_year: true, discard_month: true, discard_day: true, default: @first_day, class: "btn btn-default" %>
+      <%#= attendance.text :worked_on, disabled: true %>
+      <%#= attendance.date_select :worked_on, discard_year: true, discard_month: true, discard_day: true, default: @first_day %>
+      <%#= attendance.text :worked_on, disabled: true %>
+    <%# end %>
+  <%# end %>
+<% end %>
+
