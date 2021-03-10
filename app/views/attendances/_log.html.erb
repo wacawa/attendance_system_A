@@ -9,6 +9,17 @@
     <div class="modal-body">
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
+          <%= link_to "リセット", attendances_log_user_path(date: @first_day), remote: true, class: "btn btn-default" %>
+          <%= form_with(model: @user, url: attendances_log_user_path(date: @first_day), method: :get, local: true) do |f| %>
+            <% @attendances.each do |day| %>
+              <%= f.fields_for "attendances[]", day do |attendance| %>
+                <%= attendance.text_field :worked_on %>
+                <%= attendance.month_field :worked_on %>
+                <%= attendance.month_field :worked_on %>
+                <%= attendance.month_field :worked_on %>
+              <% end %>
+            <% end %>
+          <% end %>
           <table class="table table-bordered table-hover">
             <thead>
               <tr>
@@ -40,14 +51,8 @@
 </div>
 
 <% if false %>
-  <%# form_with(model: @user, attendances_log_user_path(date: @first_day), local: true) do |f| %>
-    <%#= link_to "リセット", attendances_log_user_path(date: @first_day), remote: true, class: "btn btn-default" %>
-    <%# f.fields_for "attendances[]", day do |attendance| %>
-      <%#= attendance.date_select :worked_on, discard_year: true, discard_month: true, discard_day: true, default: @first_day, class: "btn btn-default" %>
-      <%#= attendance.text :worked_on, disabled: true %>
-      <%#= attendance.date_select :worked_on, discard_year: true, discard_month: true, discard_day: true, default: @first_day %>
-      <%#= attendance.text :worked_on, disabled: true %>
-    <%# end %>
-  <%# end %>
+  , discard_year: true, discard_month: true, discard_day: true, default: @first_day, class: "btn btn-default" %>
+  , disabled: true %>
+  , discard_year: true, discard_month: true, discard_day: true, default: @first_day %>
+  , disabled: true %>
 <% end %>
-
