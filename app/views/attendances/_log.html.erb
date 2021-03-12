@@ -9,11 +9,11 @@
     <div class="modal-body">
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
-          <div><%= link_to "リセット", attendances_log_user_path(date: @first_day), remote: true, class: "btn btn-default" %></div>
-          <div class="inline">
-            <button id="yearDrop" class="btn btn-default dropdown-toggle" data-toggle="dropdown">年 <b class="caret"></b></button>
-            <input class="form-control" placeholder="<%= @first_day.year %>">
-          </div>            
+          <%= link_to "リセット", attendances_log_user_path(date: @first_day), remote: true, class: "btn btn-default" %>
+          <div>
+          <span class="form-inline"><form>
+          <button id="yearDrop" class="btn btn-default dropdown-toggle" data-toggle="dropdown">年 <b class="caret"></b></button>
+          <input class="form-control" placeholder="<%= @first_day.year %>"></form></span></div>
           <div class="dropdown-menu" aria-lablledby="yearDrop">
             <a class="dropdown-item" href="#"><%= @first_day.year %></a>
             <a href="#"></a>
@@ -63,6 +63,8 @@
     </div>
   </div>
 </div>
+
+
 
 <% if false %>
   , discard_year: true, discard_month: true, discard_day: true, default: @first_day, class: "btn btn-default" %>
