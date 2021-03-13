@@ -9,29 +9,40 @@
     <div class="modal-body">
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
+
           <%= link_to "リセット", attendances_log_user_path(date: @first_day), remote: true, class: "btn btn-default" %>
-          <div>
-          <span class="form-inline"><form>
-          <button id="yearDrop" class="btn btn-default dropdown-toggle" data-toggle="dropdown">年 <b class="caret"></b></button>
-          <input class="form-control" placeholder="<%= @first_day.year %>"></form></span></div>
-          <div class="dropdown-menu" aria-lablledby="yearDrop">
-            <a class="dropdown-item" href="#"><%= @first_day.year %></a>
-            <a href="#"></a>
-            <a href="#"></a>
-            <a href="#"></a>
+
+          <div class="input-group col-md-3">
+            <input class="form-control" disabled="true" placeholder="<%= @first_day.year %>">
+            <span class="input-group-btn">
+              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                年 <b class="caret"></b></button>
+              <ul class="dropdown-menu dropdown-menu-down" role="menu">
+                <li><a href="#"><%= @first_day.year %></a></li>
+                <li class="divider"></li>
+                <li><a href="#"><%= @first_day.prev_year.year %></a></li>
+                <li><a href="#"><%= @first_day.prev_year.year %></a></li>
+                <li><a href="#"><%= @first_day.prev_year.year %></a></li>
+                <li><a href="#"><%= @first_day.prev_year.year %></a></li>
+                <li><a href="#"><%= @first_day.prev_year.year %></a></li>
+              </ul>
+            </span>
           </div>
-          <div>
-            <div class="input-group">
-              <button id="monthDrop" class="btn btn-default btn-group dropdown-toggle" data-toggle="dropdown">月 <b class="caret"></b></button>
-              <button class="btn btn-default disabled"><%= @first_day.month %></button>
-            </div>
-            <div class="dropdown-menu" aria-lablledby="monthDrop">
-              <a href="#"><%= @first_day.month %></a>
-              <a href="#"></a>
-              <a href="#"></a>
-              <a href="#"></a>
-            </div>
+
+
+          <div class="input-group col-md-3">
+            <span class="input-group-btn"><div>
+              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                月 <b class="caret"></b></button>
+              <ul class="dropdown-menu" role="menu">
+                <% for m in 1..12 do %>
+                  <li><a href="#"><%= m %></a></li>
+                <% end %>
+              </ul>
+            </div></span>
+            <input class="form-control" disabled="true" placeholder="<%= @first_day.month %>">
           </div>
+
           <table class="table table-bordered table-hover">
             <thead>
               <tr>
