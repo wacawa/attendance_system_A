@@ -13,30 +13,35 @@
           <%= link_to "リセット", attendances_log_user_path(date: @first_day), remote: true, class: "btn btn-default" %>
 
           <div class="input-group col-md-3">
-            <input class="form-control" disabled="true" placeholder="<%= @first_day.year %>">
             <span class="input-group-btn">
-              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                 年 <b class="caret"></b></button>
-              <ul class="dropdown-menu dropdown-menu-down" role="menu">
-                <li><a href="#"><%= @first_day.year %></a></li>
+              <ul class="dropdown-menu">
+                <li><%= link_to @first_day.year, "#", class: "disabled" %></li>
                 <li class="divider"></li>
-                <li><a href="#"><%= @first_day.prev_year.year %></a></li>
-                <li><a href="#"><%= @first_day.prev_year.year %></a></li>
-                <li><a href="#"><%= @first_day.prev_year.year %></a></li>
-                <li><a href="#"><%= @first_day.prev_year.year %></a></li>
-                <li><a href="#"><%= @first_day.prev_year.year %></a></li>
+                <% 5.downto(1) do |y| %>
+                  <li><%= link_to Date.current.ago(y.years).year,
+                      attendances_log_user_path(date: Date.current.ago(y.years)), remote: true %></li>
+                <% end %>
               </ul>
             </span>
+            <input class="form-control" disabled="true" placeholder="<%= @first_day.year %>">
           </div>
-
 
           <div class="input-group col-md-3">
             <span class="input-group-btn"><div>
-              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                月 <b class="caret"></b></button>
-              <ul class="dropdown-menu" role="menu">
-                <% for m in 1..12 do %>
-                  <li><a href="#"><%= m %></a></li>
+              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">月 <b class="caret"></b></button>
+              <ul class="dropdown-menu">
+                <% if @first_day.year == Date.current.year %>
+                  <% Date.current.month.downto(1) do |m| %>
+                    <li><%= link_to Date.current.next_month.month - m,
+                        attendances_log_user_path(date: @first_day.ago(m.months)), remote: true %></li>
+                  <% end %>
+                <% else %>
+                  <% for m in 1..12 do %>
+                    <li><%= link_to m,
+                        attendances_log_user_path(date: Date.current.ago(m.months)), remote: true %></li>
+                  <% end %>
                 <% end %>
               </ul>
             </div></span>
