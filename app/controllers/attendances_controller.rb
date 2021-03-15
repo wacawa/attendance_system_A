@@ -43,6 +43,7 @@ class AttendancesController < ApplicationController
   end 
 
   def log
+    @first_day = @attendances.where("worked_on LIKE ?", @first_day)
   end
 
   private

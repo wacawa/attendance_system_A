@@ -10,32 +10,35 @@
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
 
-          <%= link_to "リセット", attendances_log_user_path(date: @first_day), remote: true, class: "btn btn-default" %>
+          <%= link_to "リセット", attendances_log_user_path(date: @default_date), remote: true, class: "btn btn-default" %>
 
           <div class="input-group col-md-3">
             <span class="input-group-btn">
-              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspop="true">
                 年 <b class="caret"></b></button>
               <ul class="dropdown-menu">
                 <li><%= link_to @first_day.year, "#", class: "disabled" %></li>
                 <li class="divider"></li>
-                <% 5.downto(1) do |y| %>
+                <% 5.downto(0) do |y| %>
                   <li><%= link_to Date.current.ago(y.years).year,
                       attendances_log_user_path(date: Date.current.ago(y.years)), remote: true %></li>
                 <% end %>
               </ul>
             </span>
-            <input class="form-control" disabled="true" placeholder="<%= @first_day.year %>">
+            <input class="form-control" disabled="true" placeholder="<%= @first_day.year %>" arai-label="...">
           </div>
 
           <div class="input-group col-md-3">
             <span class="input-group-btn"><div>
               <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">月 <b class="caret"></b></button>
               <ul class="dropdown-menu">
+                <li><%= link_to @first_day.month, "#", class: "disabled" %></li>
+                <li class="divider"></li>
                 <% if @first_day.year == Date.current.year %>
-                  <% Date.current.month.downto(1) do |m| %>
-                    <li><%= link_to Date.current.next_month.month - m,
-                        attendances_log_user_path(date: @first_day.ago(m.months)), remote: true %></li>
+                  <% for m in 1..Date.current.prev_month.month do %>
+                    <% mth = Date.current.month - m %>
+                    <li><%= link_to m,
+                        attendances_log_user_path(date: Date.current.ago(mth.months)), remote: true %></li>
                   <% end %>
                 <% else %>
                   <% for m in 1..12 do %>
