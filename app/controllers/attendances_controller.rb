@@ -43,7 +43,7 @@ class AttendancesController < ApplicationController
   end 
 
   def log
-    @first_day = @attendances.where("worked_on LIKE ?", @first_day)
+    @default_day = URI(request.referer).path
   end
 
   private
