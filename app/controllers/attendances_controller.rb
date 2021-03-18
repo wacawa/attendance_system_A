@@ -43,7 +43,9 @@ class AttendancesController < ApplicationController
   end 
 
   def log
-    @default_day = URI(request.referer).path
+    @default_day = "a" if URI(request.referer).path == "users/#{@user.id}"
+    @a = "users/#{@user.id}"
+    @b = URI(request.referer).path
   end
 
   private

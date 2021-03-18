@@ -5,13 +5,27 @@
         <span aria-hidden="true">&times;</span>
       </button>
       <h1>勤怠修正ログ</h1>
-      <%= @default_day %>
     </div>
     <div class="modal-body">
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
 
           <%= link_to "リセット", attendances_log_user_path(date: @first_day), remote: true, class: "btn btn-default" %>
+
+          <%= form_with model: @user, method: :get, local: true do |f| %>
+            <%= f.fields_for url: attendances_log_user_path(date: @wanted_day), method: :get do |form| %>
+              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspop="true">
+                年 <b class="caret"></b></button>
+                <ul class="dropdown">
+                  <li><%= form.submit "2020" %></li>
+                  <li><%= form.submit "2020" %></li>
+                  <li><%= form.submit "2020" %></li>
+                  <li><%= form.submit "2020" %></li>
+                  <li><%= form.submit "2020" %></li>
+                </ul>
+              
+            <%= f.fields_for url: attendances_log_user_path(date: @wanted_day), method: :get do |form| %>
+            <%= f.fields_for url: attendances_log_user_path(date: @wanted_day), method: :get do |form| %>
 
           <div class="input-group col-md-3">
             <span class="input-group-btn">
