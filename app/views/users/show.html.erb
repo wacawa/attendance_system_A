@@ -38,7 +38,8 @@
     <%= link_to "CSV出力", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary"%>  
   </div>
   <div class="mrgn-top5 mrgn-bottom10">
-    <%= link_to "勤怠修正ログ(承認済)", attendances_log_user_path(@user, date: @first_day), remote: true, class: "btn btn-primary"%>
+    <%= link_to "勤怠修正ログ(承認済)",
+        attendances_log_user_path(date: @first_day, default_day: @first_day), remote: true, class: "btn btn-primary" %>
   </div>
 
   <div id="log" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true"></div>

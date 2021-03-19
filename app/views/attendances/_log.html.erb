@@ -10,7 +10,8 @@
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
 
-          <%= link_to "リセット", attendances_log_user_path(date: @default_day), remote: true, class: "btn btn-default" %>
+          <%= link_to "リセット",
+              attendances_log_user_path(date: @default_day, default_day: @default_day), remote: true, class: "btn btn-default" %>
 
           <div class="input-group col-md-3">
             <span class="input-group-btn">
@@ -20,8 +21,10 @@
                 <li><%= link_to @first_day.year, "#", class: "disabled" %></li>
                 <li class="divider"></li>
                 <% 5.downto(0) do |y| %>
-                  <li><%= link_to @default_day.ago(y.years).year,
-                      attendances_log_user_path(date: @first_day.ago(y.years)), remote: true %></li>
+                  <% get_day = "#{@default_day.ago(y.years).year}-#{@first_day.month}-01".to_date %>
+                  <li><%= link_to get_day.year,
+                          attendances_log_user_path(date: get_day, default_day: @default_day),
+                          remote: true %></li>
                 <% end %>
               </ul>
             </span>
@@ -37,7 +40,7 @@
                 <% for m in 1..12 do %>
                   <% get_day = "#{@first_day.year}-#{m}-1".to_date %>
                   <li><%= link_to m,
-                      attendances_log_user_path(date: get_day), remote: true %></li>
+                          attendances_log_user_path(date: get_day, default_day: @default_day), remote: true %></li>
                   <% break if get_day == Date.current.beginning_of_month %>
                 <% end %>
               </ul>

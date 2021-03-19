@@ -43,7 +43,7 @@ class AttendancesController < ApplicationController
   end 
 
   def log
-    @default_day = request.parameters[:date].to_date if URI(request.referer).path == "/users/#{@user.id}"
+    @default_day = params[:default_day].to_date
   end
 
   private
