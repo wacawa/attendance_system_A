@@ -21,6 +21,9 @@ class UsersController < ApplicationController
 
   def show
     @worked_sum = @attendances.where.not(started_at: nil).count
+    @approval = @attendances.find_by(worked_on: @first_day).approval? ? "済" : "未"
+    @superiors = User.where(superior: true)
+    @superior = User.find_by(name: params[:superior]) if params[:superior]
   end
 
   def new

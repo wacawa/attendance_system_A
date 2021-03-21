@@ -123,11 +123,14 @@
         <td colspan="3">累計在社時間</td>
         <td rowspan="2"></td>
         <td rowspan="2">
-          所属長承認 <%= "#" %>
-          <%# form_with(model: , local: true) do |f| %>
-            <%# f.select ["#", "#", "#", "#"] %>
-            <%# f.submit "申請" %>
-          <%# end %>
+          所属長承認 <%= @approval %>
+          <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><%= @superior.name %> <b class="caret"></b></button>
+          <ul class="dropdown-menu">
+            <% @superiors.each do |s| %>
+              <li><%= link_to s.name, user_path(@user, superior: s.name) %></li>
+            <% end %>
+          </ul>
+          <button class="btn btn-primary">申請</button>
         </td>
       </tr>
       <tr>
