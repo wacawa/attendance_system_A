@@ -35,7 +35,7 @@
 <div>
   <div class="mrgn-top10">
     <%= link_to "勤怠編集へ", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary"%>
-    <%= link_to "CSV出力", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary"%>  
+    <%= link_to "CSV出力", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary"%>
   </div>
   <div class="mrgn-top5 mrgn-bottom10">
     <%= link_to "勤怠修正ログ(承認済)",
@@ -124,20 +124,26 @@
         <td rowspan="2"></td>
         <td rowspan="2">
           所属長承認 <%= @approval %>
-          <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><%= @superior.name %> <b class="caret"></b></button>
-          <ul class="dropdown-menu">
-            <% @superiors.each do |s| %>
-              <li><%= link_to s.name, user_path(@user, superior: s.name) %></li>
-            <% end %>
-          </ul>
-          <button class="btn btn-primary">申請</button>
+          <div>
+            <button class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown">
+              <%= @superior.superior_name %> <b class="caret"></b>
+            </button>
+            <ul class="dropdown-menu">
+              <% @superiors.each do |s| %>
+                <li><%= link_to s.superior_name, user_path(@user, superior: s.superior_name) %></li>
+              <% end %>
+            </ul>
+          </div>
+          <div>
+            <%= link_to "申請", "#", class: "btn btn-primary btn-block" %>
+          </div>
         </td>
       </tr>
       <tr>
         <td colspan="2"><%= @attendances.count %>日</td>
         <td colspan="8"><%= format_basic_info(@user.basic_work_time).to_f * @worked_sum %></td>
-        <td colspan="3"><%= format("%.2f", @total_working_times.to_f) %></td>                
-      </tr>      
+        <td colspan="3"><%= format("%.2f", @total_working_times.to_f) %></td>
+      </tr>
     </tfoot>
   </table>
 

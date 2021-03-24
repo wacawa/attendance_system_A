@@ -22,7 +22,8 @@ User.create!(name: "zero",
                password_confirmation: password,
                employee_id: empid,
                card_id: cardid,
-               superior: true
+               superior: true,
+               superior_name: "上長#{n+1}",
                )
 end
 
