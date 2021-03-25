@@ -21,6 +21,10 @@ Rails.application.routes.draw do
       patch 'attendances/update_one_month'
       get 'attendances/log'
     end
-    resources :attendances, only: :update
+    resources :attendances, only: :update do
+      member do
+        patch 'approval'
+      end
+    end
   end
 end

@@ -123,8 +123,12 @@
         <td colspan="3">累計在社時間</td>
         <td rowspan="2"></td>
         <td rowspan="2">
-          所属長承認 <%= @approval %>
+          所属長承認 未 <%# @approval %>
           <div>
+            <%= form_with url: approval_user_attendance_path(@user, date: @first_day), local: true do |f| %>
+              <%= f.select :superior, @superiors.map { |s| [s.superior_name] }, {}, {class: "form-control"} %>
+              <%= f.submit "申請", class: "btn btn-primary btn-block" %>
+            <% end %>
             <button class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown">
               <%= @superior.superior_name %> <b class="caret"></b>
             </button>
