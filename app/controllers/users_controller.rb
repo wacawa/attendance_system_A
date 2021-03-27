@@ -20,6 +20,8 @@ class UsersController < ApplicationController
   end
 
   def show
+    @aapproval_first = @user.attendances.find_by(worked_on: @first_day).after_approval
+    @approval = @aapproval_first.nil? ? "未" : "#{@aapproval_first}の承認済"
     @worked_sum = @attendances.where.not(started_at: nil).count
     @superiors = User.where(superior: true)
     @superior = User.find_by(superior_name: params[:superior])

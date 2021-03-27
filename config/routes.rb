@@ -23,7 +23,8 @@ Rails.application.routes.draw do
     end
     resources :attendances, only: :update do
       member do
-        patch 'approval'
+        patch 'before_approval'
+        patch 'after_approval'
       end
     end
   end

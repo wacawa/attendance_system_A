@@ -123,23 +123,12 @@
         <td colspan="3">累計在社時間</td>
         <td rowspan="2"></td>
         <td rowspan="2">
-          所属長承認 未 <%# @approval %>
+          所属長承認 <%= @approval %>
           <div>
-            <%= form_with url: approval_user_attendance_path(@user, date: @first_day), local: true do |f| %>
+            <%= form_with url: before_approval_user_attendance_path(@user, @attendances), local: true do |f| %>
               <%= f.select :superior, @superiors.map { |s| [s.superior_name] }, {}, {class: "form-control"} %>
               <%= f.submit "申請", class: "btn btn-primary btn-block" %>
             <% end %>
-            <button class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown">
-              <%= @superior.superior_name %> <b class="caret"></b>
-            </button>
-            <ul class="dropdown-menu">
-              <% @superiors.each do |s| %>
-                <li><%= link_to s.superior_name, user_path(@user, superior: s.superior_name) %></li>
-              <% end %>
-            </ul>
-          </div>
-          <div>
-            <%= link_to "申請", "#", class: "btn btn-primary btn-block" %>
           </div>
         </td>
       </tr>
