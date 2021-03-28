@@ -1,9 +1,9 @@
 class AttendancesController < ApplicationController
-  before_action :set_user, only: [:edit_one_month, :update_one_month, :attendance_log, :log]
-  before_action :set_user_for_user_id, only: [:update, :approval]
+  before_action :set_user, only: [:edit_one_month, :update_one_month, :attendance_log, :log, :before_approval]
+  before_action :set_user_for_user_id, only: [:update]
   before_action :logged_in_user, only: [:update, :edit_one_month, :attendance_log, :log]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month, :log]
-  before_action :set_one_month, only: [:edit_one_month, :log, :approval]
+  before_action :set_one_month, only: [:edit_one_month, :log, :before_approval]
   
   UPDATE_ERROR_MSG = "勤怠登録をやり直してくだ。"
   
@@ -46,9 +46,12 @@ class AttendancesController < ApplicationController
     @default_day = params[:default_day].to_date
   end
 
-  def approval
-    if @attendance.update_all(before_approval: params[:superior])
-    else
+  def before_approval
+    debugger
+    @superior = params[:superior]
+    if @attendances.update_all(before_approval: @superior)
+      flash[:success] = "#{@superior}に#{@first_day.month}月度の勤怠承認を申請しました。"
+      redirect_to @user
     end
   end
   

@@ -125,9 +125,9 @@
         <td rowspan="2">
           所属長承認 <%= @approval %>
           <div>
-            <%= form_with url: before_approval_user_attendance_path(@user, @attendances), local: true do |f| %>
-              <%= f.select :superior, @superiors.map { |s| [s.superior_name] }, {}, {class: "form-control"} %>
-              <%= f.submit "申請", class: "btn btn-primary btn-block" %>
+            <%= form_with(url: attendances_before_approval_user_path(@user, date: @first_day), local: true, method: :patch) do |f| %>
+              <%= f.select :superior, @superiors.map { |s| [s.superior_name] }, {include_blank: ""}, {class: "form-control"} %>
+              <%= f.submit "申請", class: "btn btn-primary btn-block mrgn-top5" %>
             <% end %>
           </div>
         </td>

@@ -20,12 +20,9 @@ Rails.application.routes.draw do
       get 'attendances/edit_one_month'
       patch 'attendances/update_one_month'
       get 'attendances/log'
+      patch 'attendances/before_approval'
+      patch 'attendances/after_approval'
     end
-    resources :attendances, only: :update do
-      member do
-        patch 'before_approval'
-        patch 'after_approval'
-      end
-    end
+    resources :attendances, only: :update
   end
 end
