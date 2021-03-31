@@ -5,9 +5,13 @@ class Attendance < ApplicationRecord
   validates :note, length: { maximum: 50 }
   validates :work_overtime, length: { maximum: 50 }
   validates :overtime_instructor, length: { maximum: 20 }
+  validates :before_approval, in: { User.where(superior: true).pluck(:superior_name) }
+  validates :after_approval, in: { User.where(superior: true).pluck(:superior_name) }
 
   validate :finished_at_is_invalid_without_a_started_at
   validate :started_at_than_finished_at_fast_if_invalid
+
+  validate :before_and_after_approval
 
   def finished_at_is_invalid_without_a_started_at
     errors.add(:started_at, "が必要です") if started_at.blank? && finished_at.present?
@@ -17,6 +21,10 @@ class Attendance < ApplicationRecord
     if started_at.present? && finished_at.present?
       errors.add(:started_at, "より早い退勤時間は駄目だよ") if started_at > finished_at
     end
+  end
+
+  def before_and_after_approval
+    
   end
 
 end

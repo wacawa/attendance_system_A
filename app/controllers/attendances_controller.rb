@@ -47,7 +47,6 @@ class AttendancesController < ApplicationController
   end
 
   def before_approval
-    debugger
     @superior = params[:superior]
     if @attendances.update_all(before_approval: @superior)
       flash[:success] = "#{@superior}に#{@first_day.month}月度の勤怠承認を申請しました。"
