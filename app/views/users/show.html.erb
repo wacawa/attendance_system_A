@@ -26,9 +26,18 @@
 
 <% if @user.superior %>
   <div class="mrgn-top10">
-    <div><%= link_to "[ 所属長承認申請のお知らせ ]", "#", class: "btn-default" %></div>
-    <div><%= link_to "[ 勤怠変更申請のお知らせ ]", "#", class: "btn-default" %></div>
-    <div><%= link_to "[ 残業申請のお知らせ ]", "#", class: "btn-default" %></div>
+    <div>
+      <%= link_to "[ 所属長承認申請のお知らせ ]", "#", class: "btn-default" %>
+      <%= "#{sr}件の通知があります" if sr = @superior_request > 0 %>
+    </div>
+    <div>
+      <%= link_to "[ 勤怠変更申請のお知らせ ]", "#", class: "btn-default" %>
+      <%= "#{ar}件の通知があります" if ar = @att_edit_request > 0 %>
+    </div>
+    <div>
+      <%= link_to "[ 残業申請のお知らせ ]", "#", class: "btn-default" %>
+      <%= "#{otr}件の通知があります" if otr = @overtime_request > 0 %>
+    </div>
   </div>
 <% end %>
 

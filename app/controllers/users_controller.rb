@@ -24,6 +24,11 @@ class UsersController < ApplicationController
     @approval = @aapproval_first.nil? ? "未" : "#{@aapproval_first}の承認済"
     @worked_sum = @attendances.where.not(started_at: nil).count
     @superiors = User.where(superior: true).where.not(superior_name: @user.superior_name)
+    if @user.superior
+      @superior_request = Attendance.where(before_approval: @user.superior_name).where("worked_on LIKE ?", "%-01").count
+      @att_edit_request = Attendance.where(before_approval: @user.superior_name).where("worked_on LIKE ?", "%-01").count
+      @overtime_request = Attendance.where(before_approval: @user.superior_name).where("worked_on LIKE ?", "%-01").count
+    end
   end
 
   def new
