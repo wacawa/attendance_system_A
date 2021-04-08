@@ -22,6 +22,9 @@ Rails.application.routes.draw do
       get 'attendances/log'
       patch 'attendances/before_approval'
       patch 'attendances/after_approval'
+      get 'attendances/superior_request'
+      get 'attendances/attendances_edit_request', as: 'attendances_edit_request'
+      get 'attendances/overtime_request'
     end
     resources :attendances, only: :update
   end

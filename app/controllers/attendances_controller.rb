@@ -53,6 +53,15 @@ class AttendancesController < ApplicationController
       redirect_to @user
     end
   end
+
+  def superior_request
+  end
+
+  def attendances_edit_request
+  end
+
+  def overtime_request
+  end
   
   private
 
