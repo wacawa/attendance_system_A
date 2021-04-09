@@ -1,5 +1,5 @@
 class AttendancesController < ApplicationController
-  before_action :set_user, only: [:edit_one_month, :update_one_month, :attendance_log, :log, :before_approval]
+  before_action :set_user, only: [:edit_one_month, :update_one_month, :attendance_log, :log, :before_approval, :superior_request]
   before_action :set_user_for_user_id, only: [:update]
   before_action :logged_in_user, only: [:update, :edit_one_month, :attendance_log, :log]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month, :log]
@@ -55,6 +55,8 @@ class AttendancesController < ApplicationController
   end
 
   def superior_request
+    @users = User.all
+    @request_attendances = Attendance.where("worked_on LIKE ?", "%-01").where(before_superior: @user.superior_name)
   end
 
   def attendances_edit_request

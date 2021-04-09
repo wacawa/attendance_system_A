@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 
   def show
     @aapproval_first = @user.attendances.find_by(worked_on: @first_day).after_approval
-    @approval = @aapproval_first.nil? ? "未" : "#{@aapproval_first}の承認済"
+    @bapproval_first = @user.attendances.find_by(worked_on: @first_day).before_approval
     @worked_sum = @attendances.where.not(started_at: nil).count
     @superiors = User.where(superior: true).where.not(superior_name: @user.superior_name)
     if @user.superior

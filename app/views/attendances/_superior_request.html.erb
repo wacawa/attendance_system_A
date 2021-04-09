@@ -1,16 +1,38 @@
 <div id="superior-request" class="modal-dialog modal-lg modal-dialog-center">
   <div class="modal-content">
-    <div class="right mrgn-right10 mrgn-top3">
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <div class="modal-body">
+      <button type="button" class="mrgn-right5 close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
-    </div>
-    <div class="modal-body">
-      <div class="row">
-        <div class="col-md-10 col-md-offset-1 center">
-          <h2>【からの1ヶ月分勤怠申請】</h2>
-        </div>
-      </div>
+      <%# @users.each do |user| %>
+        <%# @request_attendances.each do |attendance| %>
+          <%# if user.id == attendance.user_id %>
+          <div class="row">
+            <div class="col-md-10 col-md-offset-1 center">
+              <h2>【<%# user.name %>からの1ヶ月分の勤怠申請】</h2>
+              <table class="table table-bordered table-condensed table-hover">
+                <thead>
+                  <tr>
+                    <th>月</th>
+                    <th>指示者確認(印)</th>
+                    <th>変更</th>
+                    <th>勤怠を確認する</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%# user %>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        <%# end %>
+      <%# end %>
     </div>
   </div>
 </div>

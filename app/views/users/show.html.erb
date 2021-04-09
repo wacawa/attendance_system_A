@@ -138,7 +138,14 @@
         <td colspan="3">累計在社時間</td>
         <td rowspan="2"></td>
         <td rowspan="2">
-          所属長承認 <%= @approval %>
+          所属長承認 
+          <% if @bapproval_first.nil? %>
+            <%= "未承認" if @aapproval_first.nil? %>
+            <%= "#{@aapproval_first}から承認済" if @aapproval_first.present? %>
+          <% else %>
+            <%= "#{@aapproval_first}から否認" if @aapproval_first.nil? %>
+            <%= "#{@bapproval_first}から未承認" if @aapproval_first.present? %>
+          <% end %>
           <div>
             <%= form_with url: attendances_before_approval_user_path(@user, date: @first_day), local: true, method: :patch do |f| %>
               <%= f.select :superior, @superiors.map { |s| [s.superior_name] }, {include_blank: ""}, {class: "form-control"} %>
