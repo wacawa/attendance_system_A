@@ -7,30 +7,33 @@
       <%# @users.each do |user| %>
         <%# @request_attendances.each do |attendance| %>
           <%# if user.id == attendance.user_id %>
-          <div class="row">
-            <div class="col-md-10 col-md-offset-1 center">
-              <h2>【<%# user.name %>からの1ヶ月分の勤怠申請】</h2>
-              <table class="table table-bordered table-condensed table-hover">
-                <thead>
-                  <tr>
-                    <th>月</th>
-                    <th>指示者確認(印)</th>
-                    <th>変更</th>
-                    <th>勤怠を確認する</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <%# user %>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+            <%# form_with model: attendance, local: true do |f| %>
+              <div class="row">
+                <div class="col-md-10 col-md-offset-1 center">
+                  <h2>【<%# user.name %>からの1ヶ月分の勤怠申請】</h2>
+                  <table class="table table-bordered table-condensed table-hover">
+                    <thead>
+                      <tr>
+                        <th>月</th>
+                        <th>指示者確認(印)</th>
+                        <th>変更</th>
+                        <th>勤怠を確認する</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><%# attendance.worked_on.month %>月</td>
+                        <td><%# f.select :instructor_authentication,
+                              [["なし", "なし"], ["申請中", "申請中"], ["承認", "承認"], ["否認", "否認"]], {}, { class: "form-control" } %></td>
+                        <td><%# f.check_box : %></td>
+                        <td><%# link_to "確認", user, class: "btn btn-primary btn-lg" %></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            <%# end %>
+          <%# end %>
         <%# end %>
       <%# end %>
     </div>

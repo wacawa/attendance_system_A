@@ -3,9 +3,9 @@
   <table class="table table-bordered table-condensed user-table">
     <tr>
       <td>
-        <%= link_to "<--", user_path(date: @first_day.prev_month), class: "btn btn-primary mrgn-right5"%>
+        <%= link_to "<--", user_path(date: @first_day.prev_month), class: "btn btn-primary mrgn-right5" if login_user?(@user) %>
         <%= l(@first_day, format: :middle) %>の勤怠
-        <%= link_to "-->", user_path(date: @first_day.next_month), class: "btn btn-primary mrgn-left5"%>
+        <%= link_to "-->", user_path(date: @first_day.next_month), class: "btn btn-primary mrgn-left5" if login_user?(@user)%>
       </td>
       <td>
         <div>指定勤務開始時間：&nbsp;&nbsp;<%= l(@user.work_start_time, format: :time) %></div>
@@ -49,12 +49,12 @@
 
 <div>
   <div class="mrgn-top10">
-    <%= link_to "勤怠編集へ", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary"%>
-    <%= link_to "CSV出力", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary"%>
+    <%= link_to "勤怠編集へ", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" if login_user?(@user) %>
+    <%= link_to "CSV出力", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" if login_user?(@user) %>
   </div>
   <div class="mrgn-top5 mrgn-bottom10">
     <%= link_to "勤怠修正ログ(承認済)",
-        attendances_log_user_path(date: @first_day, default_day: @first_day), remote: true, class: "btn btn-primary" %>
+        attendances_log_user_path(date: @first_day, default_day: @first_day), remote: true, class: "btn btn-primary" if login_user?(@user) %>
   </div>
 
   <div id="log" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true"></div>
@@ -97,21 +97,21 @@
     <tbody>
       <% @attendances.each do |day| %>
         <tr>
-          <td><%= link_to "残業申請", "#", class: "btn btn-primary" %></td>
+          <td><%= link_to "残業申請", "#", class: "btn btn-primary" if login_user?(@user) %></td>
           <td><%= l(day.worked_on, format: :short) %></td>
           <td><%= $days_of_the_week[day.worked_on.wday] %></td>
           <td><%= l(day.started_at, format: :hour) if day.started_at.present? %></td>
           <td><%= l(day.started_at, format: :minutes) if day.started_at.present? %></td>
           <td>
             <% if btn_text = attendance_state(day, 0) %>
-              <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance"%>
+              <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" if login_user?(@user)%>
             <% end %>
           </td>
           <td><%= l(day.finished_at, format: :hour) if day.finished_at.present? %></td>
           <td><%= l(day.finished_at, format: :minutes) if day.finished_at.present? %></td>
           <td>
             <% if btn_text = attendance_state(day, 1) %>
-              <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance"%>
+              <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" if login_user?(@user)%>
             <% end %>
           </td>
           <td>
@@ -146,12 +146,14 @@
             <%= "#{@aapproval_first}から否認" if @aapproval_first.nil? %>
             <%= "#{@bapproval_first}から未承認" if @aapproval_first.present? %>
           <% end %>
-          <div>
-            <%= form_with url: attendances_before_approval_user_path(@user, date: @first_day), local: true, method: :patch do |f| %>
-              <%= f.select :superior, @superiors.map { |s| [s.superior_name] }, {include_blank: ""}, {class: "form-control"} %>
-              <%= f.submit "申請", class: "btn btn-primary btn-block mrgn-top5" %>
-            <% end %>
-          </div>
+          <% if login_user?(@user) %>
+            <div>
+              <%= form_with url: attendances_before_approval_user_path(@user, date: @first_day), local: true, method: :patch do |f| %>
+                <%= f.select :superior, @superiors.map { |s| [s.superior_name] }, {include_blank: ""}, {class: "form-control"} %>
+                <%= f.submit "申請", class: "btn btn-primary btn-block mrgn-top5" %>
+              <% end %>
+            </div>
+          <% end %>
         </td>
       </tr>
       <tr>

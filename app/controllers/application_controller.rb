@@ -25,6 +25,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def superior_or_correct_user
+    if !login_user?(@user) || !@user.superior
+      flash[:danger] = "権限がありません。"
+      redirect_to root_url
+    end
+  end
+
   def admin_or_correct_user
     if !login_user?(@user) && !login_user.admin?
       flash[:danger] = "編集権限がありません。"
