@@ -1,2 +1,13 @@
 $("#superior-request").html("<%= escape_javascript(render 'superior_request') %>");
 $("#superior-request").modal("show");
+
+
+$(function(){
+  $(".checkbox").click(function(){
+    if (this.checked) {
+      $(".is-form").removeAttribute("disabled");
+    } else {
+      $("#link3").setAttribute("disabled", true);
+    }
+  });
+});

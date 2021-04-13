@@ -56,7 +56,7 @@ class AttendancesController < ApplicationController
 
   def superior_request
     @users = User.all
-    @request_attendances = Attendance.where("worked_on LIKE ?", "%-01").where(before_superior: @user.superior_name)
+    @request_attendances = Attendance.where("worked_on LIKE ?", "%-01").where(before_approval: @user.superior_name)
   end
 
   def attendances_edit_request

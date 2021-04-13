@@ -50,10 +50,12 @@ class ApplicationController < ActionController::Base
     one_month = [*@first_day..@last_day]
     @attendances = @user.attendances.where(worked_on: @first_day..@last_day).order(:worked_on)
     unless one_month.count == @attendances.count
+      debugger
       ActiveRecord::Base.transaction do
         one_month.each {|day| @user.attendances.create!(worked_on: day)}
       end
-      @attendances = @user.attendances.where(worked_on: @first_day..@last_day).order(:worked_on)      
+      @attendances = @user.attendances.where(worked_on: @first_day..@last_day).order(:worked_on)  
+      debugger
     end
   rescue ActiveRecord::RecordInvalid
     flash[:danger] = "ページ情報の取得に失敗しました。再アクセスしてね。"
