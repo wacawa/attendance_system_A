@@ -24,7 +24,7 @@
   </table>
 </div>
 
-<% if @user.superior %>
+<% if login_user?(@user) %>
   <div class="mrgn-top10">
     <div>
       <%= link_to "[ 所属長承認申請のお知らせ ]", attendances_superior_request_user_path(@user), remote: true, class: "btn-default" %>

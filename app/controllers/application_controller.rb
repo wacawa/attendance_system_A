@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def superior_or_correct_user
-    if !login_user?(@user) || !@user.superior
+    unless login_user?(@user) || @user.superior
       flash[:danger] = "権限がありません。"
       redirect_to root_url
     end
