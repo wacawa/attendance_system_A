@@ -8,7 +8,7 @@ class Attendance < ApplicationRecord
   validates :before_approval, allow_nil: true, inclusion: { in: User.where(superior: true).pluck(:superior_name), message: "選択してください。" }
   validates :after_approval, allow_nil: true, inclusion: { in: User.where(superior: true).pluck(:superior_name), message: "選択してください。" }
   validates :instructor_authentication,
-              inclusion: { in: %w(なし 申請中 承認 否認), message: "が無効な値です" }, presence: { message: "を選択してください"}
+              inclusion: { in: %w(なし 申請中 承認 否認), message: "が無効な値です" }, allow_nil: true
 
 
   validate :finished_at_is_invalid_without_a_started_at
