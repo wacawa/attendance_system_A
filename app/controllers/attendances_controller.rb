@@ -76,6 +76,5 @@ class AttendancesController < ApplicationController
   end
   
   # beforeフィルター
-  
-  
+
 end

@@ -24,23 +24,23 @@
   </table>
 </div>
 
-<% if login_user?(@user) %>
+<% if @user.superior? && login_user?(@user) %>
   <div class="mrgn-top10">
     <div>
       <%= link_to "[ 所属長承認申請のお知らせ ]", attendances_superior_request_user_path(@user), remote: true, class: "btn-default" %>
-      <%= "#{sr}件の通知があります" if sr = @superior_request > 0 %>
+      <%= "#{@superior_request}件の通知があります" if @superior_request > 0 %>
 
       <div id="superior-request" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true"></div>
     </div>
     <div>
       <%= link_to "[ 勤怠変更申請のお知らせ ]", attendances_edit_request_user_path(@user), remote: true, class: "btn-default" %>
-      <%= "#{ar}件の通知があります" if ar = @att_edit_request > 0 %>
+      <%= "#{@att_edit_request}件の通知があります" if @att_edit_request > 0 %>
 
       <div id="att-edit-request" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true"></div>
     </div>
     <div>
       <%= link_to "[ 残業申請のお知らせ ]", attendances_overtime_request_user_path(@user), remote: true, class: "btn-default" %>
-      <%= "#{otr}件の通知があります" if otr = @overtime_request > 0 %>
+      <%= "#{@overtime_request}件の通知があります" if @overtime_request > 0 %>
 
       <div id="overtime-request" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true"></div>
     </div>

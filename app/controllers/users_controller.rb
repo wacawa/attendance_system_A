@@ -89,4 +89,13 @@ class UsersController < ApplicationController
       params.require(:user).permit(:department, :basic_work_time)
     end
 
+    # before_action
+
+      def superior_or_correct_user
+        unless login_user?(@user) || login_user.superior?
+          flash[:danger] = "権限がねぇ。"
+          redirect_to root_url
+        end
+      end
+  
 end
