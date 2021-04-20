@@ -6,6 +6,7 @@
       </button>
       <div class="row">
         <div class="col-md-10 col-md-offset-1 center">
+          <% i = 0 %>
           <% @users.each do |user| %>
             <% attendances = [] %>
             <% @request_attendances.each do |attendance| %>
@@ -26,11 +27,13 @@
                     </thead>
                     <tbody>
                       <% attendances.each do |attendance| %>
+                        <%= i += 1 %>
                         <tr>
                           <td><%= attendance.worked_on.month %>月</td>
                           <td><%= f.select :instructor_authentication,
-                                [["なし", "なし"], ["申請中", "申請中"], ["承認", "承認"], ["否認", "否認"]], {}, { class: "form-control is-form" } %></td>
-                          <td><%= f.check_box :is_form, class: "checkbox" %></td>
+                                [["なし", "なし"], ["申請中", "申請中"], ["承認", "承認"], ["否認", "否認"]], {},
+                                 {class: "form-control is-form-#{i}", disabled: "true" } %></td>
+                            <td><%= f.check_box :is_form, class: "checkbox-#{i}" %></td>
                           <td><%= link_to "確認", user, class: "btn btn-primary" %></td>
                         </tr>
                       <% end %>

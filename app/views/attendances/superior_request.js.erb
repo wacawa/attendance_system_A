@@ -1,13 +1,13 @@
 $("#superior-request").html("<%= escape_javascript(render 'superior_request') %>");
 $("#superior-request").modal("show");
 
-
-$(function(){
-  $(".checkbox").click(function(){
-    if (this.checked) {
-      $(".is-form").removeAttribute("disabled");
-    } else {
-      $("#link3").setAttribute("disabled", true);
+$('[class^="checkbox-"]').each(function(i){
+  $('.checkbox-' + i).change(function(){
+    if($('.is-form-' + i).prop('disabled')){
+      $('.is-form-' + i).prop('disabled', false)
+    }else{
+      $('.is-form-' + i).prop('disabled', true)
     }
-  });
-});
+  })
+})
+
