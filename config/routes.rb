@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       patch 'attendances/before_approval'
       patch 'attendances/after_approval'
       get 'attendances/superior_request'
+      patch 'attendances/update_instructor_authentication'
       get 'attendances/attendances_edit_request', as: 'attendances_edit_request'
       get 'attendances/overtime_request'
     end

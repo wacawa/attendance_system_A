@@ -1,13 +1,17 @@
 $("#superior-request").html("<%= escape_javascript(render 'superior_request') %>");
 $("#superior-request").modal("show");
 
-$('[class^="checkbox-"]').each(function(i){
+
+<%#
+以下は、チェックボックスにチェックを付ければ、対応するformがアクティブになる仕組み。
+本来は必要ない機能だが、勘違いして（苦労もして）作成した。残しときたかった。
+$('.form-control').each(function(i){
   $('.checkbox-' + i).change(function(){
-    if($('.is-form-' + i).prop('disabled')){
-      $('.is-form-' + i).prop('disabled', false)
+    if($('.ia-form-' + i).prop('disabled')){
+      $('.ia-form-' + i).prop('disabled', false)
     }else{
-      $('.is-form-' + i).prop('disabled', true)
+      $('.ia-form-' + i).prop('disabled', true)
     }
   })
 })
-
+%>

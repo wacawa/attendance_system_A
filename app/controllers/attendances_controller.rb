@@ -1,5 +1,5 @@
 class AttendancesController < ApplicationController
-  before_action :set_user, only: [:edit_one_month, :update_one_month, :attendance_log, :log, :before_approval, :superior_request]
+  before_action :set_user, only: [:edit_one_month, :update_one_month, :attendance_log, :log, :before_approval, :superior_request, :update_instructor_authentication]
   before_action :set_user_for_user_id, only: [:update]
   before_action :logged_in_user, only: [:update, :edit_one_month, :attendance_log, :log]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month, :log]
@@ -57,6 +57,14 @@ class AttendancesController < ApplicationController
   def superior_request
     @users = User.all
     @request_attendances = Attendance.where("worked_on LIKE ?", "%-01").where(before_approval: @user.superior_name).order(:worked_on)
+  end
+
+  def update_instructor_authentication
+    flash[:success] = "変更が送信されました。"
+    redirect_to @user
+  rescue ActiveRecord::RecordInvalid
+    flash[:danger] = "変更の送信に失敗しました。"
+    redirect_to @user
   end
 
   def attendances_edit_request
