@@ -4,11 +4,11 @@
       <button type="button" class="mrgn-right5 close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
-      <div class="row">
-        <div class="col-md-10 col-md-offset-1 center">
-          <% i = 0 %>
-          <% @users.each do |user| %>
-            <%= form_with(model: user, local: true) do |f| %>
+      <%= form_with(url: attendances_update_superior_request_user_path(@user), method: :patch, local: true) do |f| %>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 center">
+            <% i = 0 %>
+            <% @users.each do |user| %>
               <% attendances = [] %>
               <% @request_attendances.each do |attendance| %>
                 <% attendances << attendance if user.id == attendance.user_id %>
@@ -26,14 +26,14 @@
                   </thead>
                   <tbody>
                     <% attendances.each do |attendance| %>
-                      <%= f.fields_for attendance do |a| %>
-                        <%= i += 1 %>
+                      <%= f.fields_for "attendances[]", attendance do |att| %>
+                        <% i += 1 %>
                         <tr>
                           <td><%= attendance.worked_on.month %>月</td>
-                          <td><%= a.select :instructor_authentication,
+                          <td><%= att.select :instructor_authentication,
                                 [["なし", "なし"], ["申請中", "申請中"], ["承認", "承認"], ["否認", "否認"]], {},
-                                 { class: "form-control is-form-#{i}" } %></td>
-                          <td><%= a.check_box :checkbox, class: "checkbox-#{i}" %></td>
+                                  { class: "form-control is-form-#{i}" } %></td>
+                          <td><%= f.check_box "checkbox#{i}", class: "checkbox-#{i}" %></td>
                           <td><%= link_to "確認", user, class: "btn btn-primary" %></td>
                         </tr>
                       <% end %>
@@ -41,12 +41,11 @@
                   </tbody>
                 </table>
               <% end %>
-              <%= f.submit "変更を送信", "#", class: "btn btn-primary" %>
-              <%#attendances_update_instructor_authentication_user_path(user)%>
             <% end %>
-          <% end %>
+            <%= f.submit "変更を送信", class: "btn btn-primary btn-lg" %>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
   </div>
 </div>
