@@ -56,19 +56,28 @@ class AttendancesController < ApplicationController
 
   def superior_request
     @users = User.all
-    @request_attendances = Attendance.where("worked_on LIKE ?", "%-01").where(before_approval: @user.superior_name).order(:worked_on)
+    @request_attendances = Attendance.where(before_approval: @user.superior_name).where("worked_on LIKE ?", "%-01").order(:worked_on)
   end
 
   def update_superior_request
-    @request_attendances = Attendance.where("worked_on LIKE ?", "%-01").where(before_approval: @user.superior_name).order(:worked_on)
-    debugger
-    # if params[:checkbox] == "1"
-    # end
-    # flash[:success] = "変更が送信されました。"
-    # redirect_to @user
-  # rescue ActiveRecord::RecordInvalid
-    # flash[:danger] = "変更の送信に失敗しました。"
-    # redirect_to @user
+    ActiveRecord::Base.transaction do
+      request_params.each do |id, item|
+        if params["checkbox#{id}"] == "1"
+          attendance = Attendance.find(id)
+          user = User.find(attendance.user_id)
+          attendances = user.attendances.where(worked_on: attendance.worked_on..attendance.worked_on.end_of_month)
+          debugger
+          attendances.each do |day|
+            day.update_attributes!(item)
+          end
+        end
+      end
+      flash[:success] = "変更を送信しました。"
+      redirect_to @user
+    rescue ActiveRecord::RecordInvalid
+      flash[:danger] = "変更の送信に失敗しました。"
+      redirect_to @user
+    end
   end
 
   def attendances_edit_request
@@ -85,6 +94,10 @@ class AttendancesController < ApplicationController
   
   def attendances_params
     params.require(:user).permit(attendances: [:started_at, :finished_at, :note, :work_overtime, :overtime_instructor])[:attendances]
+  end
+
+  def request_params
+    params.require(:attendance).permit(:instructor_authentication)
   end
   
   # beforeフィルター
