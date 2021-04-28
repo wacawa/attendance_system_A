@@ -62,11 +62,11 @@ class AttendancesController < ApplicationController
   def update_superior_request
     ActiveRecord::Base.transaction do
       request_params.each do |id, item|
+        attendance = Attendance.find(id)
+        user = User.find(attendance.user_id)
+        debugger
         if params["checkbox#{id}"] == "1"
-          attendance = Attendance.find(id)
-          user = User.find(attendance.user_id)
           attendances = user.attendances.where(worked_on: attendance.worked_on..attendance.worked_on.end_of_month)
-          debugger
           attendances.each do |day|
             day.update_attributes!(item)
           end
@@ -97,7 +97,7 @@ class AttendancesController < ApplicationController
   end
 
   def request_params
-    params.require(:attendance).permit(:instructor_authentication)
+    params.require(:attendances).permit(attendances: :instructor_authentication)
   end
   
   # beforeフィルター
