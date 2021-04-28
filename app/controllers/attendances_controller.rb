@@ -66,10 +66,10 @@ class AttendancesController < ApplicationController
         user = User.find(attendance.user_id)
         debugger
         if params["checkbox#{id}"] == "1"
-          attendances = user.attendances.where(worked_on: attendance.worked_on..attendance.worked_on.end_of_month)
-          attendances.each do |day|
-            day.update_attributes!(item)
-          end
+          #attendances = user.attendances.where(worked_on: attendance.worked_on..attendance.worked_on.end_of_month)
+          #attendances.each do |day|
+            attendance.update_attributes!(item)
+          #end
         end
       end
       flash[:success] = "変更を送信しました。"
@@ -97,7 +97,7 @@ class AttendancesController < ApplicationController
   end
 
   def request_params
-    params.require(:attendances).permit(attendances: :instructor_authentication)
+    params.require(:attendances).permit(:instructor_authentication)
   end
   
   # beforeフィルター
