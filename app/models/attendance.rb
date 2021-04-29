@@ -5,10 +5,10 @@ class Attendance < ApplicationRecord
   validates :note, length: { maximum: 50 }
   validates :work_overtime, length: { maximum: 50 }
   validates :overtime_instructor, length: { maximum: 20 }
-  validates :before_approval, allow_nil: true, inclusion: { in: User.where(superior: true).pluck(:superior_name), message: "選択してください。" }
-  validates :after_approval, allow_nil: true, inclusion: { in: User.where(superior: true).pluck(:superior_name), message: "選択してください。" }
+  validates :before_approval, inclusion: { in: User.where(superior: true).pluck(:superior_name), message: "選択してください。" }, allow_nil: true 
+  validates :after_approval, inclusion: { in: User.where(superior: true).pluck(:superior_name), message: "選択してください。" }, allow_nil: true 
   validates :instructor_authentication,
-              inclusion: { in: %w(なし 申請中 承認 否認), message: "が無効な値です" }, allow_nil: true
+              inclusion: { in: %w(なし 申請中 承認 否認), message: "が無効な値です" }
 
 
   validate :finished_at_is_invalid_without_a_started_at

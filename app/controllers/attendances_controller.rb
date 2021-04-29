@@ -49,6 +49,7 @@ class AttendancesController < ApplicationController
   def before_approval
     @superior = params[:superior]
     if @attendances.update_all(before_approval: @superior)
+      @attendances.update_all(instructor_authentication: "申請中")
       flash[:success] = "#{@superior}に#{@first_day.month}月度の勤怠承認を申請しました。"
       redirect_to @user
     end
@@ -64,17 +65,19 @@ class AttendancesController < ApplicationController
       request_params.each do |id, item|
         attendance = Attendance.find(id)
         user = User.find(attendance.user_id)
-        debugger
         if params["checkbox#{id}"] == "1"
-          #attendances = user.attendances.where(worked_on: attendance.worked_on..attendance.worked_on.end_of_month)
-          #attendances.each do |day|
-            attendance.update_attributes!(item)
-          #end
+          attendances = user.attendances.where(worked_on: attendance.worked_on..attendance.worked_on.end_of_month)
+          attendances.each do |day|
+            debugger
+            day.update_attributes!(item)
+            debugger
+          end
         end
       end
       flash[:success] = "変更を送信しました。"
       redirect_to @user
     rescue ActiveRecord::RecordInvalid
+      debugger
       flash[:danger] = "変更の送信に失敗しました。"
       redirect_to @user
     end
@@ -97,7 +100,7 @@ class AttendancesController < ApplicationController
   end
 
   def request_params
-    params.require(:attendances).permit(:instructor_authentication)
+    params.permit(attendances: {})[:attendances]
   end
   
   # beforeフィルター

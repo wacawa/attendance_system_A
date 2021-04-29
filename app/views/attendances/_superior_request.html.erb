@@ -35,6 +35,8 @@
                                   { class: "form-control is-form" } %></td>
                           <td><%= f.check_box "checkbox#{attendance.id}", class: "checkbox" %></td>
                           <td><%= link_to "確認", user, class: "btn btn-primary" %></td>
+                          <%= att.hidden_field :before_approval, value: nil %>
+                          <%= att.hidden_field :after_approval, value: @user.superior_name %>
                         </tr>
                       <% end %>
                     <% end %>
