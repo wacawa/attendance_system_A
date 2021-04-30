@@ -64,14 +64,11 @@ class AttendancesController < ApplicationController
     ActiveRecord::Base.transaction do
       request_params.each do |id, item|
         attendance = Attendance.find(id)
+        debugger
         user = User.find(attendance.user_id)
         if params["checkbox#{id}"] == "1"
           attendances = user.attendances.where(worked_on: attendance.worked_on..attendance.worked_on.end_of_month)
-          attendances.each do |day|
-            debugger
-            day.update_attributes!(item)
-            debugger
-          end
+          #attendances.update_all(item.to_h)
         end
       end
       flash[:success] = "変更を送信しました。"
