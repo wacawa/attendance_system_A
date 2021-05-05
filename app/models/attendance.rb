@@ -13,7 +13,7 @@ class Attendance < ApplicationRecord
 
   validate :finished_at_is_invalid_without_a_started_at
   validate :started_at_than_finished_at_fast_if_invalid
-  validate :before_and_after_approval_and_inauthe_are_same_in_one_month
+#  validate :before_and_after_approval_and_inauthe_are_same_in_the_month
 
   def finished_at_is_invalid_without_a_started_at
     errors.add(:started_at, "が必要です") if started_at.blank? && finished_at.present?
@@ -25,24 +25,23 @@ class Attendance < ApplicationRecord
     end
   end
 
-  def before_and_after_approval_and_inauthe_are_same_in_one_month
+  if false
+  def before_and_after_approval_and_inauthe_are_same_in_the_month
     attendances = Attendance.where("worked_on LIKE ?", "%-01")
     attendances.each do |attendance|
       day = attendance.worked_on.to_date
-      user = User.find(attendance.user_id)
-      atts = user.attendances.where(worked_on: day..day.end_of_month)
-      atts.each do |att|
-        unless att.before_approval == attendance.before_approval
-          atts.update_all(before_approval: attendance.before_approval)
-        end
-        unless att.after_approval == attendance.after_approval
-          atts.update_all(after_approval: attendance.after_approval)
-        end
-        unless att.instructor_authentication == attendance.instructor_authentication
-          atts.update_all(instructor_authentication: attendance.instructor_authentication)
-        end
-      end
+      list = Attendance.where(worked_on: day..day.end_of_month).pluck(:before_approval, :after_approval, :instructor_authentication)
+      before_approval_list = Attendance.where(worked_on: day..day.end_of_month).pluck(:before_approval)
+      after_approval_list = Attendance.where(worked_on: day..day.end_of_month).pluck(:after_approval)
+      in_authe_list = Attendance.where(worked_on: day..day.end_of_month).pluck(:instructor_authentication)
+      unless list.uniq.count == 1
+        errors.add("#{day.year}年#{day.month}月の勤怠内に不適切な値を持つ日付があります(before_approval)。") unless list.pluck[]
+        errors.add("#{day.year}年#{day.month}月の勤怠内に不適切な値を持つ日付があります(before_approval)。")
+        errors.add("#{day.year}年#{day.month}月の勤怠内に不適切な値を持つ日付があります(before_approval)。")
     end
   end
+end
+end
+
 
 end

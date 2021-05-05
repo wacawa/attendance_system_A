@@ -5,6 +5,7 @@ class AttendancesController < ApplicationController
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month, :log]
   before_action :set_one_month, only: [:edit_one_month, :log, :before_approval]
   
+  
   UPDATE_ERROR_MSG = "勤怠登録をやり直してくだ。"
   
   def update
@@ -64,17 +65,21 @@ class AttendancesController < ApplicationController
     ActiveRecord::Base.transaction do
       request_params.each do |id, item|
         attendance = Attendance.find(id)
-        debugger
         user = User.find(attendance.user_id)
-        if params["checkbox#{id}"] == "1"
+        if params["checkbox#{id}"] == "1" && attendance.instructor_authentication != item[:instructor_authentication]
           attendances = user.attendances.where(worked_on: attendance.worked_on..attendance.worked_on.end_of_month)
-          #attendances.update_all(item.to_h)
+          attendances.update_all(item.to_h)
+          wanted_data_list = attendances.pluck(:before_approval, :after_approval, :instructor_authentication)
+          unless wanted_data_list.uniq.count == 1
+            attendances.update_all(before_approval: wanted_data_list[0][0]) 
+            attendances.update_all(after_approval: wanted_data_list[0][1]) 
+            attendances.update_all(instructor_authentication: wanted_data_list[0][2]) 
+          end
         end
       end
       flash[:success] = "変更を送信しました。"
       redirect_to @user
     rescue ActiveRecord::RecordInvalid
-      debugger
       flash[:danger] = "変更の送信に失敗しました。"
       redirect_to @user
     end
