@@ -17,4 +17,12 @@ module AttendancesHelper
     format("%.2f", ((finish - start) / 3600.0))
   end
 
+  def wanted_data_update(attendances, list)
+    if list.uniq.count == 1
+      attendances.update_all(before_approval: list[0][0]) 
+      attendances.update_all(after_approval: list[0][1]) 
+      attendances.update_all(instructor_authentication: list[0][2]) 
+    end
+  end
+
 end

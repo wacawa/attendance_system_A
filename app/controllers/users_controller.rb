@@ -20,8 +20,9 @@ class UsersController < ApplicationController
   end
 
   def show
-    @aapproval_first = @user.attendances.find_by(worked_on: @first_day).after_approval
-    @bapproval_first = @user.attendances.find_by(worked_on: @first_day).before_approval
+    @after_approval = @user.attendances.find_by(worked_on: @first_day).after_approval
+    @before_approval = @user.attendances.find_by(worked_on: @first_day).before_approval
+    @in_authe = @user.attendances.find_by(worked_on: @first_day).instructor_authentication
     @worked_sum = @attendances.where.not(started_at: nil).count
     @superiors = User.where(superior: true).where.not(superior_name: @user.superior_name)
     if @user.superior

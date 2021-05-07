@@ -25,23 +25,18 @@ class Attendance < ApplicationRecord
     end
   end
 
-  if false
   def before_and_after_approval_and_inauthe_are_same_in_the_month
     attendances = Attendance.where("worked_on LIKE ?", "%-01")
     attendances.each do |attendance|
       day = attendance.worked_on.to_date
       list = Attendance.where(worked_on: day..day.end_of_month).pluck(:before_approval, :after_approval, :instructor_authentication)
-      before_approval_list = Attendance.where(worked_on: day..day.end_of_month).pluck(:before_approval)
-      after_approval_list = Attendance.where(worked_on: day..day.end_of_month).pluck(:after_approval)
-      in_authe_list = Attendance.where(worked_on: day..day.end_of_month).pluck(:instructor_authentication)
       unless list.uniq.count == 1
-        errors.add("#{day.year}年#{day.month}月の勤怠内に不適切な値を持つ日付があります(before_approval)。") unless list.pluck[]
-        errors.add("#{day.year}年#{day.month}月の勤怠内に不適切な値を持つ日付があります(before_approval)。")
-        errors.add("#{day.year}年#{day.month}月の勤怠内に不適切な値を持つ日付があります(before_approval)。")
+        errors.add("#{day.year}年#{day.month}月の勤怠内に不適切な値を持つ日付があります(before_approval)。") unless list.transpose[0].uniq.count == 1
+        errors.add("#{day.year}年#{day.month}月の勤怠内に不適切な値を持つ日付があります(before_approval)。") unless list.transpose[1].uniq.count == 1
+        errors.add("#{day.year}年#{day.month}月の勤怠内に不適切な値を持つ日付があります(before_approval)。") unless list.transpose[2].uniq.count == 1
+      end
     end
   end
-end
-end
 
 
 end

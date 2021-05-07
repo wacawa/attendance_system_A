@@ -66,18 +66,22 @@ class AttendancesController < ApplicationController
       request_params.each do |id, item|
         attendance = Attendance.find(id)
         user = User.find(attendance.user_id)
-        if params["checkbox#{id}"] == "1" && attendance.instructor_authentication != item[:instructor_authentication]
+        if params["checkbox#{id}"] == "1" && item[:instructor_authentication] != "申請中"
           attendances = user.attendances.where(worked_on: attendance.worked_on..attendance.worked_on.end_of_month)
           attendances.update_all(item.to_h)
           wanted_data_list = attendances.pluck(:before_approval, :after_approval, :instructor_authentication)
-          unless wanted_data_list.uniq.count == 1
-            attendances.update_all(before_approval: wanted_data_list[0][0]) 
-            attendances.update_all(after_approval: wanted_data_list[0][1]) 
-            attendances.update_all(instructor_authentication: wanted_data_list[0][2]) 
+          if item[:instructor_authentication] == "なし"
+            list = wanted_data_list.transpose[2].uniq[0]
+            attendances.update_all(instructor_authentication: list)
+            flash[:success] = "変更を送信しました。"
+          else
+            wanted_data_update(attendances, wanted_data_list)
+            flash[:success] = "変更を送信しました。"
           end
+        else
+          flash[:danger] = "「指示者確認」を変更し、チェックを入れて送信してください。"
         end
       end
-      flash[:success] = "変更を送信しました。"
       redirect_to @user
     rescue ActiveRecord::RecordInvalid
       flash[:danger] = "変更の送信に失敗しました。"
