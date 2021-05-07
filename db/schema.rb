@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_29_025434) do
+ActiveRecord::Schema.define(version: 2021_05_07_065449) do
 
   create_table "attendances", force: :cascade do |t|
     t.date "worked_on"
@@ -25,6 +25,9 @@ ActiveRecord::Schema.define(version: 2021_04_29_025434) do
     t.string "before_approval"
     t.string "after_approval"
     t.string "instructor_authentication", default: "なし"
+    t.string "before_atts_edit_approval"
+    t.string "after_atts_edit_approval"
+    t.string "atts_edit_instructor_authentication", default: "なし"
     t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 
