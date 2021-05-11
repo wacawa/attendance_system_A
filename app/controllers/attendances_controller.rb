@@ -27,6 +27,7 @@ class AttendancesController < ApplicationController
   end
   
   def edit_one_month
+    @superiors = User.where(superior: true).where.not(superior_name: @user.superior_name)
   end
   
   def update_one_month
@@ -102,7 +103,7 @@ class AttendancesController < ApplicationController
   end
   
   def attendances_params
-    params.require(:user).permit(attendances: [:started_at, :finished_at, :note, :work_overtime, :overtime_instructor])[:attendances]
+    params.require(:user).permit(attendances: [:started_at, :finished_at, :note, :before_atts_edit_approval])[:attendances]
   end
 
   def request_params
