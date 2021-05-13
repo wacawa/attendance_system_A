@@ -32,14 +32,22 @@ class AttendancesController < ApplicationController
   
   def update_one_month
     ActiveRecord::Base.transaction do
+      i = 0
       attendances_params.each do |id, item|
+        i += 1
+        debugger if i == 1
         attendance = Attendance.find(id)
+        start_time = "#{item["started_at(4i)"]}:#{item["started_at(5i)"]}"
+        finish_time = "#{item["finished_at(4i)"]}:#{item["finished_at(5i)"]}"
+        item = [["started_at", start_time.to_time], ["finished_at", finish_time.to_time],
+                    ["note", item[:note]], ["before_atts_edit_approval", item[:before_atts_edit_approval]]].to_h
         attendance.update_attributes!(item)
       end
     end
     flash[:success] = "1ヶ月分の勤怠情報を更新しました。"
     redirect_to user_url(date: params[:date])
   rescue ActiveRecord::RecordInvalid
+    debugger
     flash[:danger] = "入力データが無効な値だったから、更新をキャンセルしたよ"
     redirect_to attendances_edit_one_month_user_url(date: params[:date])
   end 
