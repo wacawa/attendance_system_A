@@ -1,18 +1,116 @@
 <div id="att-edit-request" class="modal-dialog modal-lg modal-dialog-center">
   <div class="modal-content">
-    <div class="right mrgn-right10 mrgn-top3">
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <div class="modal-body">
+      <button type="button" class="mrgn-right5 close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
-    </div>
-    <div class="modal-body">
-      <div class="row">
-        <div class="col-md-10 col-md-offset-1 center">
-          <h2>【からの1ヶ月分勤怠申請】</h2>
+      <%= form_with(url: update_attendances_edit_request_user_path(@user), method: :patch, local: true) do |f| %>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 center">
+            <% i = 0 %>
+            <% @users.each do |user| %>
+              <% requests = [] %>
+              <% @request.each do |request| %>
+                <% requests << request if user.id == request.user_id %>
+              <% end %>
+              <% if requests.count > 0 %>
+                <h2>【<%= user.name %>からの勤怠変更申請】</h2>
+                <table class="table table-bordered table-condensed table-hover">
+                <table class="table table-bordered table-condensed table-hover">
+                  <thead>
+                    <tr>
+                      <th rowspan="3">日付</th>
+                      <th rowspan="3">曜日</th>
+                      <th colspan="4">変更前</th>
+                      <th colspan="4">変更後</th>
+                      <th rowspan="3">備考</th>
+                      <th rowspan="3">指示者確認㊞</th>
+                      <th rowspan="3">変更</th>
+                      <th rowspan="3">勤怠を確認する</th>
+                    </tr>
+                    <tr>
+                      <th colspan="2">出社</th>
+                      <th colspan="2">退社</th>
+                      <th colspan="2">出社</th>
+                      <th colspan="2">退社</th>
+                    </tr>
+                    <tr>
+                      <th>時</th>
+                      <th>分</th>
+                      <th>時</th>
+                      <th>分</th>
+                      <th>時</th>
+                      <th>分</th>
+                      <th>時</th>
+                      <th>分</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% requests.each do |attendance| %>
+                      <%= f.fields_for "attendances[]", attendance do |day| %>
+                        <% i += 1 %>
+                        <tr>
+                          <td><%= l(day.worked_on, format: :short) %></td>
+                          <td><%= $days_of_the_week[day.worked_on.wday] %></td>
+                        </tr>
+
+                          <td><%= link_to "残業申請", "#", class: "btn btn-primary" if login_user?(@user) %></td>
+                          <td><%= l(day.started_at, format: :hour) if day.started_at.present? %></td>
+                          <td><%= l(day.started_at, format: :minutes) if day.started_at.present? %></td>
+                          <td>
+                            <% if btn_text = attendance_state(day, 0) %>
+                              <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" if login_user?(@user)%>
+                            <% end %>
+                          </td>
+                          <td><%= l(day.finished_at, format: :hour) if day.finished_at.present? %></td>
+                          <td><%= l(day.finished_at, format: :minutes) if day.finished_at.present? %></td>
+                          <td>
+                            <% if btn_text = attendance_state(day, 1) %>
+                              <%= link_to "#{btn_text}", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" if login_user?(@user)%>
+                            <% end %>
+                          </td>
+                          <td>
+                            <% if day.started_at.present? && day.finished_at.present? %>
+                              <%= str_time = working_times(day.started_at, day.finished_at) %>
+                              <% @total_working_times = @total_working_times.to_f + str_time.to_f %>
+                            <% end %>
+                          </td>
+                          <td><%= day.note %></td>
+                          <td><%= day.work_overtime %></td>
+                          <td><%= day.overtime_instructor %></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+
+
+                        <tr>
+                          <td><%= day.worked_on %>月</td>
+                          <td><%= att.select :instructor_authentication,
+                                [["なし", "なし"], ["申請中", "申請中"], ["承認", "承認"], ["否認", "否認"]], {},
+                                  { class: "form-control is-form" } %></td>
+                          <td><%= f.check_box "checkbox#{attendance.id}", class: "checkbox" %></td>
+                          <td><%= link_to "確認", user, class: "btn btn-primary" %></td>
+                          <%= att.hidden_field :before_approval, value: nil %>
+                          <%= att.hidden_field :after_approval, value: @user.superior_name %>
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  </tbody>
+                </table>
+                <%= f.submit "変更を送信", class: "btn btn-primary btn-lg" %>
+              <% end %>
+            <% end %>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
   </div>
 </div>
 
+
+    <tbody>
+      <% @attendances.each do |day| %>
+      <% end %>
+    </tbody>
 

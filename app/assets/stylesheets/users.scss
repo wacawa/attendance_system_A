@@ -1,3 +1,13 @@
+.request-area {
+  padding: 5px;
+  .notif-border {
+    padding: 3px;
+    border: 2px solid;
+    border-radius: 5px;
+    color: red;
+  }
+}
+
 table.user-table {
   tr {
     td {

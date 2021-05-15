@@ -1,5 +1,7 @@
 class AttendancesController < ApplicationController
-  before_action :set_user, only: [:edit_one_month, :update_one_month, :attendance_log, :log, :before_approval, :superior_request, :update_superior_request]
+  before_action :set_user, only: [:edit_one_month, :update_one_month, :attendance_log, :log,
+                                  :before_approval, :superior_request, :update_superior_request,
+                                  :attendances_edit_request, :update_attendances_edit_request]
   before_action :set_user_for_user_id, only: [:update]
   before_action :logged_in_user, only: [:update, :edit_one_month, :attendance_log, :log]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month, :log]
@@ -32,10 +34,7 @@ class AttendancesController < ApplicationController
   
   def update_one_month
     ActiveRecord::Base.transaction do
-      i = 0
       attendances_params.each do |id, item|
-        i += 1
-        debugger if i == 1
         attendance = Attendance.find(id)
         start_time = "#{item["started_at(4i)"]}:#{item["started_at(5i)"]}"
         finish_time = "#{item["finished_at(4i)"]}:#{item["finished_at(5i)"]}"
@@ -99,6 +98,11 @@ class AttendancesController < ApplicationController
   end
 
   def attendances_edit_request
+    @users = User.all
+    @request = Attendance.where(before_atts_edit_approval: @user.superior_name)
+  end
+
+  def update_attendances_edit_request
   end
 
   def overtime_request
