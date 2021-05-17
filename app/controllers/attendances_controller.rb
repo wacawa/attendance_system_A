@@ -99,7 +99,7 @@ class AttendancesController < ApplicationController
 
   def attendances_edit_request
     @users = User.all
-    @request = Attendance.where(before_atts_edit_approval: @user.superior_name)
+    @requests = Attendance.where(before_atts_edit_approval: @user.superior_name)
   end
 
   def update_attendances_edit_request
