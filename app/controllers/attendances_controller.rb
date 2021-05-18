@@ -36,10 +36,12 @@ class AttendancesController < ApplicationController
     ActiveRecord::Base.transaction do
       attendances_params.each do |id, item|
         attendance = Attendance.find(id)
+        app = "before_atts_edit_approval"
+        a = "atts_edit_instructor_authentication"
         start_time = "#{item["started_at(4i)"]}:#{item["started_at(5i)"]}"
         finish_time = "#{item["finished_at(4i)"]}:#{item["finished_at(5i)"]}"
         item = [["started_at", start_time.to_time], ["finished_at", finish_time.to_time],
-                    ["note", item[:note]], ["before_atts_edit_approval", item[:before_atts_edit_approval]]].to_h
+                    ["note", item[:note]], [app, item[app]], [a, item[a]]].to_h
         attendance.update_attributes!(item)
       end
     end
@@ -103,6 +105,20 @@ class AttendancesController < ApplicationController
   end
 
   def update_attendances_edit_request
+    request_params.each do |id, item|
+      attendance = Attendance.find(id)
+      user = User.find(attendance.user_id)
+      a = "atts_edit_instructor_authentication"
+      if params["checkbox#{id}"] == "1" && item[a] != "申請中"
+        #attendance.update_attributes!(atts_edit_instructor_authentication: item[a]) if item[a] == "なし"
+        #attendance.update_attributes!(item) if item[a] == "承認" || item[a] == "否認"
+        flash[:success] = "変更を送信しました。"
+        redirect_to @user
+      else
+        flash[:danger] = "「指示者確認㊞」欄を変更し、チェックを入れて送信してください。"
+        redirect_to @user
+      end
+    end
   end
 
   def overtime_request
@@ -115,11 +131,13 @@ class AttendancesController < ApplicationController
   end
   
   def attendances_params
-    params.require(:user).permit(attendances: [:started_at, :finished_at, :note, :before_atts_edit_approval])[:attendances]
+    params.require(:user).permit(
+      attendances: [:started_at, :finished_at, :note, :before_atts_edit_approval, :atts_edit_instructor_authentication]
+    )[:attendances]
   end
 
   def request_params
-    params.permit(attendances: {})[:attendances]
+    params.permit(requests: {})[:requests]
   end
   
   # beforeフィルター

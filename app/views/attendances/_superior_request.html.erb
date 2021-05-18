@@ -9,11 +9,11 @@
           <div class="col-md-10 col-md-offset-1 center">
             <% i = 0 %>
             <% @users.each do |user| %>
-              <% attendances = [] %>
-              <% @request_attendances.each do |attendance| %>
-                <% attendances << attendance if user.id == attendance.user_id %>
+              <% requests = [] %>
+              <% @request_attendances.each do |request| %>
+                <% requests << request if user.id == request.user_id %>
               <% end %>
-              <% if attendances.count > 0 %>
+              <% if requests.count > 0 %>
                 <h2>【<%= user.name %>からの勤怠申請】</h2>
                 <table class="table table-bordered table-condensed table-hover">
                   <thead>
@@ -25,8 +25,8 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% attendances.each do |attendance| %>
-                      <%= f.fields_for "attendances[]", attendance do |att| %>
+                    <% requests.each do |request| %>
+                      <%= f.fields_for "requests[]", request do |att| %>
                         <% i += 1 %>
                         <tr>
                           <td><%= attendance.worked_on.month %>月</td>
