@@ -16,7 +16,6 @@ class Attendance < ApplicationRecord
                                         message: "選択してください。" }, allow_blank: true 
   validates :atts_edit_instructor_authentication, inclusion: { in: %w(なし 申請中 承認 否認), message: "が無効な値です" }
 
-
   validate :finished_at_is_invalid_without_a_started_at
   validate :started_at_than_finished_at_fast_if_invalid
 #  validate :before_and_after_approval_and_inauthe_are_same_in_the_month
@@ -27,7 +26,7 @@ class Attendance < ApplicationRecord
 
   def started_at_than_finished_at_fast_if_invalid
     if started_at.present? && finished_at.present?
-      errors.add(:started_at, "より早い退勤時間は駄目だよ") if started_at > finished_at
+      errors.add("#{started_at}より早い#{finished_at}は駄目だよ") if started_at > finished_at
     end
   end
 

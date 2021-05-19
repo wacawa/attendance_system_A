@@ -33,14 +33,14 @@ class AttendancesController < ApplicationController
   end
   
   def update_one_month
+    app = "before_atts_edit_approval"
+    a = "atts_edit_instructor_authentication"
     ActiveRecord::Base.transaction do
       attendances_params.each do |id, item|
         attendance = Attendance.find(id)
-        app = "before_atts_edit_approval"
-        a = "atts_edit_instructor_authentication"
         start_time = "#{item["started_at(4i)"]}:#{item["started_at(5i)"]}"
         finish_time = "#{item["finished_at(4i)"]}:#{item["finished_at(5i)"]}"
-        item = [["started_at", start_time.to_time], ["finished_at", finish_time.to_time],
+        item = [["new_started_at", start_time.to_time], ["new_finished_at", finish_time.to_time],
                     ["note", item[:note]], [app, item[app]], [a, item[a]]].to_h
         attendance.update_attributes!(item)
       end
