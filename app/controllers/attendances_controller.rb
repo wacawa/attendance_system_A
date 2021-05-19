@@ -37,12 +37,23 @@ class AttendancesController < ApplicationController
     a = "atts_edit_instructor_authentication"
     ActiveRecord::Base.transaction do
       attendances_params.each do |id, item|
-        attendance = Attendance.find(id)
-        start_time = "#{item["started_at(4i)"]}:#{item["started_at(5i)"]}"
-        finish_time = "#{item["finished_at(4i)"]}:#{item["finished_at(5i)"]}"
-        item = [["new_started_at", start_time.to_time], ["new_finished_at", finish_time.to_time],
+        debugger
+        if item["started_at(4i)"].present? && item["finished_at(4i)"].present?
+          attendance = Attendance.find(id)
+          start_time = attendance.started_at.present? ? "#{format("%02d", attendance.started_at.hour)}:#{format("%02d", attendance.started_at.min)}" : nil
+          finish_time = attendance.finished_at.present? ? "#{format("%02d", attendance.finished_at.hour)}:#{format("%02d", attendance.finished_at.min)}" : nil
+          new_start_time = "#{item["started_at(4i)"]}:#{item["started_at(5i)"]}"
+          new_finish_time = "#{item["finished_at(4i)"]}:#{item["finished_at(5i)"]}"
+          debugger
+          if start_time == new_start_time && finish_time == new_finish_time
+            item = [["new_started_at", ""], ["new_finished_at", ""],
+                    ["note", item[:note]], [app, nil], [a, "なし"]].to_h
+          else
+            item = [["new_started_at", new_start_time], ["new_finished_at", new_finish_time],
                     ["note", item[:note]], [app, item[app]], [a, item[a]]].to_h
-        attendance.update_attributes!(item)
+          end
+          #attendance.update_attributes!(item)
+        end
       end
     end
     flash[:success] = "1ヶ月分の勤怠情報を更新しました。"
