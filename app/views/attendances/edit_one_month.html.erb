@@ -42,7 +42,7 @@
                 <%= attendance.text_field :note, disabled: d, class: "form-control"%>
               </td>
               <td>
-                <%= attendance.select :before_atts_edit_approval, @superiors.map { |s| [s.superior_name] },
+                <%= attendance.select :before_atts_edit_approval, @superiors.each { |s| s },
                     {include_blank: ""}, {disabled: d, class: "form-control"} %>
               </td>
               <%= attendance.hidden_field :atts_edit_instructor_authentication, value: "申請中" %>
