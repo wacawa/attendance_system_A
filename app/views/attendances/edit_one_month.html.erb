@@ -33,7 +33,7 @@
                 <%= attendance.time_select :new_finished_at, { ignore_date: true, include_blank: "" }, { disabled: d, class: "form-control" } if d %>
               </div></td>
               <td>
-                <%= f.check_box "checkbox#{day.id}", disabled: d %>
+                <%= f.check_box "overnight#{day.id}", disabled: d %>
               </td>
               <td>
                 <%= working_times(day.started_at, day.finished_at) if day.started_at.present? && day.finished_at.present? %>

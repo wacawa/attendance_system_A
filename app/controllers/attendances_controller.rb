@@ -49,6 +49,8 @@ class AttendancesController < ApplicationController
             item = [["new_started_at", ""], ["new_finished_at", ""],
                     ["note", item[:note]], [app, nil], [a, "なし"]].to_h
           else
+            new_start_time = "#{attendance.worked_on}-#{new_start_time}".to_datetime
+            new_finish_time = "#{attendance.worked_on}-#{new_finish_time}".to_datetime
             item = [["new_started_at", new_start_time], ["new_finished_at", new_finish_time],
                     ["note", item[:note]], [app, item[app]], [a, item[a]]].to_h
           end
