@@ -35,19 +35,36 @@ class AttendancesController < ApplicationController
   def update_one_month
     app = "before_atts_edit_approval"
     a = "atts_edit_instructor_authentication"
+    error = []
     ActiveRecord::Base.transaction do
       attendances_params.each do |id, item|
         attendance = Attendance.find(id)
-        worked_on = attendance.worked_on
-        start_time = "#{worked_on}-#{item["started_at(4i)"]}:#{item["started_at(5i)"]}".to_datetime
-        finish_day = params[:user]["overnight#{id}"] == "1" ? "#{worked_on.next_day}" : "#{worked_on}"
-        finish_time = "#{finish_day}-#{item["finished_at(4i)"]}:#{item["finished_at(5i)"]}".to_datetime
-        item = [["new_started_at", start_time], ["new_finished_at", finish_time],
-                ["note", item[:note]], [app, nil], [a, item[a]]].to_h
-        attendance.update_attributes!(item)# if item[app].present?
+        if item[app].present? && item["started_at(4i)"].present? && item["finished_at(4i)"].present?
+          s_min = item["started_at(5i)"].present? ? item["started_at(5i)"] : "00"
+          f_min = item["finished_at(5i)"].present? ? item["finished_at(5i)"] : "00"
+          worked_on = attendance.worked_on
+          start_time = "#{item["started_at(4i)"]}:#{s_min}"
+          finish_time = "#{item["finished_at(4i)"]}:#{f_min}"
+          if attendance.finished_at.present? 
+            next if l(attendance.started_at, format: :time) == start_time && l(attendance.finished_at, format: :time) == finish_time
+          end
+          start_time = "#{worked_on}-#{item["started_at(4i)"]}:#{s_min}".to_time
+          finish_day = params[:user]["overnight#{id}"] == "1" ? "#{worked_on.next_day}" : "#{worked_on}"
+          finish_time = "#{finish_day}-#{item["finished_at(4i)"]}:#{f_min}".to_time
+          item = [["new_started_at", start_time], ["new_finished_at", finish_time],
+                  ["note", item[:note]], [app, item[app]], [a, item[a]]].to_h
+          debugger
+          attendance.update_attributes!(item)
+        else
+          error << true if attendance.new_started_at.present? || attendance.new_finished_at.present?
+        end
       end
     end
-    flash[:success] = "1ヶ月分の勤怠情報を更新しました。"
+    if msg = error.count > 0
+      flash[:danger] = "更新されていない日付があります。"
+    else
+      flash[:success] = "1ヶ月分の勤怠情報を更新しました。"
+    end
     redirect_to user_url(date: params[:date])
   rescue ActiveRecord::RecordInvalid
     debugger

@@ -19,11 +19,11 @@
       <tbody>
         <% @attendances.each do |day| %>
           <%= f.fields_for "attendances[]", day do |attendance| %>
+            <% d = !( !login_user.admin? && (Date.current >= day.worked_on) ) %>
+            <% d ||= day.atts_edit_instructor_authentication == "申請中" %>
             <tr>
               <td><%= l(day.worked_on, format: :short) %></td>
               <td><%= $days_of_the_week[day.worked_on.wday] %></td>
-              <% d = !( !login_user.admin? && (Date.current >= day.worked_on) ) %>
-              <% d ||= day.new_started_at.present? %>
               <td><div class="form-inline">
                 <%= attendance.time_select :started_at, { ignore_date: true, include_blank: "" }, { disabled: d, class: "form-control" } unless d %>
                 <%= attendance.time_select :new_started_at, { ignore_date: true, include_blank: "" }, { disabled: d, class: "form-control" } if d %>
@@ -35,12 +35,8 @@
               <td>
                 <%= f.check_box "overnight#{day.id}", disabled: d %>
               </td>
-              <td>
-                <%= working_times(day.started_at, day.finished_at) if day.started_at.present? && day.finished_at.present? %>
-              </td>
-              <td>
-                <%= attendance.text_field :note, disabled: d, class: "form-control"%>
-              </td>
+              <td><%= working_times(day.started_at, day.finished_at) if day.finished_at %></td>
+              <td><%= attendance.text_field :note, disabled: d, class: "form-control"%></td>
               <td>
                 <%= attendance.select :before_atts_edit_approval, @superiors.each { |s| s },
                     {include_blank: ""}, {disabled: d, class: "form-control"} %>
