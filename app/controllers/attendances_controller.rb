@@ -55,7 +55,7 @@ class AttendancesController < ApplicationController
                   ["note", item[:note]], [app, item[app]], [a, item[a]]].to_h
           debugger
           attendance.update_attributes!(item)
-        else
+        elsif item["started_at(4i)"].present? && item["finished_at(4i)"].present? && !item[app].present? 
           error << true if attendance.new_started_at.present? || attendance.new_finished_at.present?
         end
       end
