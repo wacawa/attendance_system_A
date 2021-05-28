@@ -42,6 +42,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def log
+    @default_day = params[:default_day].to_date
+  end
+
   def new
     @user = User.new
   end

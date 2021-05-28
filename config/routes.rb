@@ -18,9 +18,9 @@ Rails.application.routes.draw do
     collection { post :import }
     member do
       patch 'before_approval'
+      get 'log'
       get 'attendances/edit_one_month'
       patch 'attendances/update_one_month'
-      get 'attendances/log'
       patch 'attendances/after_approval'
       get 'attendances/superior_request'
       patch 'attendances/update_superior_request'

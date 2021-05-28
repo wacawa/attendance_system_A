@@ -72,10 +72,6 @@ class AttendancesController < ApplicationController
     redirect_to attendances_edit_one_month_user_url(date: params[:date])
   end 
   
-  def log
-    @default_day = params[:default_day].to_date
-  end
-
   def superior_request
     @users = User.all
     @request_attendances = Attendance.where(before_approval: @user.superior_name).where("worked_on LIKE ?", "%-01").order(:worked_on)

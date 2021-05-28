@@ -55,7 +55,7 @@
   </div>
   <div class="mrgn-top5 mrgn-bottom10">
     <%= link_to "勤怠修正ログ(承認済)",
-        attendances_log_user_path(date: @first_day, default_day: @first_day), remote: true, class: "btn btn-primary" if login_user?(@user) %>
+        log_user_path(date: @first_day, default_day: @first_day), remote: true, class: "btn btn-primary" if login_user?(@user) %>
   </div>
 
   <div id="log" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true"></div>
