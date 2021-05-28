@@ -76,15 +76,6 @@ class AttendancesController < ApplicationController
     @default_day = params[:default_day].to_date
   end
 
-  def before_approval
-    @superior = params[:superior]
-    if @attendances.update_all(before_approval: @superior)
-      @attendances.update_all(instructor_authentication: "申請中")
-      flash[:success] = "#{@superior}に#{@first_day.month}月度の勤怠承認を申請しました。"
-      redirect_to @user
-    end
-  end
-
   def superior_request
     @users = User.all
     @request_attendances = Attendance.where(before_approval: @user.superior_name).where("worked_on LIKE ?", "%-01").order(:worked_on)
