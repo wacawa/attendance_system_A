@@ -29,7 +29,7 @@
     <% css_class = "mrgn-bottom10" if @superior_request > 0 || @atts_edit_request > 0 || @overtime_request > 0 %>
     <div class= <%= css_class || "" %>>
       <%= link_to "[ 所属長承認申請のお知らせ ]", attendances_superior_request_user_path(@user), remote: true, class: "btn-default" %>
-      <% if @superior_request > 0 %><p class="notif-border"><%= @superior_request %>件の通知があります</p><% end %>
+      <% if @superior_request > 0 %><span class="notif-border"><%= @superior_request %>件の通知があります</span><% end %>
 
       <div id="superior-request" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true"></div>
     </div>
@@ -41,7 +41,7 @@
     </div>
     <div class=<%= css_class || "" %>>
       <%= link_to "[ 残業申請のお知らせ ]", attendances_overtime_request_user_path(@user), remote: true, class: "btn-default" %>
-      <% if @overtime_request > 0 %><p class="notif-border"><%= @overtime_request %>件の通知があります</p><% end %>
+      <% if @overtime_request > 0 %><span class="notif-border"><%= @overtime_request %>件の通知があります</span><% end %>
 
       <div id="overtime-request" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true"></div>
     </div>

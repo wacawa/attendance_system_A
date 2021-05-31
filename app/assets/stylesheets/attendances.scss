@@ -1,12 +1,11 @@
 #superior-request, #att-edit-request {
+  table tr td {
+    vertical-align: middle;
+  }
   .close {
     font-size: 30px;
   }
-
-  
-  td {
+  [class*="checkbox"] {
     text-align: center;
-    vertical-align: middle;
   }
 }
-

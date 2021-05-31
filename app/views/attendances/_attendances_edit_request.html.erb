@@ -61,7 +61,7 @@
                           <td><%= day.select :atts_edit_instructor_authentication,
                                 [["なし", "なし"], ["申請中", "申請中"], ["承認", "承認"], ["否認", "否認"]], {},
                                   { class: "form-control is-form" } %></td>
-                          <td><%= f.check_box "checkbox#{request.id}", class: "checkbox" %></td>
+                          <td><%= f.check_box "checkbox#{request.id}", class: "checkbox#{request.id}" %></td>
                           <td><%= link_to "確認", user, class: "btn btn-primary" %></td>
                           <%= day.hidden_field :before_atts_edit_approval, value: nil %>
                           <%= day.hidden_field :after_atts_edit_approval, value: @user.superior_name %>
