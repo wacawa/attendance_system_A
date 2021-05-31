@@ -79,9 +79,9 @@ class AttendancesController < ApplicationController
   def update_superior_request
     ActiveRecord::Base.transaction do
       request_params.each do |id, item|
-        attendance = Attendance.find(id)
-        user = User.find(attendance.user_id)
         if params["checkbox#{id}"] == "1" && item[:instructor_authentication] != "申請中"
+          attendance = Attendance.find(id)
+          user = User.find(attendance.user_id)
           attendances = user.attendances.where(worked_on: attendance.worked_on..attendance.worked_on.end_of_month)
           attendances.update_all(item.to_h)
           wanted_data_list = attendances.pluck(:before_approval, :after_approval, :instructor_authentication)
@@ -94,7 +94,7 @@ class AttendancesController < ApplicationController
             flash[:success] = "変更を送信しました。"
           end
         else
-          flash[:danger] = "「指示者確認」を変更し、チェックを入れて送信してください。"
+          flash[:danger] = "「指示者確認㊞」を変更し、チェックを入れて送信してください。"
         end
       end
       redirect_to @user
@@ -105,24 +105,26 @@ class AttendancesController < ApplicationController
   end
 
   def attendances_edit_request
-    @users = User.all
+      @users = User.all
     @requests = Attendance.where(before_atts_edit_approval: @user.superior_name)
   end
 
   def update_attendances_edit_request
-    request_params.each do |id, item|
-      attendance = Attendance.find(id)
-      user = User.find(attendance.user_id)
-      a = "atts_edit_instructor_authentication"
-      if params["checkbox#{id}"] == "1" && item[a] != "申請中"
-        #attendance.update_attributes!(atts_edit_instructor_authentication: item[a]) if item[a] == "なし"
-        #attendance.update_attributes!(item) if item[a] == "承認" || item[a] == "否認"
-        flash[:success] = "変更を送信しました。"
-        redirect_to @user
-      else
-        flash[:danger] = "「指示者確認㊞」欄を変更し、チェックを入れて送信してください。"
-        redirect_to @user
+    a = "atts_edit_instructor_authentication"
+    ActiveRecord::Base.transaction do
+      request_params.each do |id, item|
+        debugger
+        if params["checkbox#{id}"] == "1" && item[a] != "申請中"
+          attendance = Attendance.find(id)
+          user = User.find(attendance.user_id)
+          #attendance.update_attributes!(atts_edit_instructor_authentication: item[a]) if item[a] == "なし"
+          #attendance.update_attributes!(item) if item[a] == "承認" || item[a] == "否認"
+          msg = "変更を送信しました。"
       end
+      redirect_to @user
+    rescue ActiveRecord::RecordInvalid
+      flash[:danger] = "変更の送信に失敗しました。"
+      redirect_to @user
     end
   end
 
