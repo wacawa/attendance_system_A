@@ -113,14 +113,21 @@ class AttendancesController < ApplicationController
     a = "atts_edit_instructor_authentication"
     ActiveRecord::Base.transaction do
       request_params.each do |id, item|
-        debugger
         if params["checkbox#{id}"] == "1" && item[a] != "申請中"
           attendance = Attendance.find(id)
           user = User.find(attendance.user_id)
-          #attendance.update_attributes!(atts_edit_instructor_authentication: item[a]) if item[a] == "なし"
-          #attendance.update_attributes!(item) if item[a] == "承認" || item[a] == "否認"
-          msg = "変更を送信しました。"
+          case item[a]
+          when "なし" then
+            a = 1
+            #attendance.update_attributes!(atts_edit_instructor_authentication: item[a])
+          when "承認", "否認" then
+            a=2
+            #attendance.update_attributes!(item)
+          end
+          debugger
+        end
       end
+      flash[:success] = "変更を送信しました。"
       redirect_to @user
     rescue ActiveRecord::RecordInvalid
       flash[:danger] = "変更の送信に失敗しました。"
