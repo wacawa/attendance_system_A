@@ -63,6 +63,10 @@
                                   { class: "form-control is-form" } %></td>
                           <td><%= f.check_box "checkbox#{request.id}", class: "checkbox#{request.id}" %></td>
                           <td><%= link_to "確認", user, class: "btn btn-primary" %></td>
+                          <%= day.hidden_field :started_at, value: request.new_started_at %>
+                          <%= day.hidden_field :finished_at, value: request.new_finished_at %>
+                          <%= day.hidden_field :new_started_at, value: nil %>
+                          <%= day.hidden_field :new_finished_at, value: nil %>
                           <%= day.hidden_field :before_atts_edit_approval, value: nil %>
                           <%= day.hidden_field :after_atts_edit_approval, value: @user.superior_name %>
                         </tr>

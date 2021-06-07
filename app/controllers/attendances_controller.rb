@@ -117,14 +117,13 @@ class AttendancesController < ApplicationController
           attendance = Attendance.find(id)
           user = User.find(attendance.user_id)
           case item[a]
-          when "なし" then
-            a = 1
-            #attendance.update_attributes!(atts_edit_instructor_authentication: item[a])
-          when "承認", "否認" then
-            a=2
-            #attendance.update_attributes!(item)
+          when "なし", "否認" then
+            item = [[a, item[a]], ["new_started_at", nil], ["new_finished_at", nil], 
+                    ["before_atts_edit_approval", nil], ["after_atts_edit_approval", "上長2"]].to_h
+            attendance.update_attributes!(item)
+          when "承認" then
+            attendance.update_attributes!(item)
           end
-          debugger
         end
       end
       flash[:success] = "変更を送信しました。"
