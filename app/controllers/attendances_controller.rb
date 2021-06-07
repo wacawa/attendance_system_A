@@ -52,7 +52,6 @@ class AttendancesController < ApplicationController
           finish_time = "#{finish_day}-#{item["finished_at(4i)"]}:#{f_min}".to_time
           item = [["new_started_at", start_time], ["new_finished_at", finish_time],
                   ["note", item[:note]], [app, item[app]], [a, item[a]]].to_h
-          debugger
           attendance.update_attributes!(item)
         elsif item["started_at(4i)"].present? && item["finished_at(4i)"].present? && !item[app].present? 
           error << true if attendance.new_started_at.present? || attendance.new_finished_at.present?
@@ -118,7 +117,7 @@ class AttendancesController < ApplicationController
           user = User.find(attendance.user_id)
           case item[a]
           when "なし", "否認" then
-            item = [[a, item[a]], ["new_started_at", nil], ["new_finished_at", nil], 
+            item = [[a, item[a]], ["note", nil], ["new_started_at", nil], ["new_finished_at", nil], 
                     ["before_atts_edit_approval", nil], ["after_atts_edit_approval", "上長2"]].to_h
             attendance.update_attributes!(item)
           when "承認" then
