@@ -1,6 +1,6 @@
 class AttendancesController < ApplicationController
   before_action :set_user, only: [:edit_one_month, :update_one_month, :superior_request, :update_superior_request,
-                                  :attendances_edit_request, :update_attendances_edit_request]
+                                  :attendances_edit_request, :update_attendances_edit_request, :overtime_request_to_superior]
   before_action :set_user_for_user_id, only: [:update]
   before_action :logged_in_user, only: [:update, :edit_one_month]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
@@ -133,7 +133,13 @@ class AttendancesController < ApplicationController
     end
   end
 
+  def overtime_request_to_superior
+  end
+
   def overtime_request
+  end
+
+  def update_overtime_request
   end
   
   private

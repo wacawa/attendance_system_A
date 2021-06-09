@@ -26,11 +26,13 @@ Rails.application.routes.draw do
       patch 'attendances/update_superior_request'
       get 'attendances/attendances_edit_request', as: 'attendances_edit_request'
       patch 'attendances/update_attendances_edit_request', as: 'update_attendances_edit_request'
+      get 'attendances/overtime_request'
+      patch 'attendances/update_overtime_request'
     end
     resources :attendances, only: :update do
       member do
-        get 'request_overtime'
-        patch 'request_overtime'
+        get 'overtime_request_to_superior'
+        patch 'overtime_request_to_superior'
       end
     end
   end
