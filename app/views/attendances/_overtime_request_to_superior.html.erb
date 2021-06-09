@@ -1,0 +1,74 @@
+<div id="overtime-request-to-superior" class="modal-dialog modal-lg modal-dialog-center">
+  <div class="modal-content">
+    <div class="modal-body">
+      <button type="button" class="mrgn-right5 close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+<% if false %>
+      <%= form_with(url: attendances_update_superior_request_user_path(@user), method: :patch, local: true) do |f| %>
+<% end %>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 center">
+            <% i = 0 %>
+<% if false %>
+            <% @users.each do |user| %>
+              <% requests = [] %>
+              <% @request_attendances.each do |request| %>
+                <% requests << request if user.id == request.user_id %>
+              <% end %>
+              <% if requests.count > 0 %>
+<% end %>
+                <h2>【 残業申請 】</h2>
+                <table class="table table-bordered table-condensed table-hover" id="overtime-request-table" >
+                  <thead>
+                    <tr>
+                      <th>日付</th>
+                      <th>曜日</th>
+                      <th>終了予定時間</th>
+                      <th>翌日</th>
+                      <th>業務処理内容</th>
+                      <th>指示者確認㊞</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+<% if false %>
+                    <% requests.each do |request| %>
+                      <%= f.fields_for "requests[]", request do |att| %>
+                        <% i += 1 %>
+<% end %>
+                        <tr>
+                          <td><%= l(@attendance.worked_on, format: :short) %></td>
+                          <td><%= $days_of_the_week[@attendance.worked_on.wday] %></td>
+                          <td>
+                            <div class="form-inline">
+                              <%# f.time_select :finished_at, { ignore_date: true, include_blank: "" }, { disabled: d, class: "form-control" } unless d %>
+                            </div>
+                          </td>
+                          <td><%# f.check_box "overnight#{@attendance.id}", checked: c, disabled: d %></td>
+                          <td><%# f.text_field :task, class: "form-control" %></td>
+                          <td><%# f.select :overtime_instructor_authentication,
+                                [["なし", "なし"], ["申請中", "申請中"], ["承認", "承認"], ["否認", "否認"]], {},
+                                  { class: "form-control is-form" } %></td>
+                          <%# att.hidden_field :before_approval, value: nil %>
+                          <%# att.hidden_field :after_approval, value: @user.superior_name %>
+                        </tr>
+<% if false %>
+                      <% end %>
+                    <% end %>
+<% end %>                    
+                  </tbody>
+                </table>
+<% if false %>                
+              <% end %>
+            <% end %>
+<% end %>            
+            <%# f.submit "変更を送信", class: "btn btn-primary btn-lg" if @request_attendances.count > 0 %>
+          </div>
+        </div>
+<% if false %>        
+      <% end %>
+<%end%>
+    </div>
+  </div>
+</div>
+

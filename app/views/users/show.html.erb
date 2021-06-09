@@ -98,7 +98,7 @@
     <tbody>
       <% @attendances.each do |day| %>
         <tr>
-          <td><%= link_to "残業申請", overtime_request_to_superior_user_attendance_path(day), remote: true, class: "btn btn-primary" if login_user?(@user) %></td>
+          <td><%= link_to "残業申請", overtime_request_to_superior_user_attendance_path(@user, day), remote: true, class: "btn btn-primary" if login_user?(@user) %></td>
           <td><%= l(day.worked_on, format: :short) %></td>
           <td><%= $days_of_the_week[day.worked_on.wday] %></td>
           <td><%= l(day.started_at, format: :hour) if day.started_at.present? %></td>
