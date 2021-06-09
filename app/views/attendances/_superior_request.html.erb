@@ -42,9 +42,9 @@
                     <% end %>
                   </tbody>
                 </table>
-                <%= f.submit "変更を送信", class: "btn btn-primary btn-lg" %>
               <% end %>
             <% end %>
+            <%= f.submit "変更を送信", class: "btn btn-primary btn-lg" if @request_attendances.count > 0 %>
           </div>
         </div>
       <% end %>
