@@ -126,7 +126,11 @@
           <td><%= day.overtime_instructor %></td>
           <td></td>
           <td></td>
-          <td></td>
+          <td>
+            <%= "勤怠編集申請中" if day.atts_edit_instructor_authentication == "申請中" %>
+            <%= "勤怠編集承認済み" if day.atts_edit_instructor_authentication == "承認" %>
+            <%= "勤怠編集否認" if day.atts_edit_instructor_authentication == "否認" %>
+          </td>
         </tr>
       <% end %>
     </tbody>
