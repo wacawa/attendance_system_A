@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_19_020141) do
+ActiveRecord::Schema.define(version: 2021_06_10_024202) do
 
   create_table "attendances", force: :cascade do |t|
     t.date "worked_on"
     t.datetime "started_at"
     t.datetime "finished_at"
     t.string "note"
-    t.string "work_overtime"
-    t.string "overtime_instructor"
+    t.string "task"
+    t.string "before_overtime_approval"
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 2021_05_19_020141) do
     t.string "atts_edit_instructor_authentication", default: "なし"
     t.datetime "new_started_at"
     t.datetime "new_finished_at"
+    t.string "after_overtime_approval"
+    t.string "overtime_instructor_authentication", default: "なし"
     t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 

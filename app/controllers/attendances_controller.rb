@@ -135,6 +135,7 @@ class AttendancesController < ApplicationController
 
   def overtime_request_to_superior
     @attendance = Attendance.find(params[:id])
+    @superiors = User.where(superior: true).where.not(superior_name: @user.superior_name).pluck(:superior_name)
   end
 
   def overtime_request
