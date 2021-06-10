@@ -98,7 +98,10 @@
     <tbody>
       <% @attendances.each do |day| %>
         <tr>
+
           <td><%= link_to "残業申請", overtime_request_to_superior_user_attendance_path(@user, day), remote: true, class: "btn btn-primary" if login_user?(@user) %></td>
+          <div id="overtime-request-to-superior" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true"></div>
+
           <td><%= l(day.worked_on, format: :short) %></td>
           <td><%= $days_of_the_week[day.worked_on.wday] %></td>
           <td><%= l(day.started_at, format: :hour) if day.started_at.present? %></td>
@@ -122,10 +125,10 @@
             <% end %>
           </td>
           <td><%= day.note if day.atts_edit_instructor_authentication == "承認" %></td>
-          <td><%= day.work_overtime %></td>
-          <td><%= day.overtime_instructor %></td>
           <td></td>
           <td></td>
+          <td></td>
+          <td><%= day.task %></td>
           <td>
             <%= "勤怠編集申請中" if day.atts_edit_instructor_authentication == "申請中" %>
             <%= "勤怠編集承認済み" if day.atts_edit_instructor_authentication == "承認" %>

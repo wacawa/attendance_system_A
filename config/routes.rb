@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     resources :attendances, only: :update do
       member do
         get 'overtime_request_to_superior'
-        patch 'overtime_request_to_superior'
+        patch 'update_overtime_request_to_superior'
       end
     end
   end

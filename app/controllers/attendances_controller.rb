@@ -104,7 +104,7 @@ class AttendancesController < ApplicationController
   end
 
   def attendances_edit_request
-      @users = User.all
+    @users = User.all
     @requests = Attendance.where(before_atts_edit_approval: @user.superior_name)
   end
 
@@ -138,6 +138,20 @@ class AttendancesController < ApplicationController
     @superiors = User.where(superior: true).where.not(superior_name: @user.superior_name).pluck(:superior_name)
   end
 
+  def update_overtime_request_to_superior
+    attendance = Attendance.find(params[:id])
+    day = params["overnight#{attendance.id}"] == "0" ? attendance.worked_on : attendance.worked_on.next_day
+    overtime = "#{day}-#{params["finish_overtime(4i)"]}:#{params["finish_overtime(5i)"]}".to_time
+    superior = params[:before_overtime_approval]
+    debugger
+    if superior.present? && attendance.update_attributes(finish_overtime: overtime) && attendance.update_attributes(overtime_request_params)
+      flash[:success] = "変更を送信しました。"
+      redirect_to @user
+    else
+      flash[:danger] = "変更の送信に失敗しました。"
+    end
+  end
+
   def overtime_request
   end
 
@@ -158,6 +172,10 @@ class AttendancesController < ApplicationController
 
   def request_params
     params.permit(requests: {})[:requests]
+  end
+
+  def overtime_request_params
+    params.permit([:task, :before_overtime_approval])
   end
   
   # beforeフィルター

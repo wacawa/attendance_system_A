@@ -1,14 +1,14 @@
-<div id="overtime-request-to-superior" class="modal-dialog modal-lg modal-dialog-center">
+<div id="overtime-request" class="modal-dialog modal-lg modal-dialog-center">
   <div class="modal-content">
     <div class="modal-body">
       <button type="button" class="mrgn-right5 close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
-      <%= form_with(url: overtime_request_to_superior_user_attendance_path(@user, @attendance), method: :patch, local: true) do |f| %>
+      <%= form_with(url: update_overtime_request_to_superior_user_attendance_path(@user, @attendance), method: :patch, local: true) do |f| %>
         <div class="row">
           <div class="col-md-10 col-md-offset-1 center">
             <h2>【 残業申請 】</h2>
-            <table class="table table-bordered table-condensed table-hover" id="overtime-request-table" >
+            <table class="table table-bordered table-condensed table-hover">
               <thead>
                 <tr>
                   <th>日付</th>
@@ -25,16 +25,15 @@
                   <td><%= $days_of_the_week[@attendance.worked_on.wday] %></td>
                   <td>
                     <div class="form-inline">
-                      <%= f.time_select :finished_at, { ignore_date: true, include_blank: "" }, { disabled: d, class: "form-control" } unless d %>
+                      <%= f.time_select :finish_overtime, { ignore_date: true, include_blank: "" }, { class: "form-control" } %>
                     </div>
                   </td>
                   <td><%= f.check_box "overnight#{@attendance.id}" %></td>
                   <td><%= f.text_field :task, class: "form-control" %></td>
                   <td>
-                    <%= f.select :before_overtime_approval, @superiors.each { |s| s },
-                        {include_blank: ""}, {disabled: d, class: "form-control"} %>
+                    <%= f.select :before_overtime_approval, @superiors.each { |s| s }, {include_blank: ""}, { class: "form-control"} %>
                   </td>
-                  <% f.hidden_field :overtime_instructor_authentication, value: "申請中", class: "form-control" %>
+                  <%= f.hidden_field :overtime_instructor_authentication, value: "申請中", class: "form-control" %>
                 </tr>
               </tbody>
             </table>
