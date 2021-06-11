@@ -20,21 +20,23 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><%= l(@attendance.worked_on, format: :short) %></td>
-                  <td><%= $days_of_the_week[@attendance.worked_on.wday] %></td>
-                  <td>
-                    <div class="form-inline">
-                      <%= f.time_select :finish_overtime, { ignore_date: true, include_blank: "" }, { class: "form-control" } %>
-                    </div>
-                  </td>
-                  <td><%= f.check_box "overnight#{@attendance.id}" %></td>
-                  <td><%= f.text_field :task, class: "form-control" %></td>
-                  <td>
-                    <%= f.select :before_overtime_approval, @superiors.each { |s| s }, {include_blank: ""}, { class: "form-control"} %>
-                  </td>
-                  <%= f.hidden_field :overtime_instructor_authentication, value: "申請中", class: "form-control" %>
-                </tr>
+                <%= f.fields_for @attendance do |request| %>
+                  <tr>
+                    <td><%= l(@attendance.worked_on, format: :short) %></td>
+                    <td><%= $days_of_the_week[@attendance.worked_on.wday] %></td>
+                    <td>
+                      <div class="form-inline">
+                        <%= request.time_select :finish_overtime, { ignore_date: true, include_blank: "" }, { class: "form-control" } %>
+                      </div>
+                    </td>
+                    <td><%= f.check_box "overnight#{@attendance.id}" %></td>
+                    <td><%= request.text_field :task, class: "form-control" %></td>
+                    <td>
+                      <%= request.select :before_overtime_approval, @superiors.each { |s| s }, {include_blank: ""}, { class: "form-control"} %>
+                    </td>
+                    <%= request.hidden_field :overtime_instructor_authentication, value: "申請中", class: "form-control" %>
+                  </tr>
+                <% end %>
               </tbody>
             </table>
             <%= f.submit "変更を送信", class: "btn btn-primary btn-lg" %>
