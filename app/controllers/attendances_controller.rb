@@ -140,12 +140,15 @@ class AttendancesController < ApplicationController
   end
 
   def update_overtime_request_to_superior
-    attendance = Attendance.find(params[:id])
-    day = params["overnight#{attendance.id}"] == "0" ? attendance.worked_on : attendance.worked_on.next_day
-    overtime = "#{day}-#{params["finish_overtime(4i)"]}:#{params["finish_overtime(5i)"]}".to_time
-    superior = params[:before_overtime_approval]
-    debugger
-    if superior.present? && attendance.update_attributes(finish_overtime: overtime) && attendance.update_attributes(overtime_request_params)
+    if params[:before_overtime_approval].present?
+      overtime = "#{params["finish_overtime(4i)"]}:#{params["finish_overtime(5i)"]}".to_time
+      if overtime.present? 
+        attendance = Attendance.find(params[:id])
+        day = params["overnight#{attendance.id}"] == "0" ? attendance.worked_on : attendance.worked_on.next_day
+        overtime = "#{day}-#{overtime}".to_time
+      end
+    end
+    if attendance.update_attributes(finish_overtime: overtime) && attendance.update_attributes(overtime_request_params)
       flash[:success] = "変更を送信しました。"
     else
       flash[:danger] = "変更の送信に失敗しました。"
@@ -176,7 +179,7 @@ class AttendancesController < ApplicationController
   end
 
   def overtime_request_params
-    params.require(:attendance).permit([:task, :before_overtime_approval, :overtime_instructor_authentication])
+    params.require(:attendance).permit([:finish_overtime, :task, :before_overtime_approval, :overtime_instructor_authentication])
   end
   
   # beforeフィルター
