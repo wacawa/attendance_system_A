@@ -35,34 +35,16 @@
                           <td><%= l(request.worked_on, format: :short) %></td>
                           <td><%= $days_of_the_week[request.worked_on.wday] %></td>
                           <td><%= l(request.finish_overtime, format: :time) %></td>
-                          <td><%= f.check_box "overnight#{@attendance.id}" %></td>
-                          <td><%= request.text_field :task, class: "form-control" %></td>
-                          <td>
-                            <%= request.select :before_overtime_approval, @superiors.each { |s| s }, {include_blank: ""}, { class: "form-control"} %>
-                          </td>
-                          <%= request.hidden_field :overtime_instructor_authentication, value: "申請中", class: "form-control" %>
-                        </tr>
-                      <% end %>
-                    <% end %>
-              </tbody>
-            </table>
-        </div>
-      </div>
-  </div>
-</div>
-
-
-
-                        <% i += 1 %>
-                        <tr>
-                          <td><%= request.worked_on.month %>月</td>
-                          <td><%= att.select :instructor_authentication,
+                          <td><%= l(user.work_finish_time, format: :time) %></td>
+                          <td><%= working_times(user.work_finish_time, request.finish_overtime) %></td>
+                          <td><%= request.task %></td>
+                          <td><%= att.select :overtime_instructor_authentication,
                                 [["なし", "なし"], ["申請中", "申請中"], ["承認", "承認"], ["否認", "否認"]], {},
                                   { class: "form-control is-form" } %></td>
-                          <td><%= f.check_box "checkbox#{request.id}", class: "checkbox#{request.id}" %></td>
+                          <td><%= f.check_box "checkbox#{request.id}" %></td>
                           <td><%= link_to "確認", user, class: "btn btn-primary" %></td>
-                          <%= att.hidden_field :before_approval, value: nil %>
-                          <%= att.hidden_field :after_approval, value: @user.superior_name %>
+                          <%= att.hidden_field :before_overtime_approval, value: nil %>
+                          <%= att.hidden_field :after_overtime_approval, value: @user.superior_name %>
                         </tr>
                       <% end %>
                     <% end %>
@@ -70,7 +52,12 @@
                 </table>
               <% end %>
             <% end %>
-            <%= f.submit "変更を送信", class: "btn btn-primary btn-lg" if @request_attendances.count > 0 %>
+            <%= f.submit "変更を送信", class: "btn btn-primary btn-lg" if @request_overtime.count > 0 %>
           </div>
         </div>
       <% end %>
+    </div>
+  </div>
+</div>
+
+
