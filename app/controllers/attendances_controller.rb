@@ -140,19 +140,24 @@ class AttendancesController < ApplicationController
   end
 
   def update_overtime_request_to_superior
-    if params[:before_overtime_approval].present?
-      overtime = "#{params["finish_overtime(4i)"]}:#{params["finish_overtime(5i)"]}".to_time
+    if params[:attendance][:before_overtime_approval].present?
+      overtime = "#{params[:attendance]["finish_overtime(4i)"]}:#{params[:attendance]["finish_overtime(5i)"]}".to_time 
       if overtime.present? 
         attendance = Attendance.find(params[:id])
         day = params["overnight#{attendance.id}"] == "0" ? attendance.worked_on : attendance.worked_on.next_day
         overtime = "#{day}-#{overtime}".to_time
+        if attendance.update_attributes(overtime_request_params) && attendance.update_attributes(finish_overtime: overtime)
+          msg = ["success", "変更を送信しました。"]
+        else
+          msg = ["danger", "変更の送信に失敗しました。"]
+        end
+      else
+        msg = ["danger", "終了予定時間未入力のため送信をキャンセルしました。"]
       end
-    end
-    if attendance.update_attributes(finish_overtime: overtime) && attendance.update_attributes(overtime_request_params)
-      flash[:success] = "変更を送信しました。"
     else
-      flash[:danger] = "変更の送信に失敗しました。"
+      msg = ["danger", "指示者確認欄未選択のため送信をキャンセルしました。"]
     end
+    flash[msg[0]] = msg[1] if msg.present?
     redirect_to @user
   end
 
@@ -179,7 +184,7 @@ class AttendancesController < ApplicationController
   end
 
   def overtime_request_params
-    params.require(:attendance).permit([:finish_overtime, :task, :before_overtime_approval, :overtime_instructor_authentication])
+    params.require(:attendance).permit([:task, :before_overtime_approval, :overtime_instructor_authentication])
   end
   
   # beforeフィルター

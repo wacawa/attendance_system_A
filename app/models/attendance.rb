@@ -3,18 +3,23 @@ class Attendance < ApplicationRecord
 
   validates :worked_on, presence: true
   validates :note, length: { maximum: 50 }
-  validates :work_overtime, length: { maximum: 50 }
-  validates :overtime_instructor, length: { maximum: 20 }
+  validates :task, length: { maximum: 100 }
   validates :before_approval, inclusion: { in: User.where(superior: true).pluck(:superior_name), 
-                               message: "選択してください。" }, allow_blank: true 
+                                            message: "選択してください。" }, allow_blank: true 
   validates :after_approval, inclusion: { in: User.where(superior: true).pluck(:superior_name),
-                              message: "選択してください。" }, allow_blank: true 
+                                          message: "選択してください。" }, allow_blank: true 
   validates :instructor_authentication, inclusion: { in: %w(なし 申請中 承認 否認), message: "が無効な値です" }
   validates :before_atts_edit_approval, inclusion: { in: User.where(superior: true).pluck(:superior_name), 
-                                          message: "選択してください。" }, allow_blank: true 
+                                                      message: "選択してください。" }, allow_blank: true 
   validates :after_atts_edit_approval, inclusion: { in: User.where(superior: true).pluck(:superior_name), 
-                                        message: "選択してください。" }, allow_blank: true 
+                                                      message: "選択してください。" }, allow_blank: true 
   validates :atts_edit_instructor_authentication, inclusion: { in: %w(なし 申請中 承認 否認), message: "が無効な値です" }
+  validates :before_overtime_approval, inclusion: { in: User.where(superior: true).pluck(:superior_name), 
+                                                    message: "選択してください。" }, allow_blank: true 
+  validates :after_overtime_approval, inclusion: { in: User.where(superior: true).pluck(:superior_name), 
+                                                    message: "選択してください。" }, allow_blank: true 
+  validates :overtime_instructor_authentication, inclusion: { in: %w(なし 申請中 承認 否認), message: "が無効な値です" }
+
 
   validate :finished_at_is_invalid_without_a_started_at
   validate :started_at_than_finished_at_fast_if_invalid
