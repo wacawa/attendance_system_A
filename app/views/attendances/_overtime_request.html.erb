@@ -36,7 +36,7 @@
                           <td><%= $days_of_the_week[request.worked_on.wday] %></td>
                           <td><%= l(request.finish_overtime, format: :time) %></td>
                           <td><%= l(user.work_finish_time, format: :time) %></td>
-                          <td><%= working_times(user.work_finish_time, request.finish_overtime) %></td>
+                          <td><%= working_times(user.work_finish_time.hour, request.finish_overtime.hour) %></td>
                           <td><%= request.task %></td>
                           <td><%= att.select :overtime_instructor_authentication,
                                 [["なし", "なし"], ["申請中", "申請中"], ["承認", "承認"], ["否認", "否認"]], {},
