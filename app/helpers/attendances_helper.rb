@@ -17,11 +17,6 @@ module AttendancesHelper
     format("%.2f", ((finish - start) / 3600.0))
   end
 
-  def working_overtime(date, finish, overtime)
-    unless date == overtime.
-      format("%.2f", ((finish - start) / 3600.0))
-  end
-
   def wanted_data_update(attendances, list)
     if list.uniq.count == 1
       attendances.update_all(before_approval: list[0][0]) 

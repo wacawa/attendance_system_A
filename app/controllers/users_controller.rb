@@ -29,8 +29,7 @@ class UsersController < ApplicationController
     if @user.superior
       @superior_request = Attendance.where(before_approval: @user.superior_name).where("worked_on LIKE ?", "%-01").count
       @atts_edit_request = Attendance.where(before_atts_edit_approval: @user.superior_name).count
-#      @atts_edit_request = Attendance.where(before_atts_edit_approval:  "上長2").count
-      @overtime_request = Attendance.where(before_approval: @user.superior_name).where("worked_on LIKE ?", "%-01").count
+      @overtime_request = Attendance.where(before_overtime_approval: @user.superior_name).count
     end
   end
 

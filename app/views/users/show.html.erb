@@ -125,11 +125,19 @@
             <% end %>
           </td>
           <td><%= day.note if day.atts_edit_instructor_authentication == "承認" %></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td><%= day.task %></td>
+          <% oia = day.overtime_instructor_authentication == "承認" %>
+          <td><%= l(day.finish_overtime, format: :hour) if day.finish_overtime && oia %></td>
+          <td><%= l(day.finish_overtime, format: :minutes) if day.finish_overtime && oia %></td>
+          <% work_finish_time = "#{day.worked_on}-#{@user.work_finish_time.hour}:#{@user.work_finish_time.min}".to_time %>
           <td>
+            <% if work_finish_time.present? && day.finish_overtime.present? && oia %>
+              <%= working_times(work_finish_time, day.finish_overtime) %></td>
+            <% end %>
+          <td><%= day.task if oia %></td>
+          <td>
+            <%= "残業申請中" if day.overtime_instructor_authentication == "申請中" %>
+            <%= "残業承認済み" if oia %>
+            <%= "残業否認" if day.overtime_instructor_authentication == "否認" %>
             <%= "勤怠編集申請中" if day.atts_edit_instructor_authentication == "申請中" %>
             <%= "勤怠編集承認済み" if day.atts_edit_instructor_authentication == "承認" %>
             <%= "勤怠編集否認" if day.atts_edit_instructor_authentication == "否認" %>

@@ -1,6 +1,7 @@
 class AttendancesController < ApplicationController
   before_action :set_user, only: [:edit_one_month, :update_one_month, :superior_request, :update_superior_request,
-                                  :attendances_edit_request, :update_attendances_edit_request, :overtime_request]
+                                  :attendances_edit_request, :update_attendances_edit_request,
+                                  :overtime_request, :update_overtime_request]
   before_action :set_user_for_user_id, only: [:update,
                                               :overtime_request_to_superior, :update_overtime_request_to_superior]
   before_action :set_users, only: [:superior_request, :attendances_edit_request, :overtime_request]
@@ -165,6 +166,21 @@ class AttendancesController < ApplicationController
   end
 
   def update_overtime_request
+    ActiveRecord::Base.transaction do
+      request_params.each do |id, item|
+        logger.debug(Attendance.find(id).inspect)
+        if params["checkbox#{id}"] == "1" && item["overtime_instructor_authentication"] != "申請中"
+          attendance = Attendance.find(id)
+          attendance.update_attributes!(item)
+        end
+        logger.debug(Attendance.find(id).inspect)
+      end
+      flash[:success] = "変更を送信しました。"
+      redirect_to @user
+    rescue ActiveRecord::RecordInvalid
+      flash[:danger] = "変更の送信に失敗しました。"
+      redirect_to @user
+    end
   end
   
   private
