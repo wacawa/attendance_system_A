@@ -55,14 +55,18 @@ class AttendancesController < ApplicationController
           finish_time = "#{finish_day}-#{item["finished_at(4i)"]}:#{f_min}".to_time
           item = [["new_started_at", start_time], ["new_finished_at", finish_time],
                   ["note", item[:note]], [app, item[app]], [a, item[a]]].to_h
-          attendance.update_attributes!(item)
-        elsif item["started_at(4i)"].present? && item["finished_at(4i)"].present? && !item[app].present? 
-          error << true if attendance.new_started_at.present? || attendance.new_finished_at.present?
+          if start_time < finish_time
+            attendance.update_attributes!(item)
+          else
+            error << true
+          end
+        else
+          error << true
         end
       end
     end
     if msg = error.count > 0
-      flash[:danger] = "更新されていない日付があります。"
+      flash[:danger] = "更新不可の日付がありました。"
     else
       flash[:success] = "1ヶ月分の勤怠情報を更新しました。"
     end

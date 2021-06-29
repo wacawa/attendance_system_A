@@ -26,23 +26,25 @@
 
 <% if @user.superior? && login_user?(@user) %>
   <div class="request-area">
-    <% css_class = "mrgn-top10 mrgn-bottom10" if @superior_request > 0 || @atts_edit_request > 0 || @overtime_request > 0 %>
+    <% mrgn_su = "mrgn-bottom10" if @superior_request > 0 %>
+    <% mrgn_atts = "mrgn-top10 mrgn-bottom10" if @atts_edit_request > 0 %>
+    <% mrgn_overtime = "mrgn-top10" if @overtime_request > 0 %>
     <% css_su = @superior_request > 0 ? "su_request" : "disabled_link_to" %>
     <% css_atts = @atts_edit_request > 0 ? "atts_request" : "disabled_link_to" %>
     <% css_overtime = @overtime_request > 0 ? "overtime_request" : "disabled_link_to" %>
-    <div class= <%= css_class || "" %>>
+    <div class= <%= mrgn_su || "" %>>
       <%= link_to "[ 所属長承認申請のお知らせ ]", attendances_superior_request_user_path(@user), remote: true, class: "btn-default #{css_su}" %>
       <% if @superior_request > 0 %><span class="notif-border"><%= @superior_request %></span><% end %>
 
       <div id="superior-request" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true"></div>
     </div>
-    <div class=<%= css_class || "" %>>
+    <div class=<%= mrgn_atts || "" %>>
       <%= link_to "[ 勤怠変更申請のお知らせ ]", attendances_edit_request_user_path(@user), remote: true, class: "btn-default #{css_atts}" %>
       <% if @atts_edit_request > 0 %><span class="notif-border"><%= @atts_edit_request %></span><% end %>
 
       <div id="att-edit-request" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true"></div>
     </div>
-    <div class=<%= css_class || "" %>>
+    <div class=<%= mrgn_overtime || "" %>>
       <%= link_to "[ 残業申請のお知らせ ]", attendances_overtime_request_user_path(@user), remote: true, class: "btn-default #{css_overtime}" %>
       <% if @overtime_request > 0 %><span class="notif-border"><%= @overtime_request %></span><% end %>
 
@@ -138,10 +140,10 @@
             <% end %>
           <td><%= day.task if oia %></td>
           <td>
-            <%= "残業申請中" if day.overtime_instructor_authentication == "申請中" %>
+            <%= "#{day.before_overtime_approval}に残業申請中" if day.overtime_instructor_authentication == "申請中" %>
             <%= "残業承認済み" if oia %>
             <%= "残業否認" if day.overtime_instructor_authentication == "否認" %>
-            <%= "勤怠編集申請中" if day.atts_edit_instructor_authentication == "申請中" %>
+            <%= "#{day.before_atts_edit_approval}に勤怠編集申請中" if day.atts_edit_instructor_authentication == "申請中" %>
             <%= "勤怠編集承認済み" if day.atts_edit_instructor_authentication == "承認" %>
             <%= "勤怠編集否認" if day.atts_edit_instructor_authentication == "否認" %>
           </td>
