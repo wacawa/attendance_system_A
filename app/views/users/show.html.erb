@@ -26,22 +26,25 @@
 
 <% if @user.superior? && login_user?(@user) %>
   <div class="request-area">
-    <% css_class = "mrgn-bottom10" if @superior_request > 0 || @atts_edit_request > 0 || @overtime_request > 0 %>
+    <% css_class = "mrgn-top10 mrgn-bottom10" if @superior_request > 0 || @atts_edit_request > 0 || @overtime_request > 0 %>
+    <% css_su = @superior_request > 0 ? "su_request" : "disabled_link_to" %>
+    <% css_atts = @atts_edit_request > 0 ? "atts_request" : "disabled_link_to" %>
+    <% css_overtime = @overtime_request > 0 ? "overtime_request" : "disabled_link_to" %>
     <div class= <%= css_class || "" %>>
-      <%= link_to "[ 所属長承認申請のお知らせ ]", attendances_superior_request_user_path(@user), remote: true, class: "btn-default" %>
-      <% if @superior_request > 0 %><span class="notif-border"><%= @superior_request %>件の通知があります</span><% end %>
+      <%= link_to "[ 所属長承認申請のお知らせ ]", attendances_superior_request_user_path(@user), remote: true, class: "btn-default #{css_su}" %>
+      <% if @superior_request > 0 %><span class="notif-border"><%= @superior_request %></span><% end %>
 
       <div id="superior-request" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true"></div>
     </div>
     <div class=<%= css_class || "" %>>
-      <%= link_to "[ 勤怠変更申請のお知らせ ]", attendances_edit_request_user_path(@user), remote: true, class: "btn-default" %>
-      <% if @atts_edit_request > 0 %><span class="notif-border"><%= @atts_edit_request %>件の通知があります</span><% end %>
+      <%= link_to "[ 勤怠変更申請のお知らせ ]", attendances_edit_request_user_path(@user), remote: true, class: "btn-default #{css_atts}" %>
+      <% if @atts_edit_request > 0 %><span class="notif-border"><%= @atts_edit_request %></span><% end %>
 
       <div id="att-edit-request" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true"></div>
     </div>
     <div class=<%= css_class || "" %>>
-      <%= link_to "[ 残業申請のお知らせ ]", attendances_overtime_request_user_path(@user), remote: true, class: "btn-default" %>
-      <% if @overtime_request > 0 %><span class="notif-border"><%= @overtime_request %>件の通知があります</span><% end %>
+      <%= link_to "[ 残業申請のお知らせ ]", attendances_overtime_request_user_path(@user), remote: true, class: "btn-default #{css_overtime}" %>
+      <% if @overtime_request > 0 %><span class="notif-border"><%= @overtime_request %></span><% end %>
 
       <div id="overtime-request" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true"></div>
     </div>

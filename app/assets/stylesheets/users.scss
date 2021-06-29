@@ -1,10 +1,15 @@
 .request-area {
   padding: 5px;
   .notif-border {
-    padding: 3px;
-    border: 2px solid;
-    border-radius: 5px;
     color: red;
+    display: inline-block;
+    line-height: 25px;
+    width: 25px;
+    height: 25px;
+    border: solid 1px red;
+    border-radius: 50%;
+    vertical-align: middle;
+    text-align: center;
   }
 }
 
@@ -74,3 +79,11 @@ $position: "top", "bottom", "right", "left";
   }
 }
 
+
+.su_request, .atts_request, .overtime_request {
+  color: red;
+}
+
+.disabled_link_to {
+  pointer-events: none;
+}
