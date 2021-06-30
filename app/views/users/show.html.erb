@@ -56,7 +56,7 @@
 <div>
   <div class="mrgn-top10">
     <%= link_to "勤怠編集へ", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" if login_user?(@user) %>
-    <%= link_to "CSV出力", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" if login_user?(@user) %>
+    <%= link_to "CSV出力", output_attendances_user_path(date: @first_day, format: :csv), class: "btn btn-primary" if login_user?(@user) %>
   </div>
   <div class="mrgn-top5 mrgn-bottom10">
     <%= link_to "勤怠修正ログ(承認済)",
@@ -160,7 +160,7 @@
         <td rowspan="2"></td>
         <td rowspan="2">
           <% if @in_authe == "なし" %>
-            <%= "所属長へ未申請" if @after_approval.blank? %>
+            <%= "未申請" if @after_approval.blank? %>
             <%= "#{@after_approval}から承認済" if @after_approval %>
           <% end %>
           <%= "#{@before_approval}へ申請中" if @in_authe == "申請中" %>
