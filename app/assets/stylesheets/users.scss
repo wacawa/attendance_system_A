@@ -87,3 +87,8 @@ $position: "top", "bottom", "right", "left";
 .disabled_link_to {
   pointer-events: none;
 }
+
+.modal-dialog {
+  max-width: inherit;
+  width: 70%;
+}

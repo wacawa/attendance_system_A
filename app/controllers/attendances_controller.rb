@@ -54,14 +54,18 @@ class AttendancesController < ApplicationController
           finish_day = params[:user]["overnight#{id}"] == "1" ? "#{worked_on.next_day}" : "#{worked_on}"
           finish_time = "#{finish_day}-#{item["finished_at(4i)"]}:#{f_min}".to_time
           item = [["new_started_at", start_time], ["new_finished_at", finish_time],
-                  ["note", item[:note]], [app, item[app]], [a, item[a]]].to_h
+                  ["note", item[:note]], [app, item[app]], [a, item[a]]]
+          item << ["old_started_at", attendance.started_at.to_time] if attendance.old_started_at.nil?
+          item << ["old_finished_at", attendance.finished_at.to_time] if attendance.old_finished_at.nil?
+          item = item.to_h
+          debugger
           if start_time < finish_time
             attendance.update_attributes!(item)
           else
             error << true
           end
-        else
-          error << true
+#        elsif item["started_at(4i)"].present? && item["finished_at(4i)"].present? && !item[app].present?
+#          error << true
         end
       end
     end
@@ -117,6 +121,7 @@ class AttendancesController < ApplicationController
     a = "atts_edit_instructor_authentication"
     ActiveRecord::Base.transaction do
       request_params.each do |id, item|
+        debugger
         if params["checkbox#{id}"] == "1" && item[a] != "申請中"
           attendance = Attendance.find(id)
           user = User.find(attendance.user_id)

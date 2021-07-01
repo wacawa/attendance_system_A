@@ -69,6 +69,7 @@
                           <%= day.hidden_field :new_finished_at, value: nil %>
                           <%= day.hidden_field :before_atts_edit_approval, value: nil %>
                           <%= day.hidden_field :after_atts_edit_approval, value: @user.superior_name %>
+                          <%= day.hidden_field :approval_at, value: Time.now %>
                         </tr>
                       <% end %>
                     <% end %>
