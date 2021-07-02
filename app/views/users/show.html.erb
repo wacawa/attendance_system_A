@@ -143,9 +143,9 @@
             <%= "#{day.before_overtime_approval}に残業申請中" if day.overtime_instructor_authentication == "申請中" %>
             <%= "残業承認済み" if oia %>
             <%= "残業否認" if day.overtime_instructor_authentication == "否認" %>
-            <%= "#{day.before_atts_edit_approval}に勤怠編集申請中" if day.atts_edit_instructor_authentication == "申請中" %>
-            <%= "勤怠編集承認済み" if day.atts_edit_instructor_authentication == "承認" %>
-            <%= "勤怠編集否認" if day.atts_edit_instructor_authentication == "否認" %>
+            <%= "#{day.before_atts_edit_approval}に勤怠変更申請中" if day.atts_edit_instructor_authentication == "申請中" %>
+            <%= "勤怠変更承認済み" if day.atts_edit_instructor_authentication == "承認" %>
+            <%= "勤怠変更否認" if day.atts_edit_instructor_authentication == "否認" %>
           </td>
         </tr>
       <% end %>

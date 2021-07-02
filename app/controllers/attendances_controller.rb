@@ -41,7 +41,9 @@ class AttendancesController < ApplicationController
     ActiveRecord::Base.transaction do
       attendances_params.each do |id, item|
         attendance = Attendance.find(id)
-        if item[app].present? && item["started_at(4i)"].present? && item["finished_at(4i)"].present?
+        if !item[app].present?
+          error << true if item["started_at(4i)"].present? && item["finished_at(4i)"].present?
+        elsif item["started_at(4i)"].present? && item["finished_at(4i)"].present?
           s_min = item["started_at(5i)"].present? ? item["started_at(5i)"] : "00"
           f_min = item["finished_at(5i)"].present? ? item["finished_at(5i)"] : "00"
           worked_on = attendance.worked_on
@@ -55,10 +57,9 @@ class AttendancesController < ApplicationController
           finish_time = "#{finish_day}-#{item["finished_at(4i)"]}:#{f_min}".to_time
           item = [["new_started_at", start_time], ["new_finished_at", finish_time],
                   ["note", item[:note]], [app, item[app]], [a, item[a]]]
-          item << ["old_started_at", attendance.started_at.to_time] if attendance.old_started_at.nil?
-          item << ["old_finished_at", attendance.finished_at.to_time] if attendance.old_finished_at.nil?
+          item << ["old_started_at", attendance.started_at] if attendance.old_started_at.nil?
+          item << ["old_finished_at", attendance.finished_at] if attendance.old_finished_at.nil?
           item = item.to_h
-          debugger
           if start_time < finish_time
             attendance.update_attributes!(item)
           else
@@ -69,14 +70,10 @@ class AttendancesController < ApplicationController
         end
       end
     end
-    if msg = error.count > 0
-      flash[:danger] = "更新不可の日付がありました。"
-    else
-      flash[:success] = "1ヶ月分の勤怠情報を更新しました。"
-    end
+    flash[:danger] = "申請に失敗した日付があります。" if error.present?
+    flash[:success] = "勤怠変更を申請しました。" unless error.present?
     redirect_to user_url(date: params[:date])
   rescue ActiveRecord::RecordInvalid
-    debugger
     flash[:danger] = "入力データが無効な値だったから、更新をキャンセルしたよ"
     redirect_to attendances_edit_one_month_user_url(date: params[:date])
   end 
@@ -119,10 +116,12 @@ class AttendancesController < ApplicationController
 
   def update_attendances_edit_request
     a = "atts_edit_instructor_authentication"
+    errors = []
     ActiveRecord::Base.transaction do
       request_params.each do |id, item|
-        debugger
-        if params["checkbox#{id}"] == "1" && item[a] != "申請中"
+        if params["checkbox#{id}"] == "0"
+          errors << true
+        elsif item[a] != "申請中"
           attendance = Attendance.find(id)
           user = User.find(attendance.user_id)
           case item[a]
@@ -133,9 +132,12 @@ class AttendancesController < ApplicationController
           when "承認" then
             attendance.update_attributes!(item)
           end
+        else
+          errors << true
         end
       end
-      flash[:success] = "変更を送信しました。"
+      flash[:success] = "変更を送信しました。" unless errors.present?
+      flash[:danger] = "送信に失敗した申請があります。" if errors.present?
       redirect_to @user
     rescue ActiveRecord::RecordInvalid
       flash[:danger] = "変更の送信に失敗しました。"
@@ -175,16 +177,20 @@ class AttendancesController < ApplicationController
   end
 
   def update_overtime_request
+    errors = []
     ActiveRecord::Base.transaction do
       request_params.each do |id, item|
         logger.debug(Attendance.find(id).inspect)
-        if params["checkbox#{id}"] == "1" && item["overtime_instructor_authentication"] != "申請中"
+        if params["checkbox#{id}"] == "0"
+          errors << true
+        elsif item["overtime_instructor_authentication"] != "申請中"
           attendance = Attendance.find(id)
           attendance.update_attributes!(item)
         end
-        logger.debug(Attendance.find(id).inspect)
+#        logger.debug(Attendance.find(id).inspect)
       end
-      flash[:success] = "変更を送信しました。"
+      flash[:success] = "変更を送信しました。" unless errors.present?
+      flash[:danger] = "送信に失敗した申請があります。" if errors.present?
       redirect_to @user
     rescue ActiveRecord::RecordInvalid
       flash[:danger] = "変更の送信に失敗しました。"
