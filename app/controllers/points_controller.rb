@@ -1,7 +1,7 @@
 class PointsController < ApplicationController
   before_action :set_point, only: [:destroy, :edit, :update]
   before_action :set_points, only: [:index, :edit]
-  before_action :admin_user, only: [:index, :create, :destroy, :edit, :update, :show]
+  before_action :available_admin_user
 
 
   def index
@@ -45,7 +45,7 @@ class PointsController < ApplicationController
   end
 
   def point_params
-    params.require(:point).permit(:point_name, :attendance_type)
+    params.require(:point).permit(:id, :point_name, :attendance_type)
   end
 
   # before_action

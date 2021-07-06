@@ -8,8 +8,12 @@
         <%= link_to "-->", user_path(date: @first_day.next_month), class: "btn btn-primary mrgn-left5" if login_user?(@user)%>
       </td>
       <td>
-        <div>指定勤務開始時間：&nbsp;&nbsp;<%= l(@user.work_start_time, format: :time) %></div>
-        <div>指定勤務終了時間：<%= l(@user.work_finish_time, format: :time) %></div>
+        <% st = @user.designated_work_start_time.present? ?
+                  l(@user.designated_work_start_time, format: :time) : l(@user.work_start_time, format: :time) %>
+        <% ft = @user.designated_work_finish_time.present? ?
+                  l(@user.designated_work_finish_time, format: :time) : l(@user.work_finish_time, format: :time) %>
+        <div>指定勤務開始時間：<%= st %></div>
+        <div>指定勤務終了時間：<%= ft %></div>
       </td>
       <td colspan="2">基本時間：<%= format_basic_info(@user.basic_work_time) %></td>
       <td>初日：<%= l(@first_day, format: :short) %></td>

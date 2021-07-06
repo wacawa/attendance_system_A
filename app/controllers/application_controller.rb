@@ -32,10 +32,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def admin_user
+  def available_admin_user
     redirect_to root_url unless login_user.admin?
   end
-  
+
+  def not_available_admin_user
+    redirect_to root_url if login_user.admin?
+  end
 
   def set_one_month
     @first_day = params[:date].nil? ? Date.current.beginning_of_month : params[:date].to_date

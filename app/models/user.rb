@@ -17,17 +17,15 @@ class User < ApplicationRecord
   validates :password, presence: true, length: {minimum: 6}, allow_nil: true
 
   def self.import(file)  
+    csv_header = { "name" => "name", "email" => "email", "affiliation" => "department", "employee_number" => "employee_id",
+                  "uid" => "card_id", "basic_work_time" => "basic_work_time", "designated_work_start_time" => "designated_work_start_time",
+                  "designated_work_finish_time" => "designated_work_finish_time", "superior" => "superior", "admin" => "admin", "password" => "password" }
     CSV.foreach(file.path, headers: true) do |row|
-      user = find_by(id: row["email"]) || new
-      user.attributes = row.to_hash.slice(*updatable_attributes)
+      user = find_by(email: row["email"]) || new
+      row_hash = row.to_hash.slice(*csv_header.keys)
+      user.attributes = row_hash.transform_keys(&csv_header.method(:[]))
       user.save
     end
-  end
-
-  def self.updatable_attributes
-    ["name", "email", "department", "employee_id", "card_id",
-      "basic_work_time", "designated_work_start_time", "designated_work_finish_time",
-      "superior", "admin", "password"]
   end
 
   def User.digest(string)

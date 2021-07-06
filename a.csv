@@ -1,0 +1,3 @@
+name,email,affiliation,employee_number,uid,basic_work_time,designated_work_start_time,designated_work_finish_time,superior,admin,password
+天童 進,samplesam@email.com,,100,abidj29d,2021-04-12 08:00:00,,,false,false,password
+田舎 宗四郎,samplesamp@email.com,,101,bdcpd5aj,2021-04-12 08:00:00,,,false,false,password

@@ -5,15 +5,13 @@
   <%= f.text_field :name, class: "form-control" %>
   <%= f.label :email, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
   <%= f.email_field :email, class: "form-control" %>
-  <% if request.original_url == users_url %>
-    <%= f.label :department, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
-    <%= f.text_field :department, class: "form-control" %>
-  <% end %>
+  <%= f.label :department, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
+  <%= f.text_field :department, class: "form-control" %>
   <%= f.label :employee_id, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
   <%= f.text_field :employee_id, class: "form-control" %>
   <%= f.label :card_id, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
   <%= f.text_field :card_id, class: "form-control" %>
-  <% if request.original_url == users_url %>
+  <% if request.path == "/users" %>
     <%= f.label :basic_work_time, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
     <%= f.time_field :basic_work_time, class: "form-control" %>
   <% end %>
@@ -23,7 +21,7 @@
   <%= f.time_field :designated_work_finish_time, class: "form-control" %>
   <%= f.label :password, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
   <%= f.password_field :password, class: "form-control" %>
-  <% if !request.original_url == users_url %>
+  <% if !request.path == "/users" %>
     <%= f.label :password_confirmation, class: "mrgn-top10 mrgn-right5 label-#{yield(:class_text)}" %>
     <%= f.password_field :password_confirmation, class: "form-control" %>
   <% end %>

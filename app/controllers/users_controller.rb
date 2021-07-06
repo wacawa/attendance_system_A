@@ -5,14 +5,16 @@ class UsersController < ApplicationController
   before_action :logged_in_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :log]
   before_action :admin_or_correct_user, only: [:edit, :update, :log]
   before_action :superior_or_correct_user, only: :show
-  before_action :admin_user, only: [:index_working_users, :index, :destroy, :edit_basic_info, :update_basic_info]
+  before_action :available_admin_user, only: [:index_working_users, :index, :destroy, :edit_basic_info, :update_basic_info]
+  before_action :not_available_admin_user,
+                  only: [:show, :before_approval, :log, :output_attendances]
 
   def index_working_users
     @users = User.paginate(page: params[:page])
   end
 
   def index
-    @users = User.paginate(page: params[:page])
+    @users = User.where.not(id: login_user.id).paginate(page: params[:page])
   end
 
   def import
@@ -73,7 +75,8 @@ class UsersController < ApplicationController
       flash[:success] = "ユーザー情報を更新しました。"
       redirect_to location
     else
-      render :edit
+      flash[:danger] = "ユーザー情報の編集に失敗しました。"
+      redirect_to location
     end
   end
 
