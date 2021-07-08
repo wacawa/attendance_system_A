@@ -12,7 +12,7 @@ class AttendancesController < ApplicationController
 
   
   
-  UPDATE_ERROR_MSG = "勤怠登録をやり直してくだ。"
+  UPDATE_ERROR_MSG = "勤怠登録をやり直してください。"
   
   def update
     @attendance = Attendance.find(params[:id])
@@ -76,12 +76,12 @@ class AttendancesController < ApplicationController
     flash[:success] = "勤怠変更を申請しました。" unless error.present?
     redirect_to user_url(date: params[:date])
   rescue ActiveRecord::RecordInvalid
-    flash[:danger] = "入力データが無効な値だったから、更新をキャンセルしたよ"
+    flash[:danger] = "入力データが無効な値のため、更新をキャンセルしました。"
     redirect_to attendances_edit_one_month_user_url(date: params[:date])
   end 
   
   def superior_request
-    @request_attendances = Attendance.where(before_approval: @user.superior_name).where("worked_on LIKE ?", "%-01").order(:worked_on)
+    @request_attendances = Attendance.where(before_approval: @user.superior_name).where("cast(worked_on as text) LIKE ?", "%-01").order(:worked_on)
   end
 
   def update_superior_request

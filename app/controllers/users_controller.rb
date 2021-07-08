@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     @worked_sum = @attendances.where.not(started_at: nil).count
     @superiors = User.where(superior: true).where.not(superior_name: @user.superior_name)
     if @user.superior
-      @superior_request = Attendance.where(before_approval: @user.superior_name).where("worked_on LIKE ?", "%-01").count
+      @superior_request = Attendance.where(before_approval: @user.superior_name).where("cast(worked_on as text) LIKE ?", "%-01").count
       @atts_edit_request = Attendance.where(before_atts_edit_approval: @user.superior_name).count
       @overtime_request = Attendance.where(before_overtime_approval: @user.superior_name).count
     end
@@ -117,7 +117,7 @@ class UsersController < ApplicationController
 
       def superior_or_correct_user
         unless login_user?(@user) || login_user.superior?
-          flash[:danger] = "権限がねぇ。"
+          flash[:danger] = "権限がありません。"
           redirect_to root_url
         end
       end
