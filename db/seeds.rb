@@ -1,7 +1,7 @@
 # cording: utf-8
 
 cardid = Faker::Lorem.characters(number: 8)
-User.create!(name: "zero",
+User.create!(name: "管理者",
              email: "sample@email.com",
              password: "password",
              password_confirmation: "password",
@@ -10,7 +10,7 @@ User.create!(name: "zero",
              admin: true,
              )
 
-24.times do |n|
+3.times do |n|
   name = Faker::Name.name
   email = "sample#{n+1}@email.com"
   password = "password"
@@ -27,11 +27,11 @@ User.create!(name: "zero",
                )
 end
 
-24.times do |n|
+2.times do |n|
   name = Faker::Name.name
-  email = "sample#{n+26}@email.com"
+  email = "sample#{n+4}@email.com"
   password = "password"
-  empid = n+26
+  empid = n+4
   cardid = Faker::Lorem.characters(number: 8)
   User.create!(name: name,
                email: email,
