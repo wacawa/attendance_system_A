@@ -44,18 +44,13 @@ class AttendancesController < ApplicationController
       attendances_params.each do |id, item|
         attendance = Attendance.find(id)
         worked_on = attendance.worked_on
-        debugger
         if item["started_at(4i"].present? && item["finished_at(4i"].present?
-          if item[app].blank?
-            next
-          else
+          if item[app].present?
             s_min = item["started_at(5i)"].present? ? item["started_at(5i)"] : "00"
             f_min = item["finished_at(5i)"].present? ? item["finished_at(5i)"] : "00"
             start_time = "#{item["started_at(4i)"]}:#{s_min}"
             finish_time = "#{item["finished_at(4i)"]}:#{f_min}"
-            if l(attendance.started_at, format: :time) == start_time && l(attendance.finished_at, format: :time) == finish_time
-              next
-            else
+            if l(attendance.started_at, format: :time) != start_time || l(attendance.finished_at, format: :time) != finish_time
               start_time = "#{worked_on}-#{start_time}".to_time
               finish_day = params[:user]["overnight#{id}"] == "1" ? "#{worked_on.next_day}" : "#{worked_on}"
               finish_time = "#{finish_day}-#{finish_time}".to_time
@@ -66,15 +61,15 @@ class AttendancesController < ApplicationController
                 item << ["old_finished_at", attendance.finished_at] if attendance.old_finished_at.nil?
                 item = item.to_h
                 attendance.update_attributes!(item)
-                next
+              else
+                error << true
               end
             end
           end
-        elsif item["started_at(4i"].blank? && item["finished_at(4i"].blank?
-          next
         else
-          error << true
-          next
+          unless item["started_at(4i)"].blank? && item["finished_at(4i)"].blank?
+            error << true 
+          end
         end
       end
       flash[:danger] = "申請に失敗した日付があります。" if error.present?
