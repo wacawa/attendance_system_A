@@ -19,18 +19,17 @@
       <tbody>
         <% @attendances.each do |day| %>
           <%= f.fields_for "attendances[]", day do |attendance| %>
-            <% d = !( !login_user.admin? && (Date.current >= day.worked_on) ) %>
+            <% d = !( !login_user.admin? && (Date.current > day.worked_on) ) %>
+            <% d ||= Date.current == day.worked_on && day.finished_at.present? %>
             <% d ||= day.atts_edit_instructor_authentication == "申請中" %>
             <tr>
               <td><%= l(day.worked_on, format: :short) %></td>
               <td><%= $days_of_the_week[day.worked_on.wday] %></td>
               <td><div class="form-inline">
-                <%= attendance.time_select :started_at, { ignore_date: true, include_blank: "" }, { disabled: d, class: "form-control" } unless d %>
-                <%= attendance.time_select :new_started_at, { ignore_date: true, include_blank: "" }, { disabled: d, class: "form-control" } if d %>
+                <%= attendance.time_select :started_at, { ignore_date: true, include_blank: "" }, { disabled: d, class: "form-control" } %>
               </div></td>
               <td><div class="form-inline">
-                <%= attendance.time_select :finished_at, { ignore_date: true, include_blank: "" }, { disabled: d, class: "form-control" } unless d %>
-                <%= attendance.time_select :new_finished_at, { ignore_date: true, include_blank: "" }, { disabled: d, class: "form-control" } if d %>
+                <%= attendance.time_select :finished_at, { ignore_date: true, include_blank: "" }, { disabled: d, class: "form-control" } %>
               </div></td>
               <td>
                 <% c = true if day.finished_at.present? && day.finished_at.day == day.worked_on.next_day.day %>
