@@ -33,7 +33,6 @@ class ApplicationController < ActionController::Base
   end
 
   def available_admin_user
-    debugger
     if login_user.present? && !login_user.admin?
       flash[:danger] = "アクセス権限がありません。"
       redirect_to root_url
