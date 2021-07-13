@@ -25,6 +25,6 @@ Things you may want to cover:
 # attendance_system_A
 #07/10変更
 # gitは難しい。
-# 07/10更新
+
 
 
