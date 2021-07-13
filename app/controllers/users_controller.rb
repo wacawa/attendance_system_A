@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :correct_user,
                                   :before_approval, :log, :output_attendances]
   before_action :set_one_month, only: [:show, :before_approval, :log, :output_attendances]
-  before_action :logged_in_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :log]
+  before_action :logged_in_user, exception: [:new, :create]
   before_action :admin_or_correct_user, only: [:edit, :update, :log]
   before_action :superior_or_correct_user, only: :show
   before_action :available_admin_user, only: [:index_working_users, :index, :destroy, :edit_basic_info, :update_basic_info]

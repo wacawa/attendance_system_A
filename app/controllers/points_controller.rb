@@ -1,4 +1,5 @@
 class PointsController < ApplicationController
+  before_action :logged_in_user
   before_action :set_point, only: [:destroy, :edit, :update]
   before_action :set_points, only: [:index, :edit]
   before_action :available_admin_user
