@@ -8,7 +8,7 @@ class User < ApplicationRecord
   validates :email, presence: true, length: {maximum: 100},
                     format: { with: VALID_EMAIL_REGEX }, uniqueness: true
   validates :department, length: { in: 2..30 }, allow_blank: true
-  validates :basic_work_time, presence: true
+  validates :basic_work_time, presence: true, allow_nil: true
   validates :employee_id, presence: true
   validates :card_id, presence: true
   validates :designated_work_start_time, presence: true, allow_nil: true
@@ -22,6 +22,9 @@ class User < ApplicationRecord
                   "designated_work_finish_time" => "designated_work_finish_time", "superior" => "superior", "admin" => "admin", "password" => "password" }
     CSV.foreach(file.path, headers: true) do |row|
       user = find_by(email: row["email"]) || new
+      row["basic_work_time"] = row["basic_work_time"].to_time
+      row["designated_work_start_time"] = row["designated_work_start_time"].to_time
+      row["designated_work_finish_time"] = row["designated_work_finsh_time"].to_time
       row_hash = row.to_hash.slice(*csv_header.keys)
       user.attributes = row_hash.transform_keys(&csv_header.method(:[]))
       user.save

@@ -24,7 +24,7 @@ class AttendancesController < ApplicationController
       end
     elsif @attendance.finished_at.nil?
       if @attendance.update_attributes(finished_at: Time.current.change(sec: 0))
-        flash[:info] = "お疲れ。"
+        flash[:info] = "お疲れさまでした。"
       else
         flash[:danger] = UPDATE_ERROR_MSG
       end      
