@@ -39,8 +39,10 @@
               <td><%= working_times(day.started_at, day.finished_at) if day.finished_at %></td>
               <td><%= attendance.text_field :note, disabled: d, class: "form-control"%></td>
               <td>
+                <% dd = day.atts_edit_instructor_authentication == "申請中" %>
                 <%= attendance.select :before_atts_edit_approval, @superiors.each { |s| s },
-                    {include_blank: ""}, {disabled: d, class: "form-control"} %>
+                    {include_blank: ""}, {disabled: d, class: "form-control"} unless dd %>
+                <%= "申請中" if dd %>
               </td>
               <%= attendance.hidden_field :atts_edit_instructor_authentication, value: "申請中" %>
             </tr>

@@ -44,17 +44,19 @@ class AttendancesController < ApplicationController
       attendances_params.each do |id, item|
         attendance = Attendance.find(id)
         worked_on = attendance.worked_on
-        if item["started_at(4i"].present? && item["finished_at(4i"].present?
+        if item["started_at(4i)"].present? && item["finished_at(4i)"].present?
           if item[app].present?
             s_min = item["started_at(5i)"].present? ? item["started_at(5i)"] : "00"
             f_min = item["finished_at(5i)"].present? ? item["finished_at(5i)"] : "00"
             start_time = "#{item["started_at(4i)"]}:#{s_min}"
             finish_time = "#{item["finished_at(4i)"]}:#{f_min}"
-            if l(attendance.started_at, format: :time) != start_time || l(attendance.finished_at, format: :time) != finish_time
+            default_start = attendance.started_at.present? ? l(attendance.started_at, format: :time) : ""
+            default_finish = attendance.finished_at.present? ? l(attendance.finished_at, format: :time) : ""
+            if default_start != start_time || default_finish != finish_time
               start_time = "#{worked_on}-#{start_time}".to_time
               finish_day = params[:user]["overnight#{id}"] == "1" ? "#{worked_on.next_day}" : "#{worked_on}"
               finish_time = "#{finish_day}-#{finish_time}".to_time
-              if start_time < finish_time
+              if start_time <= finish_time
                 item = [["new_started_at", start_time], ["new_finished_at", finish_time],
                         ["note", item[:note]], [app, item[app]], [a, item[a]]]
                 item << ["old_started_at", attendance.started_at] if attendance.old_started_at.nil?
