@@ -116,7 +116,7 @@ class AttendancesController < ApplicationController
   end
 
   def attendances_edit_request
-    @requests = Attendance.where(before_atts_edit_approval: @user.superior_name)
+    @requests = Attendance.where(before_atts_edit_approval: @user.superior_name).order(:worked_on)
   end
 
   def update_attendances_edit_request
@@ -178,7 +178,7 @@ class AttendancesController < ApplicationController
   end
 
   def overtime_request
-    @request_overtime = Attendance.where(before_overtime_approval: @user.superior_name)
+    @request_overtime = Attendance.where(before_overtime_approval: @user.superior_name).order(:worked_on)
   end
 
   def update_overtime_request
