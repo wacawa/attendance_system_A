@@ -61,7 +61,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @attendances.each do |day| %>
+              <% @authen.each do |day| %>
                 <tr>
                   <th><%= day.worked_on %></th>
                   <th><%= l(day.old_started_at, format: :time) if day.old_started_at.present? %></th>

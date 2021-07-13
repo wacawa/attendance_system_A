@@ -49,6 +49,7 @@ class UsersController < ApplicationController
 
   def log
     @default_day = params[:default_day].to_date
+    @authen = @attendances.where(atts_edit_instructor_authentication: "承認")
   end
 
   def new

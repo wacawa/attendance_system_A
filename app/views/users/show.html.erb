@@ -167,14 +167,16 @@
             <%= "未申請" if @after_approval.blank? %>
             <%= "#{@after_approval}から承認済" if @after_approval %>
           <% end %>
-          <%= "#{@before_approval}へ申請中" if @in_authe == "申請中" %>
+          <%= "#{@before_approval}へ所属長承認申請中" if @in_authe == "申請中" %>
           <%= "#{@after_approval}から否認" if @in_authe == "否認" %>
           <%= "#{@after_approval}から承認済" if @in_authe == "承認" %>
           <% if login_user?(@user) %>
             <div>
-              <%= form_with url: before_approval_user_path(@user, date: @first_day), local: true, method: :patch do |f| %>
-                <%= f.select :superior, @superiors.map { |s| [s.superior_name] }, {include_blank: ""}, {class: "form-control"} %>
-                <%= f.submit "申請", class: "btn btn-primary btn-block mrgn-top5" %>
+              <% unless @in_authe == "申請中" %>
+                <%= form_with url: before_approval_user_path(@user, date: @first_day), local: true, method: :patch do |f| %>
+                  <%= f.select :superior, @superiors.map { |s| [s.superior_name] }, {include_blank: ""}, {class: "form-control"} %>
+                  <%= f.submit "申請", class: "btn btn-primary btn-block mrgn-top5" %>
+                <% end %>
               <% end %>
             </div>
           <% end %>

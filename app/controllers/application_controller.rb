@@ -33,10 +33,12 @@ class ApplicationController < ActionController::Base
   end
 
   def available_admin_user
+    flash[:danger] = "アクセス権限がありません。"
     redirect_to root_url unless login_user.admin?
   end
 
   def not_available_admin_user
+    flash[:danger] = "アクセス権限がありません。"
     redirect_to root_url if login_user.admin?
   end
 
