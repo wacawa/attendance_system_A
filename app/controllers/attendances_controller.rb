@@ -157,7 +157,7 @@ class AttendancesController < ApplicationController
 
   def update_overtime_request_to_superior
     if params[:attendance][:before_overtime_approval].present?
-      overtime = "#{params[:attendance]["finish_overtime(4i)"]}:#{params[:attendance]["finish_overtime(5i)"]}".to_time 
+      overtime = "#{params[:attendance]["finish_overtime(4i)"]}:#{params[:attendance]["finish_overtime(5i)"]}"
       if overtime.present? 
         attendance = Attendance.find(params[:id])
         day = params["overnight#{attendance.id}"] == "0" ? attendance.worked_on : attendance.worked_on.next_day
