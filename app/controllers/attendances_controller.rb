@@ -161,7 +161,7 @@ class AttendancesController < ApplicationController
       if overtime.present? 
         attendance = Attendance.find(params[:id])
         day = params["overnight#{attendance.id}"] == "0" ? attendance.worked_on : attendance.worked_on.next_day
-        overtime = "#{day}-#{overtime}".to_datetime
+        overtime = "#{day}-#{overtime}".to_time
         if attendance.update_attributes(overtime_request_params) && attendance.update_attributes(finish_overtime: overtime)
           msg = ["success", "変更を送信しました。"]
         else
