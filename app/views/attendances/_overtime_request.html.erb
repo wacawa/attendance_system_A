@@ -34,7 +34,7 @@
                         <tr>
                           <td><%= l(request.worked_on, format: :short) %></td>
                           <td><%= $days_of_the_week[request.worked_on.wday] %></td>
-                          <td><%= l(request.finish_overtime.to_time, format: :time) %></td>
+                          <td><%= l(request.finish_overtime, format: :time) %></td>
                           <td><%= l(user.work_finish_time, format: :time) %></td>
                           <% work_finish_time = "#{request.worked_on}-#{user.work_finish_time.hour}:#{user.work_finish_time.min}".to_time %>
                           <td><%= working_times(work_finish_time, request.finish_overtime) %></td>
