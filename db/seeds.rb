@@ -1,4 +1,4 @@
-# coding: utf-8
+# encoding: utf-8
 
 cardid = Faker::Lorem.characters(number: 8)
 User.create!(name: "管理者",
@@ -11,7 +11,8 @@ User.create!(name: "管理者",
              )
 
 3.times do |n|
-  name = Faker::Name.name
+  Faker::Config.locale = :ja
+  name = Gimei.name.kanji
   email = "su#{n+1}@email.com"
   password = "password"
   empid = n+1
@@ -28,7 +29,7 @@ User.create!(name: "管理者",
 end
 
 2.times do |n|
-  name = Faker::Name.name
+  name = Gimei.name.kanji
   email = "sample#{n+1}@email.com"
   password = "password"
   empid = n+4
