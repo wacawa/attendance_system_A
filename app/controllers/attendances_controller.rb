@@ -88,26 +88,24 @@ class AttendancesController < ApplicationController
   end
 
   def update_superior_request
+    error = []
     ActiveRecord::Base.transaction do
       request_params.each do |id, item|
         if params["checkbox#{id}"] == "1" && item[:instructor_authentication] != "申請中"
           attendance = Attendance.find(id)
           user = User.find(attendance.user_id)
           attendances = user.attendances.where(worked_on: attendance.worked_on..attendance.worked_on.end_of_month)
-          attendances.update_all(item.to_h)
-          wanted_data_list = attendances.pluck(:before_approval, :after_approval, :instructor_authentication)
           if item[:instructor_authentication] == "なし"
-            list = wanted_data_list.transpose[2].uniq[0]
             attendances.update_all(instructor_authentication: list)
-            flash[:success] = "変更を送信しました。"
           else
-            wanted_data_update(attendances, wanted_data_list)
-            flash[:success] = "変更を送信しました。"
+            attendances.update_all(item.to_h)
           end
-        else
-          flash[:danger] = "「指示者確認㊞」を変更し、チェックを入れて送信してください。"
+        elsif params["checkbox#{id}"] == "1" && item[:instructor_authentication] == "申請中"
+          error << true
         end
       end
+      flash[:success] = "変更を送信しました。" unless error.present?
+      flash[:danger] = "「指示者確認㊞」を変更し、変更にチェックを入れて送信してください。" if error.present?
       redirect_to @user
     rescue ActiveRecord::RecordInvalid
       flash[:danger] = "変更の送信に失敗しました。"
