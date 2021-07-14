@@ -60,7 +60,7 @@ class AttendancesController < ApplicationController
                 item = [["new_started_at", start_time], ["new_finished_at", finish_time],
                         ["note", item[:note]], [app, item[app]], [a, item[a]]]
                 item << ["old_started_at", attendance.started_at] if attendance.old_started_at.nil?
-                item << ["old_finished_at", attendance.finished_at] if attendance.old_finished_at.nil?
+                item << ["old_finished_at", attendance.finished_at]
                 item = item.to_h
                 attendance.update_attributes!(item)
               else

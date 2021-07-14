@@ -19,8 +19,8 @@
       <tbody>
         <% @attendances.each do |day| %>
           <%= f.fields_for "attendances[]", day do |attendance| %>
-            <% d = !( !login_user.admin? && (Date.current > day.worked_on) ) %>
-            <% d ||= Date.current == day.worked_on && day.finished_at.present? %>
+            <% d = Date.current < day.worked_on %>
+            <% d ||= Date.current == day.worked_on && day.finished_at.blank? %>
             <% d ||= day.atts_edit_instructor_authentication == "申請中" %>
             <tr>
               <td><%= l(day.worked_on, format: :short) %></td>
