@@ -1,4 +1,4 @@
-# cording: utf-8
+# coding: utf-8
 
 cardid = Faker::Lorem.characters(number: 8)
 User.create!(name: "管理者",
