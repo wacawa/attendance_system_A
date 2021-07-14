@@ -105,7 +105,7 @@ class AttendancesController < ApplicationController
         end
       end
       flash[:success] = "変更を送信しました。" unless error.present?
-      flash[:danger] = "「指示者確認㊞」を変更し、変更にチェックを入れて送信してください。" if error.present?
+      flash[:danger] = "変更の送信に失敗した申請があります。" if error.present?
       redirect_to @user
     rescue ActiveRecord::RecordInvalid
       flash[:danger] = "変更の送信に失敗しました。"
@@ -122,21 +122,25 @@ class AttendancesController < ApplicationController
     errors = []
     ActiveRecord::Base.transaction do
       request_params.each do |id, item|
-        if params["checkbox#{id}"] == "0"
-          errors << true
-        elsif item[a] != "申請中"
-          attendance = Attendance.find(id)
-          user = User.find(attendance.user_id)
-          case item[a]
-          when "なし", "否認" then
-            item = [[a, item[a]], ["note", nil], ["new_started_at", nil], ["new_finished_at", nil], 
-                    ["before_atts_edit_approval", nil], ["after_atts_edit_approval", "上長2"]].to_h
-            attendance.update_attributes!(item)
-          when "承認" then
-            attendance.update_attributes!(item)
+        if params["checkbox#{id}"] == "1"
+          if item[a] != "申請中"
+            attendance = Attendance.find(id)
+            user = User.find(attendance.user_id)
+            case item[a]
+            when "なし" then
+              item = [[a, item[a]], ["note", nil], ["new_started_at", nil], ["new_finished_at", nil], 
+                      ["before_atts_edit_approval", nil], ["after_atts_edit_approval", nil]].to_h
+              attendance.update_attributes!(item)
+            when "否認" then
+              item = [[a, item[a]], ["note", nil], ["new_started_at", nil], ["new_finished_at", nil], 
+                      ["before_atts_edit_approval", nil], ["after_atts_edit_approval", "上長2"]].to_h
+              attendance.update_attributes!(item)
+            when "承認" then
+              attendance.update_attributes!(item)
+            end
+          else
+            errors << true
           end
-        else
-          errors << true
         end
       end
       flash[:success] = "変更を送信しました。" unless errors.present?
@@ -184,16 +188,23 @@ class AttendancesController < ApplicationController
     ActiveRecord::Base.transaction do
       request_params.each do |id, item|
         logger.debug(Attendance.find(id).inspect)
-        if params["checkbox#{id}"] == "0"
-          errors << true
-        elsif item["overtime_instructor_authentication"] != "申請中"
-          attendance = Attendance.find(id)
-          attendance.update_attributes!(item)
+        if params["checkbox#{id}"] == "1"
+          if item["overtime_instructor_authentication"] != "申請中"
+            attendance = Attendance.find(id)
+            item["finish_overtime"] = nil if item["overtime_instructor_authentication"] == "なし"
+            item["after_overtime_approval"] = nil if item["overtime_instructor_authentication"] == "なし"
+            attendance.update_attributes!(item)
+          else
+            errors << true
+          end
+        else
+          if item["overtime_instructor_authentication"] != "申請中"
+            errors << true
+          end
         end
-#        logger.debug(Attendance.find(id).inspect)
       end
       flash[:success] = "変更を送信しました。" unless errors.present?
-      flash[:danger] = "送信に失敗した申請があります。" if errors.present?
+      flash[:danger] = "変更の送信に失敗した申請があります。" if errors.present?
       redirect_to @user
     rescue ActiveRecord::RecordInvalid
       flash[:danger] = "変更の送信に失敗しました。"
