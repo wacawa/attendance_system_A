@@ -12,7 +12,7 @@ User.create!(name: "管理者",
 
 3.times do |n|
   name = Faker::Name.name
-  email = "sample#{n+1}@email.com"
+  email = "su#{n+1}@email.com"
   password = "password"
   empid = n+1
   cardid = Faker::Lorem.characters(number: 8)
@@ -29,7 +29,7 @@ end
 
 2.times do |n|
   name = Faker::Name.name
-  email = "sample#{n+4}@email.com"
+  email = "sample#{n+1}@email.com"
   password = "password"
   empid = n+4
   cardid = Faker::Lorem.characters(number: 8)

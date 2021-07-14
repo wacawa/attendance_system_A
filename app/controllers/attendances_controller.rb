@@ -70,7 +70,7 @@ class AttendancesController < ApplicationController
           end
         else
           unless item["started_at(4i)"].blank? && item["finished_at(4i)"].blank?
-            error << true 
+            error << true unless item[app].blank?
           end
         end
       end
