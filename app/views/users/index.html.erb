@@ -36,7 +36,7 @@
               <% unless login_user?(user) %>
                 <button data-toggle="collapse" data-target="#collapse<%= i %>" class="btn btn-primary">編集</button>
                 <%= link_to "削除", user, method: :delete,
-                    data: { confirm: "削除してよろしいか？" }, class: "btn btn-primary" %>
+                    data: { confirm: "削除してよろしいですか？" }, class: "btn btn-primary" %>
                 <div id="collapse<%=i%>" class="panel-collapse collapse">
                   <br><%= render partial: 'form', locals: { model: user } %><br>
                 </div>
