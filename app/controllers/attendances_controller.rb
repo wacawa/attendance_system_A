@@ -39,7 +39,6 @@ class AttendancesController < ApplicationController
   def update_one_month
     app = "before_atts_edit_approval"
     a = "atts_edit_instructor_authentication"
-    error = []
     ActiveRecord::Base.transaction do
       attendances_params.each do |id, item|
         attendance = Attendance.find(id)
@@ -63,19 +62,20 @@ class AttendancesController < ApplicationController
                 item << ["old_finished_at", attendance.finished_at]
                 item = item.to_h
                 attendance.update_attributes!(item)
+                msg ||= ["success", "変更を送信しました。"]
               else
-                error << true
+                msg = ["danger", "申請に失敗した日付があります。"]
               end
             end
           end
         else
           unless item["started_at(4i)"].blank? && item["finished_at(4i)"].blank?
-            error << true unless item[app].blank?
+            msg = ["danger", "申請に失敗した日付があります。"] unless item[app].blank?
           end
         end
       end
-      flash[:danger] = "申請に失敗した日付があります。" if error.present?
-      flash[:success] = "勤怠変更を申請しました。" unless error.present?
+      msg ||= []
+      flash[msg[0]] = msg[1] if msg.present?
       redirect_to user_url(date: params[:date])
     rescue ActiveRecord::RecordInvalid
       flash[:danger] = "入力データが無効な値のため、更新をキャンセルしました。"
@@ -88,7 +88,6 @@ class AttendancesController < ApplicationController
   end
 
   def update_superior_request
-    error = []
     ActiveRecord::Base.transaction do
       request_params.each do |id, item|
         if params["checkbox#{id}"] == "1" && item[:instructor_authentication] != "申請中"
@@ -100,12 +99,13 @@ class AttendancesController < ApplicationController
           else
             attendances.update_all(item.to_h)
           end
+          msg ||= ["success", "変更を送信しました。"]
         elsif params["checkbox#{id}"] == "1" && item[:instructor_authentication] == "申請中"
-          error << true
+          msg = ["danger", "変更の送信に失敗した申請があります。"]
         end
       end
-      flash[:success] = "変更を送信しました。" unless error.present?
-      flash[:danger] = "変更の送信に失敗した申請があります。" if error.present?
+      msg ||= []
+      flash[msg[0]] = msg[1] if msg.present?
       redirect_to @user
     rescue ActiveRecord::RecordInvalid
       flash[:danger] = "変更の送信に失敗しました。"
@@ -119,7 +119,6 @@ class AttendancesController < ApplicationController
 
   def update_attendances_edit_request
     a = "atts_edit_instructor_authentication"
-    errors = []
     ActiveRecord::Base.transaction do
       request_params.each do |id, item|
         if params["checkbox#{id}"] == "1"
@@ -138,13 +137,14 @@ class AttendancesController < ApplicationController
             when "承認" then
               attendance.update_attributes!(item)
             end
+            msg ||= ["success", "変更を送信しました。"]
           else
-            errors << true
+            msg = ["danger", "変更の送信に失敗した申請があります。"]
           end
         end
       end
-      flash[:success] = "変更を送信しました。" unless errors.present?
-      flash[:danger] = "送信に失敗した申請があります。" if errors.present?
+      msg ||= []
+      flash[msg[0]] = msg[1] if msg.present?
       redirect_to @user
     rescue ActiveRecord::RecordInvalid
       flash[:danger] = "変更の送信に失敗しました。"
@@ -159,8 +159,9 @@ class AttendancesController < ApplicationController
 
   def update_overtime_request_to_superior
     if params[:attendance][:before_overtime_approval].present?
-      overtime = "#{params[:attendance]["finish_overtime(4i)"]}:#{params[:attendance]["finish_overtime(5i)"]}"
-      if overtime.present? 
+      if params[:attendance]["finish_overtime(4i)"].present?
+        params[:attendance]["finish_overtime(5i)"] ||= "00"        
+        overtime = "#{params[:attendance]["finish_overtime(4i)"]}:#{params[:attendance]["finish_overtime(5i)"]}"
         attendance = Attendance.find(params[:id])
         day = params["overnight#{attendance.id}"] == "0" ? attendance.worked_on : attendance.worked_on.next_day
         overtime = "#{day}-#{overtime}".to_time
@@ -170,11 +171,12 @@ class AttendancesController < ApplicationController
           msg = ["danger", "変更の送信に失敗しました。"]
         end
       else
-        msg = ["danger", "終了予定時間未入力のため送信をキャンセルしました。"]
+        msg = ["danger", "終了予定時間未選択のため送信をキャンセルしました。"]
       end
     else
-      msg = ["danger", "指示者確認欄未選択のため送信をキャンセルしました。"]
+      msg = ["danger", "指示者確認欄未選択のため送信をキャンセルしました。"] if params[:attendance]["finish_overtime(4i)"].present?
     end
+    msg ||= []
     flash[msg[0]] = msg[1] if msg.present?
     redirect_to @user
   end
@@ -184,7 +186,6 @@ class AttendancesController < ApplicationController
   end
 
   def update_overtime_request
-    errors = []
     ActiveRecord::Base.transaction do
       request_params.each do |id, item|
         logger.debug(Attendance.find(id).inspect)
@@ -194,17 +195,18 @@ class AttendancesController < ApplicationController
             item["finish_overtime"] = nil if item["overtime_instructor_authentication"] == "なし"
             item["after_overtime_approval"] = nil if item["overtime_instructor_authentication"] == "なし"
             attendance.update_attributes!(item)
+            msg ||= ["success", "変更を送信しました。"]
           else
-            errors << true
+            msg = ["danger", "変更の送信に失敗した申請があります。"]
           end
         else
           if item["overtime_instructor_authentication"] != "申請中"
-            errors << true
+            msg = ["danger", "変更の送信に失敗した申請があります。"]
           end
         end
       end
-      flash[:success] = "変更を送信しました。" unless errors.present?
-      flash[:danger] = "変更の送信に失敗した申請があります。" if errors.present?
+      msg ||= []
+      flash[msg[0]] = msg[1] if msg.present?
       redirect_to @user
     rescue ActiveRecord::RecordInvalid
       flash[:danger] = "変更の送信に失敗しました。"
