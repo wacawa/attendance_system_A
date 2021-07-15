@@ -96,7 +96,9 @@ class AttendancesController < ApplicationController
           user = User.find(attendance.user_id)
           attendances = user.attendances.where(worked_on: attendance.worked_on..attendance.worked_on.end_of_month)
           if item[:instructor_authentication] == "なし"
-            attendances.update_all(instructor_authentication: item[:instructor_authentication])
+            item[:before_approval] = nil
+            item[:after_approval] = nil
+            attendances.update_all(item.to_h)
           else
             attendances.update_all(item.to_h)
           end
