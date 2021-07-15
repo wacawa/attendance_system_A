@@ -60,9 +60,9 @@ ActiveRecord::Schema.define(version: 2021_07_01_115617) do
     t.datetime "designated_work_finish_time"
     t.integer "employee_id"
     t.string "card_id"
-    t.datetime "basic_work_time", default: "2021-07-13 23:00:00"
-    t.datetime "work_start_time", default: "2021-07-14 00:00:00"
-    t.datetime "work_finish_time", default: "2021-07-14 09:00:00"
+    t.datetime "basic_work_time", default: "2021-07-15 23:00:00"
+    t.datetime "work_start_time", default: "2021-07-16 00:00:00"
+    t.datetime "work_finish_time", default: "2021-07-16 09:00:00"
     t.string "superior_name"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
