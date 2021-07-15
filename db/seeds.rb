@@ -13,7 +13,7 @@ User.create!(name: "管理者",
 3.times do |n|
   Faker::Config.locale = :ja
   name = Gimei.name.kanji
-  email = "su#{n+1}@email.com"
+  email = "su#{n}@email.com"
   password = "password"
   empid = n+1
   cardid = Faker::Lorem.characters(number: 8)
@@ -24,13 +24,13 @@ User.create!(name: "管理者",
                employee_id: empid,
                card_id: cardid,
                superior: true,
-               superior_name: "上長#{n+1}",
+               superior_name: "上長#{n}",
                )
 end
 
-2.times do |n|
+50.times do |n|
   name = Gimei.name.kanji
-  email = "sample#{n+1}@email.com"
+  email = "sample#{n}@email.com"
   password = "password"
   empid = n+4
   cardid = Faker::Lorem.characters(number: 8)

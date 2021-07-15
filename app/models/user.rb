@@ -22,11 +22,22 @@ class User < ApplicationRecord
                   "designated_work_finish_time" => "designated_work_finish_time", "superior" => "superior", "admin" => "admin", "password" => "password" }
     CSV.foreach(file.path, headers: true) do |row|
       user = find_by(email: row["email"]) || new
-      row["basic_work_time"] = row["basic_work_time"].to_time
-      row["designated_work_start_time"] = row["designated_work_start_time"].to_time
-      row["designated_work_finish_time"] = row["designated_work_finsh_time"].to_time
+      row["basic_work_time"] = row["basic_work_time"].to_time if row["basic_work_time"].present?
+      row["designated_work_start_time"] = row["designated_work_start_time"].to_time if row["designated_work_start_time"].present?
+      row["designated_work_finish_time"] = row["designated_work_finish_time"].to_time if row["designated_work_finish_time"].present?
+      if user.superior_name.blank? && row["superior"]
+        sn = []
+        User.where(superior: true).pluck(:superior_name).each {|s| sn << s.to_s.split("上長")[1].to_i}
+        sn.uniq.sort.each_with_index do |n, i|
+          row["superior_name"] = "上長#{i}" if n != i
+          break if row["superior_name"].present?
+        end
+      elsif user.superior_name.present?
+        row["superior_name"] = user.superior_name
+      end
       row_hash = row.to_hash.slice(*csv_header.keys)
       user.attributes = row_hash.transform_keys(&csv_header.method(:[]))
+      user.update_attributes(superior_name: row["superior_name"])
       user.save
     end
   end
