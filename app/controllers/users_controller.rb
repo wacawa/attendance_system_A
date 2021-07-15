@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.where.not(id: login_user.id).paginate(page: params[:page])
+    @users = User.where.not(id: login_user.id).paginate(page: params[:page]).order(:id)
   end
 
   def import
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
       @attendances.update_all(instructor_authentication: "申請中")
       flash[:success] = "#{@superior}に#{@first_day.month}月度の勤怠承認を申請しました。"
     else
-      flash[:danger] = "ユーザーを指定してください。"
+      flash[:danger] = "上長を指定してください。"
     end
     redirect_to @user
   end
