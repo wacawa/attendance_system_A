@@ -6,7 +6,7 @@ class PointsController < ApplicationController
 
 
   def index
-    @points = Point.all
+    @points = Point.all.order(:id)
     @point = Point.new
   end
 
