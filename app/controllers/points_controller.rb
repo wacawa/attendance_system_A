@@ -11,13 +11,15 @@ class PointsController < ApplicationController
   end
 
   def create
+    @ids = Point.all.pluck(:id)
     @point = Point.new(point_params)
-    if @point.save
+    if !@ids.include?(point_params[:id].to_i) && @point.save
       flash[:success] = "拠点情報を追加しました。"
       redirect_to points_url
     else
       @in = "in"
       @points = Point.all
+      flash[:danger] = "拠点情報の追加に失敗しました。"
       render :index
     end
   end
