@@ -28,7 +28,7 @@ User.create!(name: "管理者",
                )
 end
 
-50.times do |n|
+30.times do |n|
   name = Gimei.name.kanji
   email = "sample#{n}@email.com"
   password = "password"
